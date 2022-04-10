@@ -39,6 +39,22 @@
                             </div>
                         </div>
                         <div class="item form-group col-md-6 left">
+                            <label class="col-form-label col-md-4 col-sm-4" for="first-name" style="font-size: 16px; font-weight: bold;">Customer :
+                            </label>
+                            <div class="col-md- col-sm-6">
+                                <label class="col-form-label col-md-12 col-sm-12" for="first-name" style="font-size: 16px;"><?= $customers[0]->name ?></label>
+                                <label class="col-form-label col-md-12 col-sm-12" for="first-name" style="font-size: 16px;">(<?= $customers[0]->plat_nomor ?>)</label>
+                            </div>
+                        </div>
+                        <div class="item form-group col-md-6 right">
+                            <label class="col-form-label col-md-4 col-sm-4" for="first-name" style="font-size: 16px; font-weight: bold;">Montir :
+                            </label>
+                            <div class="col-md-6 col-sm-6">
+                                <label class="col-form-label col-md-12 col-sm-12" for="first-name" style="font-size: 16px;"><?= $montirs[0]->name ?></label>
+                                <label class="col-form-label col-md-12 col-sm-12" for="first-name" style="font-size: 16px;">(<?= $montirs[0]->nip ?>)</label>
+                            </div>
+                        </div>
+                        <div class="item form-group col-md-6 left">
                             <label class="col-form-label col-md-4 col-sm-4" for="first-name" style="font-size: 16px; font-weight: bold;">Tanggal Penjualan :
                             </label>
                             <div class="col-md- col-sm-6">

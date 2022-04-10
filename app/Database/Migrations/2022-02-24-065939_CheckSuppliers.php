@@ -16,6 +16,14 @@ class CheckSuppliers extends Migration
                 'unsigned' => true,
                 'auto_increment' => true,
             ],
+            'customer' => [
+                'type' => 'VARCHAR',
+                'constraint' => '100'
+            ],
+            'montir' => [
+                'type' => 'VARCHAR',
+                'constraint' => '100'
+            ],
             'code_order' => [
                 'type' => 'VARCHAR',
                 'constraint' => '100'

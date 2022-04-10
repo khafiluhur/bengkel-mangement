@@ -5,6 +5,8 @@ use App\Models\ItemsModel;
 use App\Models\CheckSuppliersModel;
 use App\Models\SuppliersModel;
 use App\Controllers\BaseController;
+use App\Models\CustomersModel;
+use App\Models\MontirsModel;
 use App\Database\Migrations\CheckSuppliers;
 use App\Models\SupplierItemsModel;
 use CodeIgniter\HTTP\Request;
@@ -17,7 +19,8 @@ class TransactionSupplier extends BaseController
         $this->db = db_connect();
         // $this->load = Load
         $this->checkSupplierModel = new CheckSuppliersModel();
-
+        $this->customerModel = new CustomersModel();
+        $this->montirsModel = new MontirsModel();
         $this->itemModel = new ItemsModel();
         $this->supplierModel = new SuppliersModel();
         $this->supplierItemModel = new SupplierItemsModel();
@@ -41,6 +44,8 @@ class TransactionSupplier extends BaseController
     {
         $transactions = $this->checkSupplierModel->findAll();
         $items = $this->itemModel->findAll();
+        $customers = $this->customerModel->findAll();
+        $montirs = $this->montirsModel->findAll();
         
         //Generate Code Items
         $count = count($transactions);
@@ -69,7 +74,9 @@ class TransactionSupplier extends BaseController
             'new_code' => 'TR'.$generate_code,
             'items' => $items,
             'item_supplier' => $itemPrice,
-            'total_pay' => $total_pay
+            'total_pay' => $total_pay,
+            'customers' => $customers,
+            'montirs' => $montirs
         ];
 
         return view('pages/transaction_supplier/create', $data);
@@ -94,6 +101,8 @@ class TransactionSupplier extends BaseController
         $item = new CheckSuppliersModel();
         $item->insert([
             'code_order' => $this->request->getPost('code'),
+            'customer' => $this->request->getPost('customer'),
+            'montir' => $this->request->getPost('montir'),
             'date_trasanction' => date("Y-m-d"),
             'total_pay' => $total_pay[0]->total_pay,
             'created_at' => date("Y-m-d H:i:s"),
@@ -142,6 +151,21 @@ class TransactionSupplier extends BaseController
             'updated_by' => session()->get('username')
         ]);
 
+        // 
+        $item1 = $this->db->table("items");
+        $item1->select('stock');
+        $item1->where('id_item', $this->request->getPost('id_item'));
+        $itemPrice1 = $item1->get()->getResult();
+
+        $items2 = $itemPrice1[0]->stock;
+
+        $save_items = new ItemsModel();
+        $save_items->update($this->request->getPost('id_item'), [
+            'stock' =>  $items2 - $this->request->getPost('total_stock'),
+            'updated_at'  => date("Y-m-d H:i:s"),
+            'updated_by'  => session()->get('username')
+        ]);
+
         session()->setFlashdata('success', 'Berhasil ditambah');
         return redirect()->to(base_url('check_suppliers/store'));
     }
@@ -169,6 +193,16 @@ class TransactionSupplier extends BaseController
     {
 
         $transactions = $this->checkSupplierModel->find($id);
+        // Customer //
+        $customer = $this->db->table("customers");
+        $customer->where('customers.id', $transactions['customer']);
+        $customers = $customer->get()->getResult();
+
+        // Montir //
+        $montir = $this->db->table("montirs");
+        $montir->where('montirs.id', $transactions['montir']);
+        $montirs = $montir->get()->getResult();
+
         $items = $this->itemModel->findAll();
 
         $builder = $this->db->table("supplier_items");
@@ -176,13 +210,15 @@ class TransactionSupplier extends BaseController
         $builder->join('items', 'supplier_items.id_item = items.id_item');
         $builder->where('supplier_items.code_order', $transactions['code_order']);
         $itemPrice = $builder->get()->getResult();
-
+        
         $data = [
             'title' => 'Detail Transaksi',
             'type' => 'checkSuppliers',
             'item_supplier' => $itemPrice,
             'transactions' => $transactions,
-            'items' => $items
+            'items' => $items,
+            'customers' => $customers,
+            'montirs' => $montirs
         ];
         return view('pages/transaction_supplier/detail', $data);
     }

@@ -240,6 +240,32 @@
                         <button type="submit" class="btn btn-primary btn-sm">Simpan</button>
                     </div>
                 </form>
+            <?php elseif($type == 'montirs'): ?>
+                <form method="post" action="<?= base_url(); ?>/montirs/process">
+                    <?= csrf_field() ?>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Nomor Pegawai</label>
+                            <input type="text" class="form-control product_code" name="nip" placeholder="Nomor Pegawai">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Nama</label>
+                            <input type="text" class="form-control product_name" name="name" placeholder="Nama">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Telephone</label>
+                            <input type="text" class="form-control product_type" name="telepone" placeholder="Telepone">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Alamat</label>
+                            <input type="text" class="form-control product_stock" name="alamat" placeholder="Alamat">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary btn-sm">Simpan</button>
+                    </div>
+                </form>
             <?php else: ?>
                 <form method="post" action="<?= base_url(); ?>/customers/process">
                 <?= csrf_field() ?>
@@ -517,7 +543,7 @@
                         </div>
                         <div class="form-group">
                             <label for="exampleInputEmail1">Nama</label>
-                            <input type="text" class="form-control product_name" name="nama" placeholder="Nama">
+                            <input type="text" class="form-control product_name" name="name" placeholder="Nama">
                         </div>
                         <div class="form-group">
                             <label for="exampleInputEmail1">Telephone</label>
@@ -539,7 +565,7 @@
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="exampleInputEmail1">Nama Customer</label>
-                            <input type="text" class="form-control product_code" name="nama" placeholder="Nama Customer">
+                            <input type="text" class="form-control product_code" name="name" placeholder="Nama Customer">
                         </div>
                         <div class="form-group">
                             <label for="exampleInputEmail1">Plat Nomor</label>

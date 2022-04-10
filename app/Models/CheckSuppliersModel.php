@@ -9,5 +9,5 @@ class CheckSuppliersModel extends Model
     protected $table = "check_suppliers";
     protected $primaryKey = "id";
     protected $useTimestamps = true;
-    protected $allowedFields = ['id','code_order','date_trasanction','total_pay'];
+    protected $allowedFields = ['id','customer','montir','code_order','date_trasanction','total_pay'];
 }

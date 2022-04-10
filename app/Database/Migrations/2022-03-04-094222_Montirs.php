@@ -20,7 +20,7 @@ class Montirs extends Migration
                 'type' => 'VARCHAR',
                 'constraint' => '100'
             ],
-            'nama' => [
+            'name' => [
                 'type' => 'VARCHAR',
                 'constraint' => '100'
             ],

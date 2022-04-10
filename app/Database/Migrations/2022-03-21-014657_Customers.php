@@ -16,7 +16,7 @@ class Customers extends Migration
                 'unsigned' => true,
                 'auto_increment' => true,
             ],
-            'nama' => [
+            'name' => [
                 'type' => 'VARCHAR',
                 'constraint' => '100'
             ],

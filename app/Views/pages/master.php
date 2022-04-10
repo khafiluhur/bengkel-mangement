@@ -149,9 +149,9 @@
                                                     <tr>
                                                         <td><?=$i++?></td>
                                                         <td><?=$item['nip']?></td>
-                                                        <td><?=$item['nama']?></td>
+                                                        <td><?=$item['name']?></td>
                                                         <td><?=$item['telepone']?></td>
-                                                        <td><a href="" class="btn-edit-montir" data-id="<?=$item['id']?>" data-code="<?=$item['nip']?>" data-name="<?=$item['nama']?>" data-type="<?=$item['telepone']?>" data-stock="<?=$item['alamat']?>" data-toggle="modal" data-target="#editModal" >Ubah</a> | <a href="">Hapus</a></td>
+                                                        <td><a href="" class="btn-edit-montir" data-id="<?=$item['id']?>" data-code="<?=$item['nip']?>" data-name="<?=$item['name']?>" data-type="<?=$item['telepone']?>" data-stock="<?=$item['alamat']?>" data-toggle="modal" data-target="#editModal" >Ubah</a> | <a href="<?= base_url('montirs/'.$item['id'].'/delete'); ?>">Hapus</a></td>
                                                     </tr>
                                                 <?php endforeach; ?>
                                             </tbody>
@@ -171,10 +171,10 @@
                                                 <?php foreach ($items as $item) : ?>
                                                     <tr>
                                                         <td><?=$i++?></td>
-                                                        <td><?=$item['nama']?></td>
+                                                        <td><?=$item['name']?></td>
                                                         <td><?=$item['plat_nomor']?></td>
                                                         <td><?=$item['type_motor']?></td>
-                                                        <td><a href="" class="btn-edit-montir" data-id="<?=$item['id']?>" data-code="<?=$item['nama']?>" data-name="<?=$item['plat_nomor']?>" data-type="<?=$item['type_motor']?>" data-toggle="modal" data-target="#editModal" >Ubah</a> | <a href="">Hapus</a></td>
+                                                        <td><a href="" class="btn-edit-montir" data-id="<?=$item['id']?>" data-code="<?=$item['name']?>" data-name="<?=$item['plat_nomor']?>" data-type="<?=$item['type_motor']?>" data-toggle="modal" data-target="#editModal" >Ubah</a> | <a href="<?= base_url('customers/'.$item['id'].'/delete'); ?>">Hapus</a></td>
                                                     </tr>
                                                 <?php endforeach; ?>
                                             </tbody>

@@ -333,7 +333,7 @@ class Master extends BaseController
         if (!$this->validate([
             'nip' => [
             ],
-            'nama' => [
+            'name' => [
             ],
             'telepone' => [
             ],
@@ -346,7 +346,7 @@ class Master extends BaseController
         $items = new MontirsModel();
         $items->insert([
             'nip' => $this->request->getPost('nip'),
-            'nama' => $this->request->getPost('nama'),
+            'name' => $this->request->getPost('name'),
             'telepone' => $this->request->getPost('telepone'),
             'alamat' => $this->request->getPost('alamat'),
             'created_at' => date("Y-m-d H:i:s"),
@@ -363,7 +363,7 @@ class Master extends BaseController
         $items = new MontirsModel();
         $items->update($id, [
             'nip' => $this->request->getPost('nip'),
-            'nama' => $this->request->getPost('nama'),
+            'name' => $this->request->getPost('name'),
             'telepone' => $this->request->getPost('telepone'),
             'alamat' => $this->request->getPost('alamat'),
             'updated_at'  => date("Y-m-d H:i:s"),
@@ -396,7 +396,7 @@ class Master extends BaseController
     {
         // dd($this->request);
         if (!$this->validate([
-            'nama' => [
+            'name' => [
             ],
             'plat_nomor' => [
             ],
@@ -409,7 +409,7 @@ class Master extends BaseController
 
         $items = new CustomersModel();
         $items->insert([
-            'nama' => $this->request->getPost('name'),
+            'name' => $this->request->getPost('name'),
             'plat_nomor' => $this->request->getPost('plat_nomor'),
             'type_motor' => $this->request->getPost('type_motor'),
         ]);

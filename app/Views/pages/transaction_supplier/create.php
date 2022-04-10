@@ -41,6 +41,30 @@
                                     <input type="hidden" required="required" class="form-control" name="code" value="<?=$new_code?>">
                                 </div>
                             </div>
+                            <div class="item form-group">
+                                <label class="col-form-label col-md-3 col-sm-3" for="first-name" style="font-size: 16px; font-weight: bold;">Customer
+                                </label>
+                                <div class="col-md-6 col-sm-6 ">
+                                    <select class="form-control" name="customer">
+                                        <option value="">Pilih Customer</option>
+                                        <?php foreach ($customers as $item) : ?>
+                                            <option value="<?=$item['id']?>"><?=$item['name']?>(<?=$item['plat_nomor']?>)</option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="item form-group">
+                                <label class="col-form-label col-md-3 col-sm-3" for="first-name" style="font-size: 16px; font-weight: bold;">Montir
+                                </label>
+                                <div class="col-md-6 col-sm-6 ">
+                                    <select class="form-control" name="montir">
+                                        <option value="">Pilih Montir</option>
+                                        <?php foreach ($montirs as $item) : ?>
+                                            <option value="<?=$item['id']?>"><?=$item['name']?>(<?=$item['nip']?>)</option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                            </div>
                             <div class="row">
                                 <div class="col-md-12 col-sm-12 ">
                                     <div class="">
@@ -76,7 +100,11 @@
                                                                 <?php endforeach; ?>
                                                                 <tr>
                                                                     <td colspan="5">Total Harga</td>
-                                                                    <td colspan="2" style="font-weight: bold;"><?= "Rp. " . number_format($total_pay[0]->total_pay,0,',','.'); ?></td>
+                                                                    <?php if($total_pay[0]->total_pay != null) { ?>
+                                                                        <td colspan="2" style="font-weight: bold;"><?= "Rp. " . number_format($total_pay[0]->total_pay,0,',','.'); ?></td>
+                                                                    <?php } else { ?>
+                                                                        <td colspan="2" style="font-weight: bold;"><?= "Rp. 0" ?></td>
+                                                                    <?php } ?>
                                                                 </tr>
                                                             </tbody>
                                                         </table>

@@ -9,5 +9,5 @@ class MontirsModel extends Model
     protected $table = "montirs";
     protected $primaryKey = "id";
     protected $useTimestamps = true;
-    protected $allowedFields = ['id','nip','nama','telepone','alamat'];
+    protected $allowedFields = ['id','nip','name','telepone','alamat'];
 }
