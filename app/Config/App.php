@@ -23,7 +23,7 @@ class App extends BaseConfig
      *
      * @var string
      */
-    public $baseURL = 'https://bengkel.shobaro.com/';
+    public $baseURL = 'bengkel.shobaro.com';
 
     /**
      * --------------------------------------------------------------------------
