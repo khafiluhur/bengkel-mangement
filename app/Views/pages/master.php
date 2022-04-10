@@ -253,7 +253,6 @@
         });
 
         $('.btn-edit-montir').on('click',function(){
-            console.log($(this).data());
             // get data from button edit
             const id = $(this).data('id');
             var base_url = '<?php echo base_url();?>'

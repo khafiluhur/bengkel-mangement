@@ -164,7 +164,6 @@
 <script>
 $(document).ready(function(){
     $('.btn-create').on('click',function(){
-        console.log($(this).data());
         // get data from button edit
         const code = $(this).data('codetr');
         // Set data to Form Edit
