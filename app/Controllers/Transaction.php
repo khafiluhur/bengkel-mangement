@@ -49,6 +49,7 @@ class Transaction extends BaseController
             'items' => $items,
             'suppliers' => $suppliers
         ];
+
         return view('pages/transaction', $data);
     }
 
@@ -106,12 +107,37 @@ class Transaction extends BaseController
 
     public function updateCheckIn($id)
     {
+        $convertToArray = explode(' ', $this->request->getPost('price'));
+        $slicedToArray = explode('.', $convertToArray[1]);
+        $joinToArray = join("",$slicedToArray);
+
+        $builder = $this->db->table("items");
+        $builder->select('stock');
+        $builder->where('id_item', $this->request->getPost('id_item'));
+        $itemPrice = $builder->get()->getResult();
+        $stockItems = $itemPrice[0]->stock;
+
+        $stockNewItem = $this->db->table("check_ins");
+        $stockNewItem->select('stock');
+        $stockNewItem->where('id', $id);
+        $itemStock = $stockNewItem->get()->getResult();
+        $stockNewItems = $itemStock[0]->stock;
+
+        
         $items = new CheckInsModel();
         $items->update($id, [
             'id_item' => $this->request->getPost('id_item'),
             'id_supplier' => $this->request->getPost('id_supplier'),
             'stock' => $this->request->getPost('stock'),
-            'price' => $this->request->getPost('price'),
+            'price' => $joinToArray,
+            'updated_at'  => date("Y-m-d H:i:s"),
+            'updated_by'  => session()->get('username')
+        ]);
+
+        // balance stock
+        $save_items = new ItemsModel();
+        $save_items->update($this->request->getPost('id_item'), [
+            'stock' =>  ($stockItems - $stockNewItems) + $this->request->getPost('stock'),
             'updated_at'  => date("Y-m-d H:i:s"),
             'updated_by'  => session()->get('username')
         ]);
@@ -121,6 +147,26 @@ class Transaction extends BaseController
 
     public function deleteCheckIn($id)
     {
+        $stockNewItem = $this->db->table("check_ins");
+        $stockNewItem->select('stock, id_item');
+        $stockNewItem->where('id', $id);
+        $itemStock = $stockNewItem->get()->getResult();
+        $stockNewItems = $itemStock[0]->stock;
+
+        $builder = $this->db->table("items");
+        $builder->select('stock');
+        $builder->where('id_item', $itemStock[0]->id_item);
+        $itemPrice = $builder->get()->getResult();
+        $stockItems = $itemPrice[0]->stock;
+
+        // balance stock
+        $save_items = new ItemsModel();
+        $save_items->update($itemStock[0]->id_item, [
+            'stock' =>  ($stockItems - $stockNewItems),
+            'updated_at'  => date("Y-m-d H:i:s"),
+            'updated_by'  => session()->get('username')
+        ]);
+
         $items = new CheckInsModel();
         $items->delete($id);
         session()->setFlashdata('success', 'Berhasil dihapus');
@@ -194,11 +240,31 @@ class Transaction extends BaseController
 
     public function updateCheckOut($id)
     {
+        $builder = $this->db->table("items");
+        $builder->select('stock');
+        $builder->where('id_item', $this->request->getPost('id_item'));
+        $itemPrice = $builder->get()->getResult();
+        $stockItems = $itemPrice[0]->stock;
+
+        $stockNewItem = $this->db->table("check_outs");
+        $stockNewItem->select('stock');
+        $stockNewItem->where('id', $id);
+        $itemStock = $stockNewItem->get()->getResult();
+        $stockNewItems = $itemStock[0]->stock;
+
         $items = new CheckOutsModel();
         $items->update($id, [
             'id_item' => $this->request->getPost('id_item'),
             'date_out' => $this->request->getPost('date_out'),
             'stock' => $this->request->getPost('stock'),
+            'updated_at'  => date("Y-m-d H:i:s"),
+            'updated_by'  => session()->get('username')
+        ]);
+
+        // balance stock
+        $save_items = new ItemsModel();
+        $save_items->update($this->request->getPost('id_item'), [
+            'stock' =>  ($stockItems + $stockNewItems) - $this->request->getPost('stock'),
             'updated_at'  => date("Y-m-d H:i:s"),
             'updated_by'  => session()->get('username')
         ]);
@@ -208,6 +274,26 @@ class Transaction extends BaseController
 
     public function deleteCheckOut($id)
     {
+        $stockNewItem = $this->db->table("check_outs");
+        $stockNewItem->select('stock, id_item');
+        $stockNewItem->where('id', $id);
+        $itemStock = $stockNewItem->get()->getResult();
+        $stockNewItems = $itemStock[0]->stock;
+
+        $builder = $this->db->table("items");
+        $builder->select('stock');
+        $builder->where('id_item', $itemStock[0]->id_item);
+        $itemPrice = $builder->get()->getResult();
+        $stockItems = $itemPrice[0]->stock;
+
+        // balance stock
+        $save_items = new ItemsModel();
+        $save_items->update($itemStock[0]->id_item, [
+            'stock' =>  ($stockItems + $stockNewItems),
+            'updated_at'  => date("Y-m-d H:i:s"),
+            'updated_by'  => session()->get('username')
+        ]);
+
         $items = new CheckOutsModel();
         $items->delete($id);
         session()->setFlashdata('success', 'Berhasil dihapus');

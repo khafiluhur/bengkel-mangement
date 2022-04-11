@@ -151,7 +151,7 @@ class TransactionSupplier extends BaseController
             'updated_by' => session()->get('username')
         ]);
 
-        // 
+        // balace stock //
         $item1 = $this->db->table("items");
         $item1->select('stock');
         $item1->where('id_item', $this->request->getPost('id_item'));

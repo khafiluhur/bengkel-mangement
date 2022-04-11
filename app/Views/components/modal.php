@@ -321,6 +321,10 @@
                             <input type="text" class="form-control product_price2" id="rupiah1" name="price" placeholder="Harga">
                         </div>
                         <div class="form-group">
+                            <label for="exampleInputEmail1">Ukuran</label>
+                            <input type="text" class="form-control product_size" name="size" placeholder="Ukuran">
+                        </div>
+                        <div class="form-group">
                             <label for="exampleInputEmail1">Foto Barang</label>
                             <input type="file" class="form-control product_image" name="image" placeholder="Foto Barang">
                         </div>
