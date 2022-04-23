@@ -16,22 +16,15 @@ class CheckIns extends Migration
                 'unsigned' => true,
                 'auto_increment' => true,
             ],
-            'id_item' => [
-                'type' => 'INT',
-                'constraint' => '12',
-                'unsigned' => true,
-                'null' => true
-            ],
-            'id_supplier' => [
-                'type' => 'INT',
-                'constraint' => '12',
-                'null' => true
-            ],
-            'stock' => [
-                'type' => 'INT',
+            'code_order' => [
+                'type' => 'VARCHAR',
                 'constraint' => '100'
             ],
-            'price' => [
+            'date_trasanction' => [
+                'type' => 'VARCHAR',
+                'constraint' => '100'
+            ],
+            'total_pay' => [
                 'type' => 'VARCHAR',
                 'constraint' => '100'
             ],

@@ -4,7 +4,7 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class Customers extends Migration
+class CheckInItems extends Migration
 {
     public function up()
     {
@@ -16,19 +16,29 @@ class Customers extends Migration
                 'unsigned' => true,
                 'auto_increment' => true,
             ],
-            'code' => [
+            'code_order' => [
                 'type' => 'VARCHAR',
                 'constraint' => '100'
             ],
-            'name' => [
+            'id_item' => [
+                'type' => 'INT',
+                'constraint' => '12',
+                'null' => true
+            ],
+            'price' => [
                 'type' => 'VARCHAR',
                 'constraint' => '100'
             ],
-            'plat_nomor' => [
-                'type' => 'VARCHAR',
+            'stock' => [
+                'type' => 'INT',
                 'constraint' => '100'
             ],
-            'type_motor' => [
+            'id_supplier' => [
+                'type' => 'INT',
+                'constraint' => '12',
+                'null' => true
+            ],
+            'subtotal' => [
                 'type' => 'VARCHAR',
                 'constraint' => '100'
             ],
@@ -38,8 +48,7 @@ class Customers extends Migration
             ],
             'created_by' => [
                 'type' => 'VARCHAR',
-                'constraint' => '100',
-                'null' => true
+                'constraint' => '100'
             ],
             'updated_at' => [
                 'type' => 'DATETIME',
@@ -47,17 +56,16 @@ class Customers extends Migration
             ],
             'updated_by' => [
                 'type' => 'VARCHAR',
-                'constraint' => '100',
-                'null' => true
+                'constraint' => '100'
             ]
         ]);
         $this->forge->addPrimaryKey('id', true);
-        $this->forge->createTable('customers');
+        $this->forge->createTable('check_in_items');
     }
 
     public function down()
     {
         //
-        $this->forge->dropTable('customers');
+        $this->forge->dropTable('check_in_items');
     }
 }

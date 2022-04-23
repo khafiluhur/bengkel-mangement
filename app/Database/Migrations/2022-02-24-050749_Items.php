@@ -41,11 +41,6 @@ class Items extends Migration
                 'constraint' => '12',
                 'null' => true
             ],
-            'id_supplier' => [
-                'type' => 'INT',
-                'constraint' => '12',
-                'null' => true
-            ],
             'id_merk' => [
                 'type' => 'INT',
                 'constraint' => '12',

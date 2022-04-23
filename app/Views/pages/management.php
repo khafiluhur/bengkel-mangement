@@ -63,12 +63,8 @@
                                                 <td>
                                                     <?php if($user['id_level'] == 1) : ?>
                                                         Admin
-                                                    <?php elseif($user['id_level'] == 2): ?>
-                                                        Supplier
-                                                    <?php elseif($user['id_level'] == 3): ?>
-                                                        Manajer
                                                     <?php else: ?>
-                                                        Petugas Gedung
+                                                        Kasir
                                                     <?php endif; ?>
                                                 </td>
                                                 <td>

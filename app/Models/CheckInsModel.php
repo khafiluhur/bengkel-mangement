@@ -9,5 +9,5 @@ class CheckInsModel extends Model
     protected $table = "check_ins";
     protected $primaryKey = "id";
     protected $useTimestamps = true;
-    protected $allowedFields = ['id','id_item','id_supplier','stock','price'];
+    protected $allowedFields = ['id','code_order','date_trasanction','total_pay'];
 }

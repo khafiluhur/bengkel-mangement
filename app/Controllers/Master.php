@@ -385,7 +385,7 @@ class Master extends BaseController
     {
         $items = $this->customerModel->findAll();
         $data = [
-            'title' => 'Data Customer',
+            'title' => 'Data Pelanggan',
             'type' => 'customer',
             'items' => $items
         ];
@@ -409,6 +409,7 @@ class Master extends BaseController
 
         $items = new CustomersModel();
         $items->insert([
+            'code' => time(),
             'name' => $this->request->getPost('name'),
             'plat_nomor' => $this->request->getPost('plat_nomor'),
             'type_motor' => $this->request->getPost('type_motor'),

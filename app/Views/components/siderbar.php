@@ -29,25 +29,29 @@
         <ul class="nav side-menu">
             <li><a href="<?= base_url(); ?>/home"><i class="fa fa-home"></i> Dashboard </a>
             </li>
-            <li><a><i class="fa fa-edit"></i> Data Master <span class="fa fa-chevron-down"></span></a>
-            <ul class="nav child_menu">
-                <li><a href="<?= base_url(); ?>/items">Data Barang</a></li>
-                <li><a href="<?= base_url(); ?>/type_items">Jenis Barang</a></li>
-                <li><a href="<?= base_url(); ?>/merk_items">Merek Barang</a></li>
-                <li><a href="<?= base_url(); ?>/suppliers">Supplier</a></li>
-                <li><a href="<?= base_url(); ?>/montirs">Data Montir</a></li>
-                <li><a href="<?= base_url(); ?>/customers">Data Customer</a></li>
-            </ul>
-            </li>
-            <li><a><i class="fa fa-desktop"></i> Data Transaksi <span class="fa fa-chevron-down"></span></a>
-            <ul class="nav child_menu">
-                <li><a href="<?= base_url(); ?>/check_in">Transaksi Barang Masuk</a></li>
-                <li><a href="<?= base_url(); ?>/check_out">Transaksi Barang Keluar</a></li>
-                <li><a href="<?= base_url(); ?>/check_suppliers">Pemesanan ke Supplier</a></li>
-            </ul>
-            </li>
-            <li><a href="<?= base_url(); ?>/management_user"><i class="fa fa-table"></i> Manajemen User</a>
-            </li>
+            <?php if(session()->get('level') == '1' ): ?>
+                <li><a><i class="fa fa-edit"></i> Data Master <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                        <li><a href="<?= base_url(); ?>/items">Data Barang</a></li>
+                        <li><a href="<?= base_url(); ?>/type_items">Jenis Barang</a></li>
+                        <li><a href="<?= base_url(); ?>/merk_items">Merek Barang</a></li>
+                        <li><a href="<?= base_url(); ?>/suppliers">Supplier</a></li>
+                        <li><a href="<?= base_url(); ?>/montirs">Data Montir</a></li>
+                        <li><a href="<?= base_url(); ?>/customers">Data Pelanggan</a></li>
+                    </ul>
+                </li>
+                <li><a><i class="fa fa-desktop"></i> Data Transaksi <span class="fa fa-chevron-down"></span></a>
+                <ul class="nav child_menu">
+                    <li><a href="<?= base_url(); ?>/check_in">Transaksi Barang Masuk</a></li>
+                    <!-- <li><a href="<?= base_url(); ?>/check_out">Transaksi Barang Keluar</a></li> -->
+                    <li><a href="<?= base_url(); ?>/check_suppliers">Transaksi Barang Keluar</a></li>
+                </ul>
+                </li>
+                <li><a href="<?= base_url(); ?>/management_user"><i class="fa fa-table"></i> Manajemen User</a>
+                </li>
+            <?php else: ?>
+                <li><a href="<?= base_url(); ?>/check_out"><i class="fa fa-desktop"></i>Transaksi Barang Keluar</a></li>
+            <?php endif; ?>
         </ul>
         </div>
 

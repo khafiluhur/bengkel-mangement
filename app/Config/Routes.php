@@ -96,9 +96,14 @@ $routes->group('suppliers', function($routes) {
 // Check In //
 $routes->group('check_in', function($routes) {
     $routes->get('/', 'Transaction::checkIn');
-    $routes->post('process', 'Transaction::createCheckIn');
     $routes->post('(:segment)/update', 'Transaction::updateCheckIn/$1');
-    $routes->get('(:segment)/delete', 'Transaction::deleteCheckIn/$1');
+    $routes->post('(:segment)/detail-update', 'Transaction::updateDetailCheckIn/$1');
+    $routes->get('(:segment)/delete-supplier', 'Transaction::deleteCheckIn/$1');
+    $routes->get('store', 'Transaction::storeCheckIn');
+    $routes->get('(:segment)/detail', 'Transaction::detailCheckIn/$1');
+    $routes->post('process-supplier', 'Transaction::createCheckIn');
+    $routes->post('process', 'Transaction::createCheckInItem');
+    $routes->get('(:segment)/delete', 'Transaction::deleteCheckInItem/$1');
 });
 
 // Check Out //
@@ -116,9 +121,11 @@ $routes->group('check_suppliers', function($routes) {
     $routes->get('(:segment)/detail', 'TransactionSupplier::detailCheckSupplier/$1');
     $routes->post('process-supplier', 'TransactionSupplier::storeSupplier');
     $routes->post('process', 'TransactionSupplier::storeSupplierItem');
+    $routes->post('(:segment)/update', 'TransactionSupplier::updateSupplierItem/$1');
+    $routes->post('(:segment)/detail-update', 'TransactionSupplier::updateDetailSupplierItem/$1');
     $routes->get('(:segment)/delete', 'TransactionSupplier::deleteCheckItemSupplier/$1');
     $routes->get('(:segment)/delete-supplier', 'TransactionSupplier::deleteCheckSupplier/$1');
-    $routes->get('cetak', 'TransactionSupplier::cetakTransaction');
+    $routes->get('(:segment)/cetak', 'TransactionSupplier::cetakTransaction/$1');
 });
 
 /*

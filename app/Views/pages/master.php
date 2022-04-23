@@ -51,7 +51,7 @@
                                                     <th>Ukuran</th>
                                                     <th>Harga</th>
                                                     <th>Stock</th>
-                                                    <th>Action</th>
+                                                    <th>Pilihan</th>
                                                 </tr>
                                             </thead>
 
@@ -65,7 +65,7 @@
                                                         <td><?=$item['size']?></td>
                                                         <td><?="Rp. " . number_format($item['price'],0,',','.');?></td>
                                                         <td><?=$item['stock']?></td>
-                                                        <td><a href="" class="btn-edit" data-toggle="modal" data-target="#editModal" data-id="<?=$item['id_item']?>" data-code="<?=$item['code']?>" data-name="<?=$item['name']?>" data-price="<?=$item['price']?>" data-image="<?=$item['image']?>" data-type="<?=$item['id_type']?>" data-supplier="<?=$item['id_supplier']?>" data-merk="<?=$item['id_merk']?>" data-stock="<?=$item['stock']?>" data-size="<?=$item['size']?>">Ubah</a> | <a href="<?= base_url('items/'.$item['id_item'].'/delete'); ?>">Hapus</a></td>
+                                                        <td><a href="" class="btn-edit" data-toggle="modal" data-target="#editModal" data-id="<?=$item['id_item']?>" data-code="<?=$item['code']?>" data-name="<?=$item['name']?>" data-price="<?=$item['price']?>" data-image="<?=$item['image']?>" data-type="<?=$item['id_type']?>" data-merk="<?=$item['id_merk']?>" data-stock="<?=$item['stock']?>" data-size="<?=$item['size']?>">Ubah</a> | <a href="<?= base_url('items/'.$item['id_item'].'/delete'); ?>">Hapus</a></td>
                                                     </tr>
                                                 <?php endforeach; ?>
                                             </tbody>
@@ -74,7 +74,7 @@
                                                 <tr>
                                                     <th>No</th>
                                                     <th>Jenis Barang</th>
-                                                    <th>Action</th>
+                                                    <th>Pilihan</th>
                                                 </tr>
                                             </thead>
 
@@ -93,7 +93,7 @@
                                                 <tr>
                                                     <th>No</th>
                                                     <th>Merk Barang</th>
-                                                    <th>Action</th>
+                                                    <th>Pilihan</th>
                                                 </tr>
                                             </thead>
 
@@ -115,7 +115,7 @@
                                                     <th>Nama Supplier</th>
                                                     <th>Nama PIC</th>
                                                     <th>Telepone PIC</th>
-                                                    <th>Action</th>
+                                                    <th>Pilihan</th>
                                                 </tr>
                                             </thead>
 
@@ -139,7 +139,7 @@
                                                     <th>Nomor Pegawai</th>
                                                     <th>Nama</th>
                                                     <th>Telephone</th>
-                                                    <th>Action</th>
+                                                    <th>Pilihan</th>
                                                 </tr>
                                             </thead>
 
@@ -159,10 +159,11 @@
                                             <thead>
                                                 <tr>
                                                     <th>No</th>
+                                                    <th>ID</th>
                                                     <th>Nama</th>
                                                     <th>Plat Nomor</th>
                                                     <th>Type Motor</th>
-                                                    <th>Action</th>
+                                                    <th>Pilihan</th>
                                                 </tr>
                                             </thead>
 
@@ -171,6 +172,7 @@
                                                 <?php foreach ($items as $item) : ?>
                                                     <tr>
                                                         <td><?=$i++?></td>
+                                                        <td><?= $item['code'] ?></td>
                                                         <td><?=$item['name']?></td>
                                                         <td><?=$item['plat_nomor']?></td>
                                                         <td><?=$item['type_motor']?></td>

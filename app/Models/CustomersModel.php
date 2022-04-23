@@ -9,5 +9,5 @@ class CustomersModel extends Model
     protected $table = "customers";
     protected $primaryKey = "id";
     // protected $useTimestamps = true;
-    protected $allowedFields = ['id','name','plat_nomor','type_motor'];
+    protected $allowedFields = ['id','code','name','plat_nomor','type_motor'];
 }

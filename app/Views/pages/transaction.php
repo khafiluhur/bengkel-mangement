@@ -37,6 +37,8 @@ data transaction :
                         <ul class="nav navbar-right panel_toolbox">
                             <?php if($type == 'checkSuppliers'): ?>
                                 <li><a href="<?= base_url(); ?>/check_suppliers/store" class="btn btn-primary btn-sm btn-create" style="color: white;">Tambah Transaksi</a></li>
+                            <?php elseif($type == 'checkIns'): ?>
+                                <li><a href="<?= base_url(); ?>/check_in/store" class="btn btn-primary btn-sm btn-create" style="color: white;">Tambah Transaksi</a></li>
                             <?php else: ?>
                                 <li><button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#createModal">Tambah</button></li>
                             <?php endif; ?>
@@ -52,11 +54,10 @@ data transaction :
                                             <thead>
                                                 <tr>
                                                     <th>No</th>
-                                                    <th>Kode Barang</th>
-                                                    <th>Nama Barang</th>
-                                                    <th>Harga</th>
-                                                    <th>Stock</th>
-                                                    <th>Action</th>
+                                                    <th>Kode Transaksi</th>
+                                                    <th>Tanggal Transaksi</th>
+                                                    <th>Total Bayar</th>
+                                                    <th>Pilihan</th>
                                                 </tr>
                                             </thead>
 
@@ -65,11 +66,13 @@ data transaction :
                                                 <?php foreach ($transactions as $transaction) : ?>
                                                     <tr>
                                                         <td><?=$i++?></td>
-                                                        <td><?=$transaction->item?>(<?=$transaction->code_item?>)</td>
-                                                        <td><?=$transaction->supplier?>(<?=$transaction->code_supplier?>)</td>
-                                                        <td><?="Rp. " . number_format($transaction->price,0,',','.');?></td>
-                                                        <td><?=$transaction->stock?></td>
-                                                        <td><a href="" class="btn-edit" data-toggle="modal" data-target="#editModal" data-id="<?=$transaction->id?>" data-code="<?=$transaction->id_item?>" data-name="<?=$transaction->id_supplier?>" data-stock="<?=$transaction->stock?>" data-price="<?=$transaction->price?>">Ubah</a> | <a href="<?= base_url('check_in/'.$transaction->id.'/delete'); ?>">Hapus</a></td>
+                                                        <td><?=$transaction['code_order']?></td>
+                                                        <td><?=$transaction['date_trasanction']?></td>
+                                                        <td><?="Rp. " . number_format($transaction['total_pay'],0,',','.');?></td>
+                                                        <td>
+                                                            <a href="<?= base_url(); ?>/check_in/<?= $transaction['code_order'] ?>/detail" class="btn btn-warning btn-sm" style="color: black">Detail</a>
+                                                            <a href="<?= base_url(); ?>/check_in/<?= $transaction['code_order'] ?>/delete-supplier" class="btn btn-danger btn-sm" style="color: white;">Hapus</a>
+                                                        </td>
                                                     </tr>
                                                 <?php endforeach; ?>
                                             </tbody>
@@ -116,9 +119,9 @@ data transaction :
                                                         <td><?=$transaction['date_trasanction']?></td>
                                                         <td><?="Rp. " . number_format($transaction['total_pay'],0,',','.');?></td>
                                                         <td>
-                                                            <a href="<?= base_url(); ?>/check_suppliers/<?= $transaction['id'] ?>/detail" class="btn btn-warning btn-sm" style="color: black">Detail</a>
-                                                            <a href="<?= base_url(); ?>/check_suppliers/<?= $transaction['id'] ?>/delete-supplier" class="btn btn-danger btn-sm" style="color: white;">Hapus</a>
-                                                            <a href="<?= base_url(); ?>/check_suppliers/cetak" class="btn btn-success btn-sm" style="color: white;">Cetak</a>
+                                                            <a href="<?= base_url(); ?>/check_suppliers/<?= $transaction['code_order'] ?>/detail" class="btn btn-warning btn-sm" style="color: black">Detail</a>
+                                                            <a href="<?= base_url(); ?>/check_suppliers/<?= $transaction['code_order'] ?>/delete-supplier" class="btn btn-danger btn-sm" style="color: white;">Hapus</a>
+                                                            <a href="<?= base_url(); ?>/check_suppliers/<?= $transaction['code_order'] ?>/cetak" class="btn btn-success btn-sm" style="color: white;">Cetak</a>
                                                         </td>
                                                     </tr>
                                                 <?php endforeach; ?>
@@ -153,6 +156,27 @@ data transaction :
 <script src="../vendors/jszip/dist/jszip.min.js"></script>
 <script src="../vendors/pdfmake/build/pdfmake.min.js"></script>
 <script src="../vendors/pdfmake/build/vfs_fonts.js"></script>
+<script>
+    $('#id_item').on('change', function(){
+        const stock = $('#id_item option:selected').data('stock');
+        const req_stock = document.getElementById('source');
+        var element = document.getElementById("total_stock");
+        var element1 = document.getElementById("message_stock");
+        req_stock.addEventListener('input', function() {
+            // Do something
+            if(stock - this.value <= 0) {
+                element.classList.add("bad");
+                element1.classList.remove("d-none");
+                document.getElementById("button_simpan").disabled = true;
+            } else {
+                element.classList.remove("bad");
+                element1.classList.add("d-none");
+                document.getElementById("button_simpan").disabled = false;
+            }
+            
+        });
+    })
+</script>
 <script>
     $(document).ready(function(){
         // get Edit Product
@@ -221,59 +245,4 @@ data transaction :
         });
     });
 </script>
-<?php if($type == 'checkIns'): ?>
-<script type="text/javascript">		
-    var rupiah = document.getElementById('rupiah');
-    rupiah.addEventListener('keyup', function(e){
-        // tambahkan 'Rp.' pada saat form di ketik
-        // gunakan fungsi formatRupiah() untuk mengubah angka yang di ketik menjadi format angka
-        rupiah.value = formatRupiah(this.value, 'Rp. ');
-    });
-
-    /* Fungsi formatRupiah */
-    function formatRupiah(angka, prefix){
-        var number_string = angka.replace(/[^,\d]/g, '').toString(),
-        split   		= number_string.split(','),
-        sisa     		= split[0].length % 3,
-        rupiah     		= split[0].substr(0, sisa),
-        ribuan     		= split[0].substr(sisa).match(/\d{3}/gi);
-
-        // tambahkan titik jika yang di input sudah menjadi angka ribuan
-        if(ribuan){
-            separator = sisa ? '.' : '';
-            rupiah += separator + ribuan.join('.');
-        }
-
-        rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
-        return prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
-    }
-</script>
-<script type="text/javascript">		
-    var rupiah1 = document.getElementById('rupiah1');
-    rupiah1.addEventListener('keyup', function(e){
-        // tambahkan 'Rp.' pada saat form di ketik
-        // gunakan fungsi formatRupiah() untuk mengubah angka yang di ketik menjadi format angka
-        rupiah1.value = formatRupiah(this.value, 'Rp. ');
-    });
-
-    /* Fungsi formatRupiah */
-    function formatRupiah(angka, prefix){
-        var number_string = angka.replace(/[^,\d]/g, '').toString(),
-        split   		= number_string.split(','),
-        sisa     		= split[0].length % 3,
-        rupiah1     		= split[0].substr(0, sisa),
-        ribuan     		= split[0].substr(sisa).match(/\d{3}/gi);
-
-        // tambahkan titik jika yang di input sudah menjadi angka ribuan
-        if(ribuan){
-            separator = sisa ? '.' : '';
-            rupiah1 += separator + ribuan.join('.');
-        }
-
-        rupiah1 = split[1] != undefined ? rupiah1 + ',' + split[1] : rupiah1;
-        return prefix == undefined ? rupiah1 : (rupiah1 ? 'Rp. ' + rupiah1 : '');
-    }
-</script>
-<?php else: ?>
-<?php endif; ?>
 <?= $this->endSection(); ?>

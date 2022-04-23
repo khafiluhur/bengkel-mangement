@@ -38,7 +38,7 @@
                             <label for="exampleInputEmail1">Jenis Barang</label>
                             <div class="">
                                 <select class="form-control" id="id_type" name="id_type">
-                                    <option value="">Pilih</option>
+                                    <option value="">Pilih Jenis Barang</option>
                                     <?php foreach ($typeitem as $item) : ?>
                                         <option value="<?=$item['id_type']?>"><?=$item['name']?></option>
                                     <?php endforeach; ?>
@@ -49,20 +49,9 @@
                             <label for="exampleInputEmail1">Merk Barang</label>
                             <div class="">
                                 <select class="form-control" id="id_merk" name="id_merk">
-                                    <option value="">Pilih</option>
+                                    <option value="">Pilih Merk Barang</option>
                                     <?php foreach ($merkitem as $item) : ?>
                                         <option value="<?=$item['id_merk']?>"><?=$item['name']?></option>
-                                    <?php endforeach; ?>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="exampleInputEmail1">Supplier</label>
-                            <div class="">
-                                <select class="form-control" id="id_supplier" name="id_supplier">
-                                    <option value="">Pilih</option>
-                                    <?php foreach ($supplier as $item) : ?>
-                                        <option value="<?=$item['id_supplier']?>"><?=$item['name']?></option>
                                     <?php endforeach; ?>
                                 </select>
                             </div>
@@ -152,12 +141,12 @@
                             <input type="text" class="form-control" name="email" placeholder="Email">
                         </div>
                         <div class="form-group">
-                            <label for="exampleInputEmail1">Level</label>
+                            <label for="exampleInputEmail1">Pekerjaan</label>
                             <div class="">
                                 <select class="form-control" id="id_level" name="id_level">
-                                    <option value="">Pilih</option>
+                                    <option value="">Pilih Pekerjaan</option>
                                     <option value="1">Admin</option>
-                                    <option value="3">Kasir</option>
+                                    <option value="2">Kasir</option>
                                 </select>
                             </div>
                         </div>
@@ -171,46 +160,7 @@
                         <button type="submit" class="btn btn-primary btn-sm">Simpan</button>
                     </div>
                 </form>
-            <?php elseif($type == 'checkIns'): ?>
-                <form method="post" action="<?= base_url(); ?>/check_in/process">
-                    <?= csrf_field() ?>
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label for="exampleInputEmail1">Kode Barang</label>
-                            <div class="">
-                                <select class="form-control" id="id_item" name="id_item">
-                                    <option value="">Pilih</option>
-                                    <?php foreach ($items as $item) : ?>
-                                        <option value="<?=$item['id_item']?>"><?=$item['code']?>(<?=$item['name']?>)</option>
-                                    <?php endforeach; ?>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="exampleInputEmail1">Kode Supplier</label>
-                            <div class="">
-                                <select class="form-control" id="id_supplier" name="id_supplier">
-                                    <option value="">Pilih</option>
-                                    <?php foreach ($suppliers as $item) : ?>
-                                        <option value="<?=$item['id_supplier']?>"><?=$item['code']?>(<?=$item['name']?>)</option>
-                                    <?php endforeach; ?>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="exampleInputEmail1">Jumlah</label>
-                            <input type="text" class="form-control product_code" name="stock" placeholder="Stock" value="">
-                        </div>
-                        <div class="form-group">
-                            <label for="exampleInputEmail1">Harga</label>
-                            <input type="text" class="form-control" id="rupiah" name="price" placeholder="Harga">
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary btn-sm">Simpan</button>
-                    </div>
-                </form>
+ 
             <?php elseif($type == 'checkOuts'): ?>
                 <form method="post" action="<?= base_url(); ?>/check_out/process">
                     <?= csrf_field() ?>
@@ -221,7 +171,7 @@
                                 <select class="form-control" id="id_item" name="id_item">
                                     <option value="">Pilih</option>
                                     <?php foreach ($items as $item) : ?>
-                                        <option value="<?=$item['id_item']?>"><?=$item['code']?>(<?=$item['name']?>)</option>
+                                        <option value="<?=$item['id_item']?>" data-stock="<?=$item['stock']?>"><?=$item['code']?>(<?=$item['name']?>)</option>
                                     <?php endforeach; ?>
                                 </select>
                             </div>
@@ -230,14 +180,15 @@
                             <label for="exampleInputEmail1">Tanggal Keluar</label>
                             <input type="date" class="form-control product_code" name="date_out" placeholder="Tanggal Keluar" value="">
                         </div>
-                        <div class="form-group">
+                        <div id="total_stock" class="form-group">
                             <label for="exampleInputEmail1">Jumlah</label>
-                            <input type="text" class="form-control product_code" name="stock" placeholder="Stock" value="">
+                            <input type="text" class="form-control product_code" id="source" name="stock" placeholder="Stock" value="">
+                            <p id="message_stock" class="red d-none">Jumlah pembelian melebihi stok tersedia</p>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary btn-sm">Simpan</button>
+                        <button id="button_simpan" type="submit" class="btn btn-primary btn-sm">Simpan</button>
                     </div>
                 </form>
             <?php elseif($type == 'montirs'): ?>
@@ -332,7 +283,7 @@
                             <label for="exampleInputEmail1">Jenis Barang</label>
                             <div class="">
                                 <select class="form-control product_type2" id="id_type" name="id_type">
-                                    <option value="">Pilih</option>
+                                    <option value="">Pilih Jenis Barang</option>
                                     <?php foreach ($typeitem as $item) : ?>
                                         <option value="<?=$item['id_type']?>"><?=$item['name']?></option>
                                     <?php endforeach; ?>
@@ -343,20 +294,9 @@
                             <label for="exampleInputEmail1">Merk Barang</label>
                             <div class="">
                                 <select class="form-control product_merk2" id="id_merk" name="id_merk">
-                                    <option value="">Pilih</option>
+                                    <option value="">Pilih Merk Barang</option>
                                     <?php foreach ($merkitem as $item) : ?>
                                         <option value="<?=$item['id_merk']?>"><?=$item['name']?></option>
-                                    <?php endforeach; ?>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="exampleInputEmail1">Supplier</label>
-                            <div class="">
-                                <select class="form-control product_supplier2" id="id_supplier" name="id_supplier">
-                                    <option value="">Pilih</option>
-                                    <?php foreach ($supplier as $item) : ?>
-                                        <option value="<?=$item['id_supplier']?>"><?=$item['name']?></option>
                                     <?php endforeach; ?>
                                 </select>
                             </div>
@@ -448,59 +388,18 @@
                             <input type="text" class="form-control product_email" name="email" placeholder="Email">
                         </div>
                         <div class="form-group">
-                            <label for="exampleInputEmail1">Level</label>
+                            <label for="exampleInputEmail1">Pekerjaan</label>
                             <div class="">
                                 <select class="form-control product_idlevel" id="id_level" name="id_level">
-                                    <option value="">Pilih</option>
+                                    <option value="">Pilih Pekerjaan</option>
                                     <option value="1">Admin</option>
-                                    <option value="2">Supplier</option>
-                                    <option value="3">Kasir</option>
+                                    <option value="2">Kasir</option>
                                 </select>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="exampleInputEmail1">Password</label>
                             <input type="password" class="form-control" name="password" placeholder="Password">
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary btn-sm">Simpan</button>
-                    </div>
-                </form>
-            <?php elseif($type == 'checkIns'): ?>
-                <form id="checkIns" method="post" action="">
-                    <?= csrf_field() ?>
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label for="exampleInputEmail1">Kode Barang</label>
-                            <div class="">
-                                <select class="form-control product_code" id="id_item" name="id_item">
-                                    <option value="">Pilih</option>
-                                    <?php foreach ($items as $item) : ?>
-                                        <option value="<?=$item['id_item']?>"><?=$item['code']?>(<?=$item['name']?>)</option>
-                                    <?php endforeach; ?>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="exampleInputEmail1">Kode Supplier</label>
-                            <div class="">
-                                <select class="form-control product_name" id="id_supplier" name="id_supplier">
-                                    <option value="">Pilih</option>
-                                    <?php foreach ($suppliers as $item) : ?>
-                                        <option value="<?=$item['id_supplier']?>"><?=$item['code']?>(<?=$item['name']?>)</option>
-                                    <?php endforeach; ?>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="exampleInputEmail1">Jumlah</label>
-                            <input type="text" class="form-control product_stock2" name="stock" placeholder="Stock" value="">
-                        </div>
-                        <div class="form-group">
-                            <label for="exampleInputEmail1">Harga</label>
-                            <input type="text" class="form-control product_price2" id="rupiah1" name="price" placeholder="Harga">
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -516,7 +415,7 @@
                             <label for="exampleInputEmail1">Kode Barang</label>
                             <div class="">
                                 <select class="form-control product_code" id="id_item" name="id_item">
-                                    <option value="">Pilih</option>
+                                    <option value="">Pilih Barang</option>
                                     <?php foreach ($items as $item) : ?>
                                         <option value="<?=$item['id_item']?>"><?=$item['code']?>(<?=$item['name']?>)</option>
                                     <?php endforeach; ?>
