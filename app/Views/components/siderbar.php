@@ -41,13 +41,15 @@
                     </ul>
                 </li>
                 <li><a><i class="fa fa-desktop"></i> Data Transaksi <span class="fa fa-chevron-down"></span></a>
-                <ul class="nav child_menu">
-                    <li><a href="<?= base_url(); ?>/check_in">Transaksi Barang Masuk</a></li>
-                    <!-- <li><a href="<?= base_url(); ?>/check_out">Transaksi Barang Keluar</a></li> -->
-                    <li><a href="<?= base_url(); ?>/check_suppliers">Transaksi Barang Keluar</a></li>
-                </ul>
+                    <ul class="nav child_menu">
+                        <li><a href="<?= base_url(); ?>/check_in">Transaksi Barang Masuk</a></li>
+                        <!-- <li><a href="<?= base_url(); ?>/check_out">Transaksi Barang Keluar</a></li> -->
+                        <li><a href="<?= base_url(); ?>/check_suppliers">Transaksi Barang Keluar</a></li>
+                    </ul>
                 </li>
                 <li><a href="<?= base_url(); ?>/management_user"><i class="fa fa-table"></i> Manajemen User</a>
+                </li>
+                <li><a href="<?= base_url(); ?>/report"><i class="fa fa-table"></i> Report</a>
                 </li>
             <?php else: ?>
                 <li><a href="<?= base_url(); ?>/check_out"><i class="fa fa-desktop"></i>Transaksi Barang Keluar</a></li>

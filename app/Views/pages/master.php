@@ -41,7 +41,7 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <div class="card-box table-responsive">
-                                    <table id="datatable" class="table table-striped table-bordered" style="width:100%">                
+                                    <table id="datatable-items" class="table table-striped table-bordered" style="width:100%">                
                                         <?php if($type == 'dataItems'): ?>
                                             <thead>
                                                 <tr>
@@ -49,8 +49,9 @@
                                                     <th>Kode Barang</th>
                                                     <th>Nama Barang</th>
                                                     <th>Ukuran</th>
-                                                    <th>Harga</th>
                                                     <th>Stock</th>
+                                                    <th>Harga Jual</th>
+                                                    <th>Total</th>
                                                     <th>Pilihan</th>
                                                 </tr>
                                             </thead>
@@ -63,12 +64,19 @@
                                                         <td><?=$item['code']?></td>
                                                         <td><?=$item['name']?></td>
                                                         <td><?=$item['size']?></td>
-                                                        <td><?="Rp. " . number_format($item['price'],0,',','.');?></td>
                                                         <td><?=$item['stock']?></td>
+                                                        <td><?="Rp. " . number_format($item['price'],0,',','.');?></td>
+                                                        <td><?="Rp. " . number_format($item['stock'] * $item['price'],0,',','.');?></td>
                                                         <td><a href="" class="btn-edit" data-toggle="modal" data-target="#editModal" data-id="<?=$item['id_item']?>" data-code="<?=$item['code']?>" data-name="<?=$item['name']?>" data-price="<?=$item['price']?>" data-image="<?=$item['image']?>" data-type="<?=$item['id_type']?>" data-merk="<?=$item['id_merk']?>" data-stock="<?=$item['stock']?>" data-size="<?=$item['size']?>">Ubah</a> | <a href="<?= base_url('items/'.$item['id_item'].'/delete'); ?>">Hapus</a></td>
                                                     </tr>
-                                                <?php endforeach; ?>
+                                                <?php endforeach; ?> 
                                             </tbody>
+                                            <tfoot style="background-color: rgba(0,0,0,.05)">
+                                                <tr>
+                                                    <th colspan="6" style="text-align:center">Total:</th>
+                                                    <th colspan="2" style="text-align:center"></th>
+                                                </tr>
+                                            </tfoot>
                                         <?php elseif($type == 'typeItems'): ?>
                                             <thead>
                                                 <tr>
@@ -339,6 +347,37 @@
         rupiah1 = split[1] != undefined ? rupiah1 + ',' + split[1] : rupiah1;
         return prefix == undefined ? rupiah1 : (rupiah1 ? 'Rp. ' + rupiah1 : '');
     }
+</script>
+<script>
+    $(document).ready(function () {
+        $('#datatable-items').DataTable({
+            footerCallback: function (row, data, start, end, display) {
+                var api = this.api();
+                console.log(api.column(6).data);
+                // Remove the formatting to get integer data for summation
+                var intVal = function (i) {
+                    return typeof i === 'string' ? i.replace(/[\$,]/g, '') * 1 : typeof i === 'number' ? i : 0;
+                };
+    
+                // Total over all pages
+                total = api
+                    .column(6)
+                    .data()
+                    .reduce(function (a, b) {
+                        return intVal(a) + intVal(b);
+                    }, 0);
+                
+                /* Fungsi formatRupiah */
+                var angkarev = total.toString().split('').reverse().join('');
+                for(var i = 0; i < angkarev.length; i++) if(i%3 == 0) rupiah += angkarev.substr(i,3)+'.';
+                var rupiah1 = rupiah.split('',rupiah.length-1).reverse().join('');
+                var rupiah2 = rupiah1.split(']')
+    
+                // Update footer
+                $(api.column(6).footer()).html('Rp. ' +  rupiah2[0]);
+            },
+        });
+    });
 </script>
 <?php else: ?>
 <?php endif; ?>

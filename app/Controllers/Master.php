@@ -10,6 +10,7 @@ use App\Models\SuppliersModel;
 use App\Controllers\BaseController;
 use App\Models\CustomersModel;
 use App\Models\MontirsModel;
+use SebastianBergmann\CodeCoverage\Report\Xml\Totals;
 
 class Master extends BaseController
 {
@@ -39,10 +40,18 @@ class Master extends BaseController
         }
         $generate_code = sprintf('%04d', $var);
 
+        // dd($items);
+        $total = [];
+        foreach($items as $key => $value) {
+            $total = $value['price'] * $value['stock'];
+        }
+        // dd($total);
+
         $data = [
             'title' => 'Data Barang',
             'type' => 'dataItems',
             'items' => $items,
+            'total' => $total,
             'new_code' => 'BRG'.$generate_code,
             'typeitem' => $type,
             'merkitem' => $merk,

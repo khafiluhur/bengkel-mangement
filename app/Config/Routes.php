@@ -128,6 +128,11 @@ $routes->group('check_suppliers', function($routes) {
     $routes->get('(:segment)/cetak', 'TransactionSupplier::cetakTransaction/$1');
 });
 
+// Report //
+$routes->group('report', function($routes) {
+    $routes->get('/', 'Report::index');
+});
+
 /*
  * --------------------------------------------------------------------
  * Additional Routing
