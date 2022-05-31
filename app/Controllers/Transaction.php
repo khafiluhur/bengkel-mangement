@@ -9,13 +9,16 @@ use App\Controllers\BaseController;
 use App\Models\CustomersModel;
 use App\Models\MontirsModel;
 use App\Models\CheckInItemsModel;
+use App\Models\CardStocksModel;
 use App\Database\Migrations\MerkItems;
 use App\Models\ItemsModel;
 use App\Models\SuppliersModel;
+use CodeIgniter\API\ResponseTrait;
 use DB;
 
 class Transaction extends BaseController
 {
+
     public function __construct()
     {
 
@@ -157,6 +160,7 @@ class Transaction extends BaseController
             'updated_at' => date("Y-m-d H:i:s"),
             'updated_by' => session()->get('username')
         ]);
+        
 
         session()->setFlashdata('success', 'Berhasil ditambah');
         return redirect()->to(base_url('check_in'));
@@ -248,6 +252,20 @@ class Transaction extends BaseController
             'updated_by'  => session()->get('username')
         ]);
 
+        // Update Card Stock Saldo In
+        $checkInItemSame1 = $this->db->table("card_stocks");
+        $checkInItemSame1->select('id');
+        $checkInItemSame1->like('information', $idItems[0]->code_order);
+        $checkInItemSame = $checkInItemSame1->get()->getResult();
+        foreach($checkInItemSame as $key => $item) {
+            $checkInItemSame = $item->id;
+        }
+        $cardStocks = new CardStocksModel();
+        $cardStocks->update($checkInItemSame, [
+            'stock_in' => $this->request->getPost('total_stock'),
+            'saldo' => ($stockItems - $stockNewItems) + $this->request->getPost('total_stock'),
+        ]);
+
         // balance price
         $price_items = new CheckInsModel();
         $price_items->update($idItems[0]->id_check_ins, [
@@ -279,6 +297,17 @@ class Transaction extends BaseController
         $builder->select('check_in_items.*');
         $builder->where('code_order', $items[0]->code_order);
         $itemSuppliers = $builder->get()->getResult();
+
+        // Delete Card Stock Saldo In
+        $checkInItemSame1 = $this->db->table("card_stocks");
+        $checkInItemSame1->select('id');
+        $checkInItemSame1->like('information', $itemSuppliers[0]->code_order);
+        $checkInItemSame = $checkInItemSame1->get()->getResult();
+        foreach($checkInItemSame as $key => $item) {
+            $checkInItemSame = $item->id;
+        }
+        $cardStocks = new CardStocksModel();
+        $cardStocks->delete($checkInItemSame);
 
         foreach ($itemSuppliers as $item) {
             $builder = $this->db->table("items");
@@ -347,6 +376,25 @@ class Transaction extends BaseController
                 'updated_by' => session()->get('username')
             ]);
 
+            // Create Card Stock Saldo In
+            $checkInItemSame1 = $this->db->table("items");
+            $checkInItemSame1->select('code, stock');
+            $checkInItemSame1->where('id_item', $this->request->getPost('id_item'));
+            $checkInItemSame = $checkInItemSame1->get()->getResult();
+            foreach($checkInItemSame as $key => $item) {
+                $checkInItemSame = $item->code;
+                $checkInItemStockSame = $item->stock;
+            }
+            $cardStocks = new CardStocksModel();
+            $cardStocks->insert([
+                'date' => date("Y-m-d"),
+                'information' => $this->request->getPost('codeTR')." Barang Masuk",
+                'id_item' => $checkInItemSame,
+                'stock_in' => $this->request->getPost('total_stock'),
+                'stock_out' => "",
+                'saldo' => $checkInItemStockSame + $this->request->getPost('total_stock'),
+            ]);
+
             // balace stock //
             $item1 = $this->db->table("items");
             $item1->select('stock');
@@ -373,7 +421,7 @@ class Transaction extends BaseController
     public function deleteCheckInItem($id)
     {
         $stockNewItem = $this->db->table("check_in_items");
-        $stockNewItem->select('stock, id_item');
+        $stockNewItem->select('stock, id_item, code_order');
         $stockNewItem->where('id', $id);
         $itemStock = $stockNewItem->get()->getResult();
         $stockNewItems = $itemStock[0]->stock;
@@ -383,6 +431,17 @@ class Transaction extends BaseController
         $builder->where('id_item', $itemStock[0]->id_item);
         $itemPrice = $builder->get()->getResult();
         $stockItems = $itemPrice[0]->stock;
+
+        // Delete Card Stock Saldo In
+        $checkInItemSame1 = $this->db->table("card_stocks");
+        $checkInItemSame1->select('id');
+        $checkInItemSame1->like('information', $itemStock[0]->code_order);
+        $checkInItemSame = $checkInItemSame1->get()->getResult();
+        foreach($checkInItemSame as $key => $item) {
+            $checkInItemSame = $item->id;
+        }
+        $cardStocks = new CardStocksModel();
+        $cardStocks->delete($checkInItemSame);
 
         // balance stock
         $save_items = new ItemsModel();
@@ -510,6 +569,17 @@ class Transaction extends BaseController
         $builder->where('id_item', $itemStock[0]->id_item);
         $itemPrice = $builder->get()->getResult();
         $stockItems = $itemPrice[0]->stock;
+
+        // Delete Card Stock Saldo In
+        $checkInItemSame1 = $this->db->table("card_stocks");
+        $checkInItemSame1->select('id');
+        $checkInItemSame1->like('information', $itemStock[0]->code_order);
+        $checkInItemSame = $checkInItemSame1->get()->getResult();
+        foreach($checkInItemSame as $key => $item) {
+            $checkInItemSame = $item->id;
+        }
+        $cardStocks = new CardStocksModel();
+        $cardStocks->delete($checkInItemSame);
 
         // balance stock
         $save_items = new ItemsModel();

@@ -2,7 +2,7 @@
 <div class="col-md-3 left_col">
     <div class="left_col scroll-view">
     <div class="navbar nav_title" style="border: 0;">
-        <a href="index.html" class="site_title"> <span class="h6">Bengkel Indonesia</span></a>
+        <a href="index.html" class="site_title"> <span class="h6">Motekar Jaya Motor</span></a>
     </div>
 
     <div class="clearfix"></div>
@@ -47,10 +47,16 @@
                         <li><a href="<?= base_url(); ?>/check_suppliers">Transaksi Barang Keluar</a></li>
                     </ul>
                 </li>
-                <li><a href="<?= base_url(); ?>/management_user"><i class="fa fa-table"></i> Manajemen User</a>
+                <li><a href="<?= base_url(); ?>/management_user"><i class="fa fa-users"></i> Manajemen User</a>
                 </li>
-                <li><a href="<?= base_url(); ?>/report"><i class="fa fa-table"></i> Report</a>
+                <li><a><i class="fa fa-table"></i> Report <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                        <li><a href="<?= base_url(); ?>/report/historycustomer">Riwayat Service</a></li>
+                        <li><a href="<?= base_url(); ?>/report/listitem">Daftar Barang</a></li>
+                        <li><a href="<?= base_url(); ?>/report/cardstock">Kartu Stok</a></li>
+                    </ul>
                 </li>
+                <li><a href="<?= base_url(); ?>/"><i class="fa fa-gear"></i>Pengantur</a>
             <?php else: ?>
                 <li><a href="<?= base_url(); ?>/check_out"><i class="fa fa-desktop"></i>Transaksi Barang Keluar</a></li>
             <?php endif; ?>

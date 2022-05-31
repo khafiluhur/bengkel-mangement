@@ -10,18 +10,20 @@ use App\Models\SuppliersModel;
 use App\Controllers\BaseController;
 use App\Models\CustomersModel;
 use App\Models\MontirsModel;
-use SebastianBergmann\CodeCoverage\Report\Xml\Totals;
+use App\Models\CardStocksModel;
 
 class Master extends BaseController
 {
     public function __construct()
     {
+        $this->db = db_connect();
         $this->itemModel = new ItemsModel();
         $this->typeItemModel = new TypeItemsModel();
         $this->merkItemModel = new MerkItemsModel();
         $this->supplierModel = new SuppliersModel();
         $this->montirModel = new MontirsModel();
         $this->customerModel = new CustomersModel();
+        $this->cardStockModel = new CardStocksModel();
     }
 
     public function item()
@@ -57,7 +59,7 @@ class Master extends BaseController
             'merkitem' => $merk,
             'supplier' => $supplier
         ];
-        return view('pages/master', $data);
+        return view('pages/master/items', $data);
     }
 
     public function createItem()
@@ -100,10 +102,20 @@ class Master extends BaseController
             'id_supplier' => $this->request->getPost('id_supplier'),
             'id_merk' => $this->request->getPost('id_merk'),
             'stock' => $this->request->getPost('stock'),
+            'stock_initial' => $this->request->getPost('stock'),
             'created_at' => date("Y-m-d H:i:s"),
             'created_by' => session()->get('username'),
             'updated_at' => date("Y-m-d H:i:s"),
             'updated_by' => session()->get('username')
+        ]);
+        $cardStocks = new CardStocksModel();
+        $cardStocks->insert([
+            'date' => date("Y-m-d"),
+            'information' => "Saldo ".$this->request->getPost('code'),
+            'id_item' => $this->request->getPost('code'),
+            'stock_in' => "",
+            'stock_out' => "",
+            'saldo' => $this->request->getPost('stock'),
         ]);
         session()->setFlashdata('success', 'Berhasil ditambah');
         return redirect()->to(base_url('items'));
@@ -128,6 +140,32 @@ class Master extends BaseController
             'updated_at'  => date("Y-m-d H:i:s"),
             'updated_by'  => session()->get('username')
         ]);
+
+        $checkInItemSame1 = $this->db->table("items");
+        $checkInItemSame1->select('code');
+        $checkInItemSame1->where('id_item', $id);
+        $checkInItemSame = $checkInItemSame1->get()->getResult();
+        foreach($checkInItemSame as $key => $item) {
+            $checkInItemSame = $item->code;
+        }
+
+        $checkInItemSame1 = $this->db->table("card_stocks");
+        $checkInItemSame1->select('*');
+        $checkInItemSame1->where('id_item', $checkInItemSame);
+        $checkInItemSame = $checkInItemSame1->get()->getResult();
+        // dd($checkInItemSame);
+        if($checkInItemSame == null) {
+            $cardStocks = new CardStocksModel();
+            $cardStocks->insert([
+                'date' => date("Y-m-d"),
+                'information' => "Saldo ".$this->request->getPost('code'),
+                'id_item' => $this->request->getPost('code'),
+                'stock_in' => "",
+                'stock_out' => "",
+                'saldo' => $this->request->getPost('stock'),
+            ]);
+        }
+        
         session()->setFlashdata('success', 'Berhasil diupdate');
         return redirect()->to(base_url('items'));
     }

@@ -29,11 +29,7 @@
                     <div class="x_title">
                         <h2><?=$title?> </h2>
                         <ul class="nav navbar-right panel_toolbox">
-                            <?php if($type == 'dataItems'): ?>
-                                <li><button class="btn-create btn btn-primary btn-sm" style="color: white" data-toggle="modal" data-code="<?php echo $new_code; ?>" data-target="#createModal">Tambah</button></li>
-                            <?php else: ?>
                                 <li><button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#createModal">Tambah</button></li>
-                            <?php endif; ?> 
                         </ul>
                         <div class="clearfix"></div>
                     </div>
@@ -41,43 +37,8 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <div class="card-box table-responsive">
-                                    <table id="datatable-items" class="table table-striped table-bordered" style="width:100%">                
-                                        <?php if($type == 'dataItems'): ?>
-                                            <thead>
-                                                <tr>
-                                                    <th>No</th>
-                                                    <th>Kode Barang</th>
-                                                    <th>Nama Barang</th>
-                                                    <th>Ukuran</th>
-                                                    <th>Stock</th>
-                                                    <th>Harga Jual</th>
-                                                    <th>Total</th>
-                                                    <th>Pilihan</th>
-                                                </tr>
-                                            </thead>
-
-                                            <tbody>
-                                                <?php $i=1; ?>
-                                                <?php foreach ($items as $item) : ?>
-                                                    <tr>
-                                                        <td><?=$i++?></td>
-                                                        <td><?=$item['code']?></td>
-                                                        <td><?=$item['name']?></td>
-                                                        <td><?=$item['size']?></td>
-                                                        <td><?=$item['stock']?></td>
-                                                        <td><?="Rp. " . number_format($item['price'],0,',','.');?></td>
-                                                        <td><?="Rp. " . number_format($item['stock'] * $item['price'],0,',','.');?></td>
-                                                        <td><a href="" class="btn-edit" data-toggle="modal" data-target="#editModal" data-id="<?=$item['id_item']?>" data-code="<?=$item['code']?>" data-name="<?=$item['name']?>" data-price="<?=$item['price']?>" data-image="<?=$item['image']?>" data-type="<?=$item['id_type']?>" data-merk="<?=$item['id_merk']?>" data-stock="<?=$item['stock']?>" data-size="<?=$item['size']?>">Ubah</a> | <a href="<?= base_url('items/'.$item['id_item'].'/delete'); ?>">Hapus</a></td>
-                                                    </tr>
-                                                <?php endforeach; ?> 
-                                            </tbody>
-                                            <tfoot style="background-color: rgba(0,0,0,.05)">
-                                                <tr>
-                                                    <th colspan="6" style="text-align:center">Total:</th>
-                                                    <th colspan="2" style="text-align:center"></th>
-                                                </tr>
-                                            </tfoot>
-                                        <?php elseif($type == 'typeItems'): ?>
+                                    <table id="datatable" class="table table-striped table-bordered" style="width:100%">                
+                                        <?php if($type == 'typeItems'): ?>
                                             <thead>
                                                 <tr>
                                                     <th>No</th>
@@ -295,90 +256,4 @@
         });
     });
 </script>
-<?php if($type == 'dataItems'): ?>
-<script type="text/javascript">		
-    var rupiah = document.getElementById('rupiah');
-    rupiah.addEventListener('keyup', function(e){
-        // tambahkan 'Rp.' pada saat form di ketik
-        // gunakan fungsi formatRupiah() untuk mengubah angka yang di ketik menjadi format angka
-        rupiah.value = formatRupiah(this.value, 'Rp. ');
-    });
-
-    /* Fungsi formatRupiah */
-    function formatRupiah(angka, prefix){
-        var number_string = angka.replace(/[^,\d]/g, '').toString(),
-        split   		= number_string.split(','),
-        sisa     		= split[0].length % 3,
-        rupiah     		= split[0].substr(0, sisa),
-        ribuan     		= split[0].substr(sisa).match(/\d{3}/gi);
-
-        // tambahkan titik jika yang di input sudah menjadi angka ribuan
-        if(ribuan){
-            separator = sisa ? '.' : '';
-            rupiah += separator + ribuan.join('.');
-        }
-
-        rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
-        return prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
-    }
-</script>
-<script type="text/javascript">		
-    var rupiah1 = document.getElementById('rupiah1');
-    rupiah1.addEventListener('keyup', function(e){
-        // tambahkan 'Rp.' pada saat form di ketik
-        // gunakan fungsi formatRupiah() untuk mengubah angka yang di ketik menjadi format angka
-        rupiah1.value = formatRupiah(this.value, 'Rp. ');
-    });
-
-    /* Fungsi formatRupiah */
-    function formatRupiah(angka, prefix){
-        var number_string = angka.replace(/[^,\d]/g, '').toString(),
-        split   		= number_string.split(','),
-        sisa     		= split[0].length % 3,
-        rupiah1     		= split[0].substr(0, sisa),
-        ribuan     		= split[0].substr(sisa).match(/\d{3}/gi);
-
-        // tambahkan titik jika yang di input sudah menjadi angka ribuan
-        if(ribuan){
-            separator = sisa ? '.' : '';
-            rupiah1 += separator + ribuan.join('.');
-        }
-
-        rupiah1 = split[1] != undefined ? rupiah1 + ',' + split[1] : rupiah1;
-        return prefix == undefined ? rupiah1 : (rupiah1 ? 'Rp. ' + rupiah1 : '');
-    }
-</script>
-<script>
-    $(document).ready(function () {
-        $('#datatable-items').DataTable({
-            footerCallback: function (row, data, start, end, display) {
-                var api = this.api();
-                console.log(api.column(6).data);
-                // Remove the formatting to get integer data for summation
-                var intVal = function (i) {
-                    return typeof i === 'string' ? i.replace(/[\$,]/g, '') * 1 : typeof i === 'number' ? i : 0;
-                };
-    
-                // Total over all pages
-                total = api
-                    .column(6)
-                    .data()
-                    .reduce(function (a, b) {
-                        return intVal(a) + intVal(b);
-                    }, 0);
-                
-                /* Fungsi formatRupiah */
-                var angkarev = total.toString().split('').reverse().join('');
-                for(var i = 0; i < angkarev.length; i++) if(i%3 == 0) rupiah += angkarev.substr(i,3)+'.';
-                var rupiah1 = rupiah.split('',rupiah.length-1).reverse().join('');
-                var rupiah2 = rupiah1.split(']')
-    
-                // Update footer
-                $(api.column(6).footer()).html('Rp. ' +  rupiah2[0]);
-            },
-        });
-    });
-</script>
-<?php else: ?>
-<?php endif; ?>
 <?= $this->endSection(); ?>

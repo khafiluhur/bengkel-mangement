@@ -100,6 +100,34 @@
                                     </select>
                                 </div>
                             </div>
+                            <div class="item form-group">
+                                <label class="col-form-label col-md-3 col-sm-3" for="first-name" style="font-size: 16px; font-weight: bold;">Kerusakan
+                                </label>
+                                <div class="col-md-6 col-sm-6 ">
+                                <textarea id="crash" class="form-control" name="crash" data-parsley-trigger="keyup"></textarea>
+                                </div>
+                            </div>
+                            <div class="item form-group">
+                                <label class="col-form-label col-md-3 col-sm-3" for="first-name" style="font-size: 16px; font-weight: bold;">Tindakan 1
+                                </label>
+                                <div class="col-md-6 col-sm-6 ">
+                                <textarea id="crashrepair1" class="form-control" name="crashrepair1" data-parsley-trigger="keyup"></textarea>
+                                </div>
+                            </div>
+                            <div class="item form-group">
+                                <label class="col-form-label col-md-3 col-sm-3" for="first-name" style="font-size: 16px; font-weight: bold;">Tindakan 2
+                                </label>
+                                <div class="col-md-6 col-sm-6 ">
+                                <textarea id="crashrepair2" class="form-control" name="crashrepair2" data-parsley-trigger="keyup"></textarea>
+                                </div>
+                            </div>
+                            <div class="item form-group">
+                                <label class="col-form-label col-md-3 col-sm-3" for="first-name" style="font-size: 16px; font-weight: bold;">Tindakan 3
+                                </label>
+                                <div class="col-md-6 col-sm-6 ">
+                                <textarea id="crashrepair3" class="form-control" name="crashrepair3"></textarea>
+                                </div>
+                            </div>
                             <?php else: ?>
                             <?php endif; ?>
                             <div class="row">

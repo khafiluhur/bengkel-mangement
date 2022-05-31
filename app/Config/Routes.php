@@ -31,6 +31,7 @@ $routes->setAutoRoute(true);
 
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
+
 $routes->get('/', 'Login::index');
 $routes->post('/register/process', 'Register::processRegister');
 $routes->post('/login/process', 'Register::processLogin');
@@ -130,8 +131,14 @@ $routes->group('check_suppliers', function($routes) {
 
 // Report //
 $routes->group('report', function($routes) {
-    $routes->get('/', 'Report::index');
+    $routes->get('/historycustomer/(:any)', 'Report::historyCustomer/$1');
+    $routes->get('/cetakhc', 'Report::cetakhc');
+    $routes->get('/listitem/(:any)', 'Report::listItem/$1');
+    $routes->get('/cetakli', 'Report::cetakli');
+    $routes->get('/cardstock/(:any)', 'Report::cardStock/$1');
+    $routes->get('/cetakcs', 'Report::cetakcs');
 });
+
 
 /*
  * --------------------------------------------------------------------

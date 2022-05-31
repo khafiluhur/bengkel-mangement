@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 	  <link rel="icon" href="<?= base_url(); ?>/images/favicon.ico" type="image/ico" />
 
-    <title><?php echo $title; ?> | Bengkel Indonesia</title>
+    <title><?php echo $title; ?> | Bengkel Motekar Jaya Motor</title>
 
     <!-- Bootstrap -->
     <link href="/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">

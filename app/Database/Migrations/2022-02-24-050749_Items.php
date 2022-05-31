@@ -30,8 +30,9 @@ class Items extends Migration
             ],
             'image' => [
                 'type' => 'VARCHAR',
-                'constraint' => '100'
-            ],
+                'constraint' => '100',
+                'null' => true
+             ],
             'size' => [
                 'type' => 'VARCHAR',
                 'constraint' => '100'
@@ -47,6 +48,10 @@ class Items extends Migration
                 'null' => true
             ],
             'stock' => [
+                'type' => 'INT',
+                'constraint' => '100'
+            ],
+            'stock_initial' => [
                 'type' => 'INT',
                 'constraint' => '100'
             ],

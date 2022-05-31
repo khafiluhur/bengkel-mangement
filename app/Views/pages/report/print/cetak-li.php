@@ -2,10 +2,10 @@
 <html lang="en" >
 <head>
  <meta charset="UTF-8">
- <title>Invoice</title>
+ <title>Report List Barang</title>
  <link rel="stylesheet" href="css/style.css">
  <style>
-     #hiderow,
+#hiderow,
 .delete {
     display: none;
 }
@@ -271,83 +271,36 @@ textarea:focus,
  </style>
 </head>
 <body>
- <html lang="en">
+ <html>
  <head>
   <meta charset='UTF-8'>
  </head>
  <body>
   <div id="page-wrap">
-   <textarea id="header">INVOICE</textarea>
-
-   <div id="customer">
-    <table id="meta">
-     <tr>
-      <td class="meta-head">Nomor Pelanggan</td>
-      <td><?= $transactions[0]->code_customers ?></td>
-     </tr>
-     <tr>
-
-      <td class="meta-head">Nama Pelanggan</td>
-      <td id="date"><?= $transactions[0]->nama_customers ?></td>
-     </tr>
-     <tr>
-      <td class="meta-head">Tipe Motor</td>
-      <td class="due"><?= $transactions[0]->type_motor ?>(<?= $transactions[0]->plat_nomor ?>)</td>
-     </tr>
-
-    </table>
-   </div>
-
-   <div id="customer">
-        <table id="meta">
-            <tr>
-                <td class="meta-head">Nomor Montir</td>
-                <td><?= $transactions[0]->code_montirs ?></td>
-            </tr>
-            <tr>
-                <td class="meta-head">Nama Montir</td>
-                <td id="date"><?= $transactions[0]->name_montirs ?></td>
-            </tr>
-        </table>
-   </div>
-
-   <div id="customer">
-    <table id="meta">
-     <tr>
-      <td class="meta-head">Invoice #</td>
-      <td><?= $code ?></td>
-     </tr>
-     <tr>
-
-      <td class="meta-head">Tanggal</td>
-      <td id="date"><?= $transactions[0]->date_trasanction ?></td>
-     </tr>
-     <tr>
-      <td class="meta-head">Total Pembayaran</td>
-      <td class="due"><?="Rp. " . number_format($transactions[0]->total_pay,0,',','.'); ?></td>
-     </tr>
-
-    </table>
-   </div>
+   <textarea id="header">List Barang</textarea>
 
    <table id="items">
         <tr>
-            <th>Barang</th>
-            <th>Harga Satuan</th>
-            <th>Jumlah Barang</th>
-            <th>Harga</th>
+            <th>Kode Barang</th>
+            <th>Nama Barang</th>
+            <th>Ukuran</th>
+            <th>Stok</th>
+            <th>Harga Jual</th>
+            <th>Total</th>
         </tr>
-        <?php foreach($items as $index => $data) { ?> 
+        <?php foreach($items as $key => $data) { ?> 
             <tr class="item-row">
-                <td class="item-name"><?= $data->nama_item ?></td>
-                <td class="cost"><?="Rp. " . number_format($data->price,0,',','.');?></td>
+                <td class="cost"><?= $data->code ?></td>
+                <td class="qty"><?= $data->name ?></td>
+                <td class="qty"><?= $data->size ?></td>
                 <td class="qty"><?= $data->stock ?></td>
-                <td class="price"><?="Rp. " . number_format($data->subtotal,0,',','.');?></td>
+                <td class="price"><?= "Rp. " . number_format($data->price,0,',','.'); ?></td>
+                <td class="price"><?="Rp. " . number_format($data->stock * $data->price,0,',','.');?></td>
             </tr>
-        <?php } ?>   
+        <?php } ?>
         <tr>
-            <td colspan="3" class="balance">Total</td>
-            <td class="total-value balance due"><?="Rp. " . number_format($transactions[0]->total_pay,0,',','.'); ?></td>
+            <td colspan="5" class="price">Total:</td>
+            <td colspan="1" class="price"><?= "Rp. " . number_format($total,0,',','.'); ?></td>
         </tr>
    </table>
 

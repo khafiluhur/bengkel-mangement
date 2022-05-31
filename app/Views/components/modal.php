@@ -134,7 +134,7 @@
                         </div>
                         <div class="form-group">
                             <label for="exampleInputEmail1">Username</label>
-                            <input type="text" class="form-control" name="username" placeholder="Username">
+                            <input type="text" class="form-control" name="username" placeholder="Username" autocomplete="off">
                         </div>
                         <div class="form-group">
                             <label for="exampleInputEmail1">Email</label>
@@ -152,7 +152,7 @@
                         </div>
                         <div class="form-group">
                             <label for="exampleInputEmail1">Password</label>
-                            <input type="password" class="form-control" name="password" placeholder="Password">
+                            <input type="password" class="form-control" name="password" placeholder="Password" autocomplete="off">
                         </div>
                     </div>
                     <div class="modal-footer">

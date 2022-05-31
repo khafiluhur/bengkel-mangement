@@ -116,7 +116,7 @@
             // Set data to Form Edit
             $('#managementuser').attr('action', base_url + '/management_user/' + id + '/update');
             $('.product_name').val(name);
-            $('.product_username').val(name);
+            $('.product_username').val(username);
             $('.product_email').val(email);
             $('.product_idlevel').val(idlevel);
             // Call Modal Edit

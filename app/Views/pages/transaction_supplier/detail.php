@@ -60,6 +60,34 @@
                                 <label class="col-form-label col-md-12 col-sm-12" for="first-name" style="font-size: 16px;"><?= $montirs[0]->name ?> (<?= $montirs[0]->nip ?>)</label>
                             </div>
                         </div>
+                        <div class="item form-group col-md-12">
+                            <label class="col-form-label col-md-3 col-sm-3" for="first-name" style="font-size: 16px; font-weight: bold;">Kerusakan :
+                            </label>
+                            <div class="col-md-6 col-sm-6 ">
+                                <label class="col-form-label col-md-12 col-sm-12" for="first-name" style="font-size: 16px;"><?= $transactions[0]->crash ?></label>
+                            </div>
+                        </div>
+                        <div class="item form-group col-md-12">
+                            <label class="col-form-label col-md-3 col-sm-3" for="first-name" style="font-size: 16px; font-weight: bold;">Tindakan 1 :
+                            </label>
+                            <div class="col-md-6 col-sm-6 ">
+                                <label class="col-form-label col-md-12 col-sm-12" for="first-name" style="font-size: 16px;"><?= $transactions[0]->crashrepair1 ?></label>
+                            </div>
+                        </div>
+                        <div class="item form-group col-md-12">
+                            <label class="col-form-label col-md-3 col-sm-3" for="first-name" style="font-size: 16px; font-weight: bold;">Tindakan 2 :
+                            </label>
+                            <div class="col-md-6 col-sm-6 ">
+                                <label class="col-form-label col-md-12 col-sm-12" for="first-name" style="font-size: 16px;"><?= $transactions[0]->crashrepair2 ?></label>
+                            </div>
+                        </div>
+                        <div class="item form-group col-md-12">
+                            <label class="col-form-label col-md-3 col-sm-3" for="first-name" style="font-size: 16px; font-weight: bold;">Tindakan 3 :
+                            </label>
+                            <div class="col-md-6 col-sm-6 ">
+                                <label class="col-form-label col-md-12 col-sm-12" for="first-name" style="font-size: 16px;"><?= $transactions[0]->crashrepair3 ?></label>
+                            </div>
+                        </div>
                         <?php else: ?>
                         <?php endif; ?>
                         <div class="row">

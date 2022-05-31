@@ -1,7 +1,7 @@
 <!-- footer content -->
 <footer>
     <div class="pull-right">
-    Bengkel Bhinneka Tunggal Ika</a>
+    Motekar Jaya Motor</a>
     </div>
     <div class="clearfix"></div>
 </footer>

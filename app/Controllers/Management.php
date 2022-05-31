@@ -33,11 +33,6 @@ class Management extends BaseController
     {
         if (!$this->validate([
             'username' => [
-                'rules' => 'required|is_unique[users.username]',
-                'errors' => [
-                    'required' => '{field} Harus diisi',
-                    'is_unique' => 'Kode Supplier sudah ada di database'
-                ]
             ],
             'name' => [
             ],

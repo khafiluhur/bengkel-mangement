@@ -36,6 +36,22 @@ class CheckSuppliers extends Migration
                 'type' => 'VARCHAR',
                 'constraint' => '100'
             ],
+            'crash' => [
+                'type' => 'TEXT',
+                'null' => true
+            ],
+            'crashrepair1' => [
+                'type' => 'TEXT',
+                'null' => true
+            ],
+            'crashrepair2' => [
+                'type' => 'TEXT',
+                'null' => true
+            ],
+            'crashrepair3' => [
+                'type' => 'TEXT',
+                'null' => true
+            ],
             'created_at' => [
                 'type' => 'DATETIME',
                 'null' => true

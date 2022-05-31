@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" href="images/favicon.ico" type="image/ico" />
 
-    <title>Bengkel Indonesia</title>
+    <title>Bengkel Motekar Jaya Motor</title>
 
     <!-- Bootstrap -->
     <link href="/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -55,8 +55,8 @@
                 <div class="clearfix"></div>
                 <br />
                 <div>
-                  <h1> Bengkel Indoneisa</h1>
-                  <p>©2022 All Rights Reserved. Bengkel Bhinneka Tunggal Ika. Privacy and Terms</p>
+                  <h1>Motekar Jaya Motor</h1>
+                  <p>©2022 All Rights Reserved. Motekar Jaya Motor. Privacy and Terms</p>
                 </div>
               </div>
             </form>
