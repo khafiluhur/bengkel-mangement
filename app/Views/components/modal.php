@@ -269,7 +269,7 @@
                         </div>
                         <div class="form-group">
                             <label for="exampleInputEmail1">Harga</label>
-                            <input type="text" class="form-control product_price2" id="rupiah1" name="price" placeholder="Harga">
+                            <input type="text" class="form-control product_price2" id="rupiah" name="price" placeholder="Harga">
                         </div>
                         <div class="form-group">
                             <label for="exampleInputEmail1">Ukuran</label>

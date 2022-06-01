@@ -88,8 +88,12 @@ class Master extends BaseController
         }
 
         $convertToArray = explode(' ', $this->request->getPost('price'));
-        $slicedToArray = explode('.', $convertToArray[1]);
-        $joinToArray = join("",$slicedToArray);
+        if(count($convertToArray) == 2) {
+            $slicedToArray = explode('.', $convertToArray[1]);
+            $joinToArray = join("",$slicedToArray);
+        } else {
+            $joinToArray = $this->request->getPost('price');
+        }
 
         $items = new ItemsModel();
         $items->insert([
@@ -102,7 +106,6 @@ class Master extends BaseController
             'id_supplier' => $this->request->getPost('id_supplier'),
             'id_merk' => $this->request->getPost('id_merk'),
             'stock' => $this->request->getPost('stock'),
-            'stock_initial' => $this->request->getPost('stock'),
             'created_at' => date("Y-m-d H:i:s"),
             'created_by' => session()->get('username'),
             'updated_at' => date("Y-m-d H:i:s"),
@@ -124,8 +127,12 @@ class Master extends BaseController
     public function updateItem($id)
     {
         $convertToArray = explode(' ', $this->request->getPost('price'));
-        $slicedToArray = explode('.', $convertToArray[1]);
-        $joinToArray = join("",$slicedToArray);
+        if(count($convertToArray) == 2) {
+            $slicedToArray = explode('.', $convertToArray[1]);
+            $joinToArray = join("",$slicedToArray);
+        } else {
+            $joinToArray = $this->request->getPost('price');
+        }
 
         $items = new ItemsModel();
         $items->update($id, [
