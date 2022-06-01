@@ -180,6 +180,25 @@ class Master extends BaseController
     public function deleteItem($id)
     {
         $items = new ItemsModel();
+        $cardStockModel = new CardStocksModel();
+
+        $checkInItemSame1 = $this->db->table("items");
+        $checkInItemSame1->select('code');
+        $checkInItemSame1->where('id_item', $id);
+        $checkInItemSame = $checkInItemSame1->get()->getResult();
+        foreach($checkInItemSame as $key => $item) {
+            $checkInItemSame = $item->code;
+        }
+
+        $checkInItemSame1 = $this->db->table("card_stocks");
+        $checkInItemSame1->select('id');
+        $checkInItemSame1->where('id_item', $checkInItemSame);
+        $checkInItemSame2 = $checkInItemSame1->get()->getResult();
+        foreach($checkInItemSame2 as $key => $item) {
+            $checkInItemSame2 = $item->id;
+        }
+
+        $cardStockModel->delete($checkInItemSame2);
         $items->delete($id);
         session()->setFlashdata('success', 'Berhasil dihapus');
         return redirect()->to(base_url('items'));
