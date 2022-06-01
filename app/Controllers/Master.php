@@ -66,21 +66,40 @@ class Master extends BaseController
     {
         if (!$this->validate([
             'name' => [
+                'rules'  => 'required',
+                'errors' => [
+                    'required' => 'Name Barang Harus diisi.',
+                ],
             ],
             'price' => [
-
+                'rules'  => 'required',
+                'errors' => [
+                    'required' => 'Harga Barang Harus diisi.',
+                ],
             ],
             'id_type' => [
-
+                'rules'  => 'required',
+                'errors' => [
+                    'required' => 'Harus dipilih Jenis Barang',
+                ],
             ],
             'id_merk' => [
-
+                'rules'  => 'required',
+                'errors' => [
+                    'required' => 'Harus dipilih Merek Barang.',
+                ],
             ],
             'id_supplier' => [
-
+                'rules'  => 'required',
+                'errors' => [
+                    'required' => 'Harus dipilih Supplier Barang.',
+                ],
             ],
             'stock' => [
-
+                'rules'  => 'required',
+                'errors' => [
+                    'required' => 'Stok Barang Harus diisi.',
+                ],
             ]
         ])) {
             session()->setFlashdata('error', $this->validator->listErrors());
@@ -221,7 +240,7 @@ class Master extends BaseController
             'name' => [
                 'rules' => 'required|is_unique[type_items.name]',
                 'errors' => [
-                    'required' => '{field} Harus diisi',
+                    'required' => 'Nama Jenis Barang Harus diisi',
                     'is_unique' => 'Jenis Barang sudah ada di database'
                 ]
             ],
@@ -278,7 +297,7 @@ class Master extends BaseController
             'name' => [
                 'rules' => 'required|is_unique[merk_items.name]',
                 'errors' => [
-                    'required' => '{field} Harus diisi',
+                    'required' => 'Nama Merek Barang Harus diisi',
                     'is_unique' => 'Merk Barang sudah ada di database'
                 ]
             ],
@@ -335,14 +354,14 @@ class Master extends BaseController
             'code' => [
                 'rules' => 'required|is_unique[suppliers.code]',
                 'errors' => [
-                    'required' => '{field} Harus diisi',
+                    'required' => 'Kode Supplier Barang Harus diisi',
                     'is_unique' => 'Kode Supplier sudah ada di database'
                 ]
             ],
             'name' => [
                 'rules' => 'required|is_unique[suppliers.name]',
                 'errors' => [
-                    'required' => '{field} Harus diisi',
+                    'required' => 'Nama Supplier Barang Harus diisi',
                     'is_unique' => 'Nama Supplier sudah ada di database'
                 ]
             ],
@@ -405,12 +424,28 @@ class Master extends BaseController
     {
         if (!$this->validate([
             'nip' => [
+                'rules'  => 'required',
+                'errors' => [
+                    'required' => 'NIP Montir Harus diisi.',
+                ],
             ],
             'name' => [
+                'rules'  => 'required',
+                'errors' => [
+                    'required' => 'Nama Montir Harus diisi.',
+                ],
             ],
             'telepone' => [
+                'rules'  => 'required',
+                'errors' => [
+                    'required' => 'No Telepone Montir Harus diisi.',
+                ],
             ],
             'alamat' => [
+                'rules'  => 'required',
+                'errors' => [
+                    'required' => 'Alamat Montir Harus diisi.',
+                ],
             ],
         ])) {
             session()->setFlashdata('error', $this->validator->listErrors());
@@ -470,10 +505,22 @@ class Master extends BaseController
         // dd($this->request);
         if (!$this->validate([
             'name' => [
+                'rules'  => 'required',
+                'errors' => [
+                    'required' => 'Nama Pelanggan Harus diisi.',
+                ],
             ],
             'plat_nomor' => [
+                'rules'  => 'required',
+                'errors' => [
+                    'required' => 'Plat Motor Harus diisi.',
+                ],
             ],
             'type_motor' => [
+                'rules'  => 'required',
+                'errors' => [
+                    'required' => 'Jenis Motor Harus diisi.',
+                ],
             ],
         ])) {
             session()->setFlashdata('error', $this->validator->listErrors());

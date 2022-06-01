@@ -87,9 +87,18 @@ class TransactionSupplier extends BaseController
     public function storeSupplier()
     {
         if (!$this->validate([
-            'code' => [
-
-            ]
+            'customer' => [
+                'rules'  => 'required',
+                'errors' => [
+                    'required' => 'Harus dipilih Pelanggan.',
+                ],
+            ],
+            'montir' => [
+                'rules'  => 'required',
+                'errors' => [
+                    'required' => 'Harus dipilih Montir.',
+                ],
+            ],
         ])) {
             session()->setFlashdata('error', $this->validator->listErrors());
             return redirect()->to(base_url('check_suppliers'));
@@ -125,10 +134,16 @@ class TransactionSupplier extends BaseController
     {
         if (!$this->validate([
             'id_item' => [
-
+                'rules'  => 'required',
+                'errors' => [
+                    'required' => 'Harus dipilih Nama Barang.',
+                ],
             ],
             'stock' => [
-
+                'rules'  => 'required',
+                'errors' => [
+                    'required' => 'Stok Barang Harus diisi.',
+                ],
             ]
         ])) {
             session()->setFlashdata('error', $this->validator->listErrors());
@@ -340,11 +355,12 @@ class TransactionSupplier extends BaseController
         $checkInItemSame1->select('id');
         $checkInItemSame1->like('information', $itemStock[0]->code_order);
         $checkInItemSame = $checkInItemSame1->get()->getResult();
+        $array = [];
         foreach($checkInItemSame as $key => $item) {
-            $checkInItemSame = $item->id;
+            $array[$key] = $checkInItemSame[$key]->id;
+            $cardStocks = new CardStocksModel();
+            $cardStocks->delete($array[$key]);
         }
-        $cardStocks = new CardStocksModel();
-        $cardStocks->delete($checkInItemSame);
 
         $items = new SupplierItemsModel();
         $items->delete($id);
@@ -370,11 +386,12 @@ class TransactionSupplier extends BaseController
         $checkInItemSame1->select('id');
         $checkInItemSame1->like('information', $items[0]->code_order);
         $checkInItemSame = $checkInItemSame1->get()->getResult();
+        $array = [];
         foreach($checkInItemSame as $key => $item) {
-            $checkInItemSame = $item->id;
+            $array[$key] = $checkInItemSame[$key]->id;
+            $cardStocks = new CardStocksModel();
+            $cardStocks->delete($array[$key]);
         }
-        $cardStocks = new CardStocksModel();
-        $cardStocks->delete($checkInItemSame);
 
         foreach ($itemSuppliers as $item) {
             $builder = $this->db->table("items");

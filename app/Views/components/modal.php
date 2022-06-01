@@ -10,6 +10,7 @@
                 </button>
             </div>
             <?php if($type == 'dataItems'): ?>
+                <?php $validation = \Config\Services::validation(); ?>
                 <form method="post" action="<?= base_url(); ?>/items/process">
                     <?= csrf_field() ?>
                     <div class="modal-body">
@@ -20,15 +21,20 @@
                         </div>
                         <div class="form-group">
                             <label for="exampleInputEmail1">Nama Barang</label>
-                            <input type="text" class="form-control" name="name" placeholder="Nama Barang">
+                            <input type="text" class="form-control" name="name" placeholder="Nama Barang" <?= old('name'); ?> id="name">
+                            <?php if($validation->getError('name')) {?>
+                                <div class='alert alert-danger mt-2'>
+                                <?= $error = $validation->getError('name'); ?>
+                                </div>
+                            <?php }?>
                         </div>
                         <div class="form-group">
                             <label for="exampleInputEmail1">Harga</label>
-                            <input type="text" class="form-control" id="rupiah2" name="price" placeholder="Harga">
+                            <input type="text" class="form-control" id="rupiah2" name="price" placeholder="Harga" <?= old('price'); ?> id="price">
                         </div>
                         <div class="form-group">
                             <label for="exampleInputEmail1">Ukuran</label>
-                            <input type="text" class="form-control" name="size" placeholder="Ukuran">
+                            <input type="text" class="form-control" name="size" placeholder="Ukuran" <?= old('size'); ?> id="size">
                         </div>
                         <div class="form-group">
                             <label for="exampleInputEmail1">Foto Barang</label>
@@ -58,7 +64,7 @@
                         </div>
                         <div class="form-group">
                             <label for="exampleInputEmail1">Stok</label>
-                            <input type="number" class="form-control" name="stock" placeholder="Stok">
+                            <input type="number" class="form-control" name="stock" placeholder="Stok" <?= old('stock'); ?> id="stock">
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -265,15 +271,15 @@
                         </div>
                         <div class="form-group">
                             <label for="exampleInputEmail1">Nama Barang</label>
-                            <input type="text" class="form-control product_name" name="name" placeholder="Nama Barang">
+                            <input type="text" class="form-control product_name" name="name" placeholder="Nama Barang" required>
                         </div>
                         <div class="form-group">
                             <label for="exampleInputEmail1">Harga</label>
-                            <input type="text" class="form-control product_price2" id="rupiah" name="price" placeholder="Harga">
+                            <input type="text" class="form-control product_price2" id="rupiah1" name="price" placeholder="Harga" required>
                         </div>
                         <div class="form-group">
                             <label for="exampleInputEmail1">Ukuran</label>
-                            <input type="text" class="form-control product_size" name="size" placeholder="Ukuran">
+                            <input type="text" class="form-control product_size" name="size" placeholder="Ukuran" required>
                         </div>
                         <div class="form-group">
                             <label for="exampleInputEmail1">Foto Barang</label>
@@ -282,7 +288,7 @@
                         <div class="form-group">
                             <label for="exampleInputEmail1">Jenis Barang</label>
                             <div class="">
-                                <select class="form-control product_type2" id="id_type" name="id_type">
+                                <select class="form-control product_type2" id="id_type" name="id_type" required>
                                     <option value="">Pilih Jenis Barang</option>
                                     <?php foreach ($typeitem as $item) : ?>
                                         <option value="<?=$item['id_type']?>"><?=$item['name']?></option>
@@ -293,7 +299,7 @@
                         <div class="form-group">
                             <label for="exampleInputEmail1">Merk Barang</label>
                             <div class="">
-                                <select class="form-control product_merk2" id="id_merk" name="id_merk">
+                                <select class="form-control product_merk2" id="id_merk" name="id_merk" required>
                                     <option value="">Pilih Merk Barang</option>
                                     <?php foreach ($merkitem as $item) : ?>
                                         <option value="<?=$item['id_merk']?>"><?=$item['name']?></option>
@@ -303,7 +309,7 @@
                         </div>
                         <div class="form-group">
                             <label for="exampleInputEmail1">Stok</label>
-                            <input type="number" class="form-control product_stock2" name="stock" placeholder="Stok">
+                            <input type="number" class="form-control product_stock2" name="stock" placeholder="Stok" required>
                         </div>
                     </div>
                     <div class="modal-footer">

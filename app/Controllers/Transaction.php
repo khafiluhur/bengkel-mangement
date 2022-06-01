@@ -301,13 +301,14 @@ class Transaction extends BaseController
         // Delete Card Stock Saldo In
         $checkInItemSame1 = $this->db->table("card_stocks");
         $checkInItemSame1->select('id');
-        $checkInItemSame1->like('information', $itemSuppliers[0]->code_order);
+        $checkInItemSame1->like('information', $items[0]->code_order);
         $checkInItemSame = $checkInItemSame1->get()->getResult();
+        $array = [];
         foreach($checkInItemSame as $key => $item) {
-            $checkInItemSame = $item->id;
+            $array[$key] = $checkInItemSame[$key]->id;
+            $cardStocks = new CardStocksModel();
+            $cardStocks->delete($array[$key]);
         }
-        $cardStocks = new CardStocksModel();
-        $cardStocks->delete($checkInItemSame);
 
         foreach ($itemSuppliers as $item) {
             $builder = $this->db->table("items");
@@ -337,10 +338,28 @@ class Transaction extends BaseController
     {
         if (!$this->validate([
             'id_item' => [
-
+                'rules'  => 'required',
+                'errors' => [
+                    'required' => 'Harus dipilih Nama Barang.',
+                ],
+            ],
+            'price1' => [
+                'rules'  => 'required',
+                'errors' => [
+                    'required' => 'Harga Barang Harus diisi.',
+                ],
+            ],
+            'id_supplier' => [
+                'rules'  => 'required',
+                'errors' => [
+                    'required' => 'Harus dipilih Supplier Barang.',
+                ],
             ],
             'stock' => [
-
+                'rules'  => 'required',
+                'errors' => [
+                    'required' => 'Stok Barang Harus diisi.',
+                ],
             ]
         ])) {
             session()->setFlashdata('error', $this->validator->listErrors());
@@ -427,7 +446,7 @@ class Transaction extends BaseController
         $stockNewItems = $itemStock[0]->stock;
 
         $builder = $this->db->table("items");
-        $builder->select('stock');
+        $builder->select('stock, code');
         $builder->where('id_item', $itemStock[0]->id_item);
         $itemPrice = $builder->get()->getResult();
         $stockItems = $itemPrice[0]->stock;
@@ -435,13 +454,15 @@ class Transaction extends BaseController
         // Delete Card Stock Saldo In
         $checkInItemSame1 = $this->db->table("card_stocks");
         $checkInItemSame1->select('id');
-        $checkInItemSame1->like('information', $itemStock[0]->code_order);
+        $checkInItemSame1->like('information', $itemPrice[0]->code);
         $checkInItemSame = $checkInItemSame1->get()->getResult();
+       
+        $array = [];
         foreach($checkInItemSame as $key => $item) {
-            $checkInItemSame = $item->id;
+            $array[$key] = $checkInItemSame[$key]->id;
+            $cardStocks = new CardStocksModel();
+            $cardStocks->delete($array[$key]);
         }
-        $cardStocks = new CardStocksModel();
-        $cardStocks->delete($checkInItemSame);
 
         // balance stock
         $save_items = new ItemsModel();

@@ -21,9 +21,8 @@ class CheckInItems extends Migration
                 'constraint' => '100'
             ],
             'id_item' => [
-                'type' => 'INT',
-                'constraint' => '12',
-                'null' => true
+                'type' => 'VARCHAR',
+                'constraint' => '100'
             ],
             'price' => [
                 'type' => 'VARCHAR',
