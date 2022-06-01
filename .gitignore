@@ -27,6 +27,9 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+# Server Windows
+App.php
+
 # Linux
 *~
 
