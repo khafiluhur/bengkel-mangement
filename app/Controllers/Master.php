@@ -131,7 +131,7 @@ class Master extends BaseController
         $items->update($id, [
             'name' => $this->request->getPost('name'),
             'price' => $joinToArray,
-            'image' => $this->request->getPost('image'),
+            // 'image' => $this->request->getPost('image'),
             'size' => $this->request->getPost('size'),
             'id_type' => $this->request->getPost('id_type'),
             'id_supplier' => $this->request->getPost('id_supplier'),

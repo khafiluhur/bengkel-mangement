@@ -179,7 +179,7 @@
     });
 </script>
 <script type="text/javascript">		
-    var rupiah = document.getElementById('rupiah');
+    var rupiah = document.getElementById('rupiah2');
     rupiah.addEventListener('keyup', function(e){
         // tambahkan 'Rp.' pada saat form di ketik
         // gunakan fungsi formatRupiah() untuk mengubah angka yang di ketik menjadi format angka
@@ -235,6 +235,7 @@
         $('#datatable-items').DataTable({
             footerCallback: function (row, data, start, end, display) {
                 var api = this.api();
+                var rupiah = '';
                 // Remove the formatting to get integer data for summation
                 var intVal = function (i) {
                     return typeof i === 'string' ? i.replace(/[\.,]/g, '') * 1 : typeof i === 'number' ? i : 0;

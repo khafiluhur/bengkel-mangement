@@ -24,7 +24,7 @@
                         </div>
                         <div class="form-group">
                             <label for="exampleInputEmail1">Harga</label>
-                            <input type="text" class="form-control" id="rupiah" name="price" placeholder="Harga">
+                            <input type="text" class="form-control" id="rupiah2" name="price" placeholder="Harga">
                         </div>
                         <div class="form-group">
                             <label for="exampleInputEmail1">Ukuran</label>

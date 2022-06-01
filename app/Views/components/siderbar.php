@@ -56,7 +56,7 @@
                         <li><a href="<?= base_url(); ?>/report/cardstock">Kartu Stok</a></li>
                     </ul>
                 </li>
-                <li><a href="<?= base_url(); ?>/"><i class="fa fa-gear"></i>Pengantur</a>
+                <!-- <li><a href="<?= base_url(); ?>/"><i class="fa fa-gear"></i>Pengantur</a> -->
             <?php else: ?>
                 <li><a href="<?= base_url(); ?>/check_out"><i class="fa fa-desktop"></i>Transaksi Barang Keluar</a></li>
             <?php endif; ?>
