@@ -28,7 +28,7 @@ $RECYCLE.BIN/
 *.lnk
 
 # Server Windows
-App.php
+app/Config/App.php
 
 # Linux
 *~
