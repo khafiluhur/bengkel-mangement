@@ -139,7 +139,7 @@ class TransactionSupplier extends BaseController
                     'required' => 'Harus dipilih Nama Barang.',
                 ],
             ],
-            'stock' => [
+            'total_stock' => [
                 'rules'  => 'required',
                 'errors' => [
                     'required' => 'Stok Barang Harus diisi.',
