@@ -150,18 +150,22 @@ class Transaction extends BaseController
         $builder->where('code_order', $this->request->getPost('code'));
         $total_pay = $builder->get()->getResult();
 
-        $item = new CheckInsModel();
-        $item->insert([
-            'code_order' => $this->request->getPost('code'),
-            'date_trasanction' => date("Y-m-d"),
-            'total_pay' => $total_pay[0]->total_pay,
-            'created_at' => date("Y-m-d H:i:s"),
-            'created_by' => session()->get('username'),
-            'updated_at' => date("Y-m-d H:i:s"),
-            'updated_by' => session()->get('username')
-        ]);
+        if($total_pay[0]->total_pay == null) {
+            session()->setFlashdata('error', 'Harus memilih barang terlebih dahulu');
+            return redirect()->to(base_url('check_in/store'));
+        } else {
+            $item = new CheckInsModel();
+            $item->insert([
+                'code_order' => $this->request->getPost('code'),
+                'date_trasanction' => date("Y-m-d"),
+                'total_pay' => $total_pay[0]->total_pay,
+                'created_at' => date("Y-m-d H:i:s"),
+                'created_by' => session()->get('username'),
+                'updated_at' => date("Y-m-d H:i:s"),
+                'updated_by' => session()->get('username')
+            ]);
+        }
         
-
         session()->setFlashdata('success', 'Berhasil ditambah');
         return redirect()->to(base_url('check_in'));
     }

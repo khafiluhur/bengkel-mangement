@@ -101,7 +101,7 @@ class TransactionSupplier extends BaseController
             ],
         ])) {
             session()->setFlashdata('error', $this->validator->listErrors());
-            return redirect()->to(base_url('check_suppliers'));
+            return redirect()->to(base_url('check_suppliers/store'));
         }
 
         $builder = $this->db->table("supplier_items");
@@ -109,22 +109,27 @@ class TransactionSupplier extends BaseController
         $builder->where('code_order', $this->request->getPost('code'));
         $total_pay = $builder->get()->getResult();
 
-        $item = new CheckSuppliersModel();
-        $item->insert([
-            'code_order' => $this->request->getPost('code'),
-            'customer' => $this->request->getPost('customer'),
-            'montir' => $this->request->getPost('montir'),
-            'crash' => $this->request->getPost('crash'),
-            'crashrepair1' => $this->request->getPost('crashrepair1'),
-            'crashrepair2' => $this->request->getPost('crashrepair2'),
-            'crashrepair3' => $this->request->getPost('crashrepair3'),
-            'date_trasanction' => date("Y-m-d"),
-            'total_pay' => $total_pay[0]->total_pay,
-            'created_at' => date("Y-m-d H:i:s"),
-            'created_by' => session()->get('username'),
-            'updated_at' => date("Y-m-d H:i:s"),
-            'updated_by' => session()->get('username')
-        ]);
+        if($total_pay[0]->total_pay == null) {
+            session()->setFlashdata('error', 'Harus memilih barang terlebih dahulu');
+            return redirect()->to(base_url('check_suppliers/store'));
+        } else {
+            $item = new CheckSuppliersModel();
+            $item->insert([
+                'code_order' => $this->request->getPost('code'),
+                'customer' => $this->request->getPost('customer'),
+                'montir' => $this->request->getPost('montir'),
+                'crash' => $this->request->getPost('crash'),
+                'crashrepair1' => $this->request->getPost('crashrepair1'),
+                'crashrepair2' => $this->request->getPost('crashrepair2'),
+                'crashrepair3' => $this->request->getPost('crashrepair3'),
+                'date_trasanction' => date("Y-m-d"),
+                'total_pay' => $total_pay[0]->total_pay,
+                'created_at' => date("Y-m-d H:i:s"),
+                'created_by' => session()->get('username'),
+                'updated_at' => date("Y-m-d H:i:s"),
+                'updated_by' => session()->get('username')
+            ]);
+        }
 
         session()->setFlashdata('success', 'Berhasil ditambah');
         return redirect()->to(base_url('check_suppliers'));
