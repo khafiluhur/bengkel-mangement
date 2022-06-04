@@ -228,8 +228,8 @@
                 <?= csrf_field() ?>
                     <div class="modal-body">
                         <div class="form-group">
-                            <label for="exampleInputEmail1">Nomor Customer</label>
-                            <input type="text" class="form-control product_code" name="name" placeholder="Nomor Customer">
+                            <label for="exampleInputEmail1">Nama Customer</label>
+                            <input type="text" class="form-control product_code" name="name" placeholder="Nama Customer">
                         </div>
                         <div class="form-group">
                             <label for="exampleInputEmail1">Plat Nomor</label>
