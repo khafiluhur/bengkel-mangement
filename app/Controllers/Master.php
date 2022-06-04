@@ -89,12 +89,6 @@ class Master extends BaseController
                     'required' => 'Harus dipilih Merek Barang.',
                 ],
             ],
-            'id_supplier' => [
-                'rules'  => 'required',
-                'errors' => [
-                    'required' => 'Harus dipilih Supplier Barang.',
-                ],
-            ],
             'stock' => [
                 'rules'  => 'required',
                 'errors' => [
@@ -122,7 +116,6 @@ class Master extends BaseController
             'image' => $this->request->getPost('image'),
             'size' => $this->request->getPost('size'),
             'id_type' => $this->request->getPost('id_type'),
-            'id_supplier' => $this->request->getPost('id_supplier'),
             'id_merk' => $this->request->getPost('id_merk'),
             'stock' => $this->request->getPost('stock'),
             'created_at' => date("Y-m-d H:i:s"),
@@ -160,7 +153,6 @@ class Master extends BaseController
             // 'image' => $this->request->getPost('image'),
             'size' => $this->request->getPost('size'),
             'id_type' => $this->request->getPost('id_type'),
-            'id_supplier' => $this->request->getPost('id_supplier'),
             'id_merk' => $this->request->getPost('id_merk'),
             'stock' => $this->request->getPost('stock'),
             'updated_at'  => date("Y-m-d H:i:s"),
