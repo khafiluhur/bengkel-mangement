@@ -40,6 +40,12 @@
                 </div>
                 <div class="x_content">
                     <div class="row">
+                        
+                        <div class="col-sm-12">
+                            <div class="alert alert-success" role="alert">
+                                <p class="mb-0 h6">Selamat Datang di <?= $name_site ?></p>
+                            </div>
+                        </div>
                         <div class="col-sm-12">
                             <div class="alert alert-success" role="alert">
                                 <p class="mb-0 h6">Selamat Datang di <?= $name_site ?></p>
