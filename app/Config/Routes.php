@@ -37,6 +37,8 @@ $routes->post('/register/process', 'Register::processRegister');
 $routes->post('/login/process', 'Register::processLogin');
 $routes->get('/logout', 'Register::logout');
 $routes->get('/home', 'Home::home');
+$routes->get('/setting', 'Home::setting');
+$routes->post('/updateSetting', 'Home::updateSetting');
 
 // Management User //
 $routes->group('management_user', function($routes) {
@@ -92,6 +94,14 @@ $routes->group('suppliers', function($routes) {
     $routes->post('process', 'Master::createSupplier');
     $routes->post('(:segment)/update', 'Master::updateSupplier/$1');
     $routes->get('(:segment)/delete', 'Master::deleteSupplier/$1');
+});
+
+// Service //
+$routes->group('services', function($routes) {
+    $routes->get('/', 'Master::service');
+    $routes->post('process', 'Master::createService');
+    $routes->post('(:segment)/update', 'Master::updateService/$1');
+    $routes->get('(:segment)/delete', 'Master::deleteService/$1');
 });
 
 // Check In //

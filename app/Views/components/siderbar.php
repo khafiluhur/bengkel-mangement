@@ -2,7 +2,7 @@
 <div class="col-md-3 left_col">
     <div class="left_col scroll-view">
     <div class="navbar nav_title" style="border: 0;">
-        <a href="index.html" class="site_title"> <span class="h6">Motekar Jaya Motor</span></a>
+        <a href="index.html" class="site_title"> <span class="h6"><?= $name_site ?></span></a>
     </div>
 
     <div class="clearfix"></div>
@@ -33,9 +33,10 @@
                 <li><a><i class="fa fa-edit"></i> Data Master <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                         <li><a href="<?= base_url(); ?>/items">Data Barang</a></li>
-                        <li><a href="<?= base_url(); ?>/type_items">Jenis Barang</a></li>
+                        <li><a href="<?= base_url(); ?>/type_items">Kategori Barang</a></li>
                         <li><a href="<?= base_url(); ?>/merk_items">Merek Barang</a></li>
-                        <li><a href="<?= base_url(); ?>/suppliers">Supplier</a></li>
+                        <li><a href="<?= base_url(); ?>/services">Data Service</a></li>
+                        <li><a href="<?= base_url(); ?>/suppliers">Data Supplier</a></li>
                         <li><a href="<?= base_url(); ?>/montirs">Data Montir</a></li>
                         <li><a href="<?= base_url(); ?>/customers">Data Pelanggan</a></li>
                     </ul>
@@ -56,7 +57,7 @@
                         <li><a href="<?= base_url(); ?>/report/cardstock">Kartu Stok</a></li>
                     </ul>
                 </li>
-                <!-- <li><a href="<?= base_url(); ?>/"><i class="fa fa-gear"></i>Pengantur</a> -->
+                <li><a href="<?= base_url(); ?>/setting"><i class="fa fa-gear"></i>Penganturan</a>
             <?php else: ?>
                 <li><a href="<?= base_url(); ?>/check_out"><i class="fa fa-desktop"></i>Transaksi Barang Keluar</a></li>
             <?php endif; ?>
@@ -67,7 +68,7 @@
     <!-- /sidebar menu -->
 
     <!-- /menu footer buttons -->
-    <div class="sidebar-footer hidden-small">
+    <div class="sidebar-footer hidden-small" style="z-index: 99;">
         <a style="background: red" class="w-100 btn btn-danger" data-toggle="tooltip" data-placement="top" title="Logout" href="<?= base_url(); ?>/logout">
         <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
         </a>

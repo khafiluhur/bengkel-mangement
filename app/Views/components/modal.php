@@ -41,10 +41,10 @@
                             <input type="file" class="form-control" name="image" placeholder="Foto Barang">
                         </div>
                         <div class="form-group">
-                            <label for="exampleInputEmail1">Jenis Barang</label>
+                            <label for="exampleInputEmail1">Kategori Barang</label>
                             <div class="">
                                 <select class="form-control" id="id_type" name="id_type">
-                                    <option value="">Pilih Jenis Barang</option>
+                                    <option value="">Pilih Kategori Barang</option>
                                     <?php foreach ($typeitem as $item) : ?>
                                         <option value="<?=$item['id_type']?>"><?=$item['name']?></option>
                                     <?php endforeach; ?>
@@ -66,6 +66,10 @@
                             <label for="exampleInputEmail1">Stok</label>
                             <input type="number" class="form-control" name="stock" placeholder="Stok" <?= old('stock'); ?> id="stock">
                         </div>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Minimal Stock</label>
+                            <input type="number" class="form-control" name="limit_stock" placeholder="Minimal Stok" <?= old('limit_stock'); ?> id="limit_stock">
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
@@ -77,8 +81,8 @@
                 <?= csrf_field() ?>
                     <div class="modal-body">
                         <div class="form-group">
-                            <label for="exampleInputEmail1">Jenis Barang</label>
-                            <input type="text" class="form-control" name="name" placeholder="Jenis Barang">
+                            <label for="exampleInputEmail1">Kategori Barang</label>
+                            <input type="text" class="form-control" name="name" placeholder="Kategori Barang">
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -104,10 +108,6 @@
                 <form method="post" action="<?= base_url(); ?>/suppliers/process">
                 <?= csrf_field() ?>
                     <div class="modal-body">
-                        <div class="form-group">
-                            <label for="exampleInputEmail1">Kode Supplier</label>
-                            <input type="text" class="form-control" name="code" placeholder="Kode Supplier">
-                        </div>
                         <div class="form-group">
                             <label for="exampleInputEmail1">Nama Supplier</label>
                             <input type="text" class="form-control" name="name" placeholder="Name Supplier">
@@ -202,10 +202,6 @@
                     <?= csrf_field() ?>
                     <div class="modal-body">
                         <div class="form-group">
-                            <label for="exampleInputEmail1">Nomor Pegawai</label>
-                            <input type="text" class="form-control product_code" name="nip" placeholder="Nomor Pegawai">
-                        </div>
-                        <div class="form-group">
                             <label for="exampleInputEmail1">Nama</label>
                             <input type="text" class="form-control product_name" name="name" placeholder="Nama">
                         </div>
@@ -215,7 +211,25 @@
                         </div>
                         <div class="form-group">
                             <label for="exampleInputEmail1">Alamat</label>
-                            <input type="text" class="form-control product_stock" name="alamat" placeholder="Alamat">
+                            <textarea type="text" class="form-control product_stock" name="alamat" placeholder="Alamat"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary btn-sm">Simpan</button>
+                    </div>
+                </form>
+            <?php elseif($type == 'services'): ?>
+                <form method="post" action="<?= base_url(); ?>/services/process">
+                <?= csrf_field() ?>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Nama Service</label>
+                            <input type="text" class="form-control product_code" name="name" placeholder="Nama Service">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Harga Service</label>
+                            <input type="text" class="form-control product_name" id="rupiah3" name="price" placeholder="Harga Service">
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -286,10 +300,10 @@
                             <input type="file" class="form-control product_image" name="image" placeholder="Foto Barang">
                         </div>
                         <div class="form-group">
-                            <label for="exampleInputEmail1">Jenis Barang</label>
+                            <label for="exampleInputEmail1">Kategori Barang</label>
                             <div class="">
                                 <select class="form-control product_type2" id="id_type" name="id_type" required>
-                                    <option value="">Pilih Jenis Barang</option>
+                                    <option value="">Pilih Kategori Barang</option>
                                     <?php foreach ($typeitem as $item) : ?>
                                         <option value="<?=$item['id_type']?>"><?=$item['name']?></option>
                                     <?php endforeach; ?>
@@ -311,6 +325,10 @@
                             <label for="exampleInputEmail1">Stok</label>
                             <input type="number" class="form-control product_stock2" name="stock" placeholder="Stok" required>
                         </div>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Minimal Stock</label>
+                            <input type="number" class="form-control product_limit" name="limit_stock">
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
@@ -322,8 +340,8 @@
                 <?= csrf_field() ?>
                     <div class="modal-body">
                         <div class="form-group">
-                            <label for="exampleInputEmail1">Jenis Barang</label>
-                            <input type="text" class="form-control product_name" name="name" placeholder="Jenis Barang" value="">
+                            <label for="exampleInputEmail1">Kategori Barang</label>
+                            <input type="text" class="form-control product_name" name="name" placeholder="Kategori Barang" value="">
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -447,10 +465,6 @@
                     <?= csrf_field() ?>
                     <div class="modal-body">
                         <div class="form-group">
-                            <label for="exampleInputEmail1">Nomor Pegawai</label>
-                            <input type="text" class="form-control product_code" name="nip" placeholder="Nomor Pegawai">
-                        </div>
-                        <div class="form-group">
                             <label for="exampleInputEmail1">Nama</label>
                             <input type="text" class="form-control product_name" name="name" placeholder="Nama">
                         </div>
@@ -460,7 +474,25 @@
                         </div>
                         <div class="form-group">
                             <label for="exampleInputEmail1">Alamat</label>
-                            <input type="text" class="form-control product_stock" name="alamat" placeholder="Alamat">
+                            <textarea type="text" class="form-control product_stock" name="alamat" placeholder="Alamat"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary btn-sm">Simpan</button>
+                    </div>
+                </form>
+            <?php elseif($type == 'services'): ?>
+                <form id="services" method="post" action="">
+                    <?= csrf_field() ?>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Nama Service</label>
+                            <input type="text" class="form-control product_name" name="name" placeholder="Nama Service">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Harga Service</label>
+                            <input type="text" class="form-control product_price2" id="rupiah4" name="price" placeholder="Harga Service">
                         </div>
                     </div>
                     <div class="modal-footer">

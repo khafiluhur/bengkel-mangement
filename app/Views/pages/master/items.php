@@ -4,12 +4,12 @@
 <!-- Bootstrap -->
 <link href="cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
 <!-- Datatables -->
-<link href="../vendors/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
-<link href="../vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css" rel="stylesheet">
-<link href="../vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css" rel="stylesheet">
-<link href="../vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
-<link href="../vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">
-<link href="../vendors/select2/dist/css/select2.min.css" rel="stylesheet">
+<link href="<?php echo base_url('/vendors/datatables.net-bs/css/dataTables.bootstrap.min.css'); ?>" rel="stylesheet">
+<link href="<?php echo base_url('/vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css'); ?>" rel="stylesheet">
+<link href="<?php echo base_url('/vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css'); ?>" rel="stylesheet">
+<link href="<?php echo base_url('/vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css'); ?>" rel="stylesheet">
+<link href="<?php echo base_url('/vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css'); ?>" rel="stylesheet">
+<link href="<?php echo base_url('/vendors/select2/dist/css/select2.min.css'); ?>" rel="stylesheet">
 <?= $this->endSection(); ?>
 
 <?= $this->section('content'); ?>
@@ -51,7 +51,6 @@
                                     <table id="datatable-items" class="table table-striped table-bordered" style="width:100%">                
                                             <thead>
                                                 <tr>
-                                                    <th>No</th>
                                                     <th>Kode Barang</th>
                                                     <th>Nama Barang</th>
                                                     <th>Ukuran</th>
@@ -63,23 +62,33 @@
                                             </thead>
 
                                             <tbody>
-                                                <?php $i=1; ?>
                                                 <?php foreach ($items as $item) : ?>
-                                                    <tr>
-                                                        <td><?=$i++?></td>
+                                                    <?php if($item['stock'] <= $item['limit_stock'] ): ?>
+                                                        <tr>
+                                                        <td class="red"><?=$item['code']?></td>
+                                                            <td class="red"><?=$item['name']?></td>
+                                                            <td class="red"><?=$item['size']?></td>
+                                                            <td class="red"><?=$item['stock']?></td>
+                                                            <td class="red"><?=number_format($item['price'],0,',','.');?></td>
+                                                            <td class="red"><?=number_format($item['stock'] * $item['price'],0,',','.');?></td>
+                                                            <td class="red"><a href="" class="btn-edit" data-toggle="modal" data-target="#editModal" data-id="<?=$item['id_item']?>" data-code="<?=$item['code']?>" data-name="<?=$item['name']?>" data-price="<?=$item['price']?>" data-image="<?=$item['image']?>" data-type="<?=$item['id_type']?>" data-merk="<?=$item['id_merk']?>" data-stock="<?=$item['stock']?>" data-size="<?=$item['size']?>" data-limit="<?=$item['limit_stock']?>">Ubah</a> | <a href="<?= base_url('items/'.$item['id_item'].'/delete'); ?>">Hapus</a></td>
+                                                        </tr>
+                                                    <?php else: ?>
+                                                        <tr>
                                                         <td><?=$item['code']?></td>
-                                                        <td><?=$item['name']?></td>
-                                                        <td><?=$item['size']?></td>
-                                                        <td><?=$item['stock']?></td>
-                                                        <td><?=number_format($item['price'],0,',','.');?></td>
-                                                        <td><?=number_format($item['stock'] * $item['price'],0,',','.');?></td>
-                                                        <td><a href="" class="btn-edit" data-toggle="modal" data-target="#editModal" data-id="<?=$item['id_item']?>" data-code="<?=$item['code']?>" data-name="<?=$item['name']?>" data-price="<?=$item['price']?>" data-image="<?=$item['image']?>" data-type="<?=$item['id_type']?>" data-merk="<?=$item['id_merk']?>" data-stock="<?=$item['stock']?>" data-size="<?=$item['size']?>">Ubah</a> | <a href="<?= base_url('items/'.$item['id_item'].'/delete'); ?>">Hapus</a></td>
-                                                    </tr>
+                                                            <td><?=$item['name']?></td>
+                                                            <td><?=$item['size']?></td>
+                                                            <td><?=$item['stock']?></td>
+                                                            <td><?=number_format($item['price'],0,',','.');?></td>
+                                                            <td><?=number_format($item['stock'] * $item['price'],0,',','.');?></td>
+                                                            <td><a href="" class="btn-edit" data-toggle="modal" data-target="#editModal" data-id="<?=$item['id_item']?>" data-code="<?=$item['code']?>" data-name="<?=$item['name']?>" data-price="<?=$item['price']?>" data-image="<?=$item['image']?>" data-type="<?=$item['id_type']?>" data-merk="<?=$item['id_merk']?>" data-stock="<?=$item['stock']?>" data-size="<?=$item['size']?>" data-limit="<?=$item['limit_stock']?>">Ubah</a> | <a href="<?= base_url('items/'.$item['id_item'].'/delete'); ?>">Hapus</a></td>
+                                                        </tr>
+                                                    <?php endif; ?>
                                                 <?php endforeach; ?> 
                                             </tbody>
                                             <tfoot style="background-color: rgba(0,0,0,.05)">
                                                 <tr>
-                                                    <th colspan="6" style="text-align:center">Total:</th>
+                                                    <th colspan="5" style="text-align:center">Total:</th>
                                                     <th colspan="2" style="text-align:center"></th>
                                                 </tr>
                                             </tfoot>
@@ -97,21 +106,21 @@
 
 <?= $this->section('script'); ?>
 <!-- Datatables -->
-<script src="../vendors/datatables.net/js/jquery.dataTables.min.js"></script>
-<script src="../vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
-<script src="../vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
-<script src="../vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
-<script src="../vendors/datatables.net-buttons/js/buttons.flash.min.js"></script>
-<script src="../vendors/datatables.net-buttons/js/buttons.html5.min.js"></script>
-<script src="../vendors/datatables.net-buttons/js/buttons.print.min.js"></script>
-<script src="../vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
-<script src="../vendors/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
-<script src="../vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
-<script src="../vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
-<script src="../vendors/datatables.net-scroller/js/dataTables.scroller.min.js"></script>
-<script src="../vendors/jszip/dist/jszip.min.js"></script>
-<script src="../vendors/pdfmake/build/pdfmake.min.js"></script>
-<script src="../vendors/pdfmake/build/vfs_fonts.js"></script>
+<script src="<?php echo base_url('/vendors/datatables.net/js/jquery.dataTables.min.js'); ?>"></script>
+<script src="<?php echo base_url('/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js'); ?>"></script>
+<script src="<?php echo base_url('/vendors/datatables.net-buttons/js/dataTables.buttons.min.js'); ?>"></script>
+<script src="<?php echo base_url('/vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js'); ?>"></script>
+<script src="<?php echo base_url('/vendors/datatables.net-buttons/js/buttons.flash.min.js'); ?>"></script>
+<script src="<?php echo base_url('/vendors/datatables.net-buttons/js/buttons.html5.min.js'); ?>"></script>
+<script src="<?php echo base_url('/vendors/datatables.net-buttons/js/buttons.print.min.js'); ?>"></script>
+<script src="<?php echo base_url('/vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js'); ?>"></script>
+<script src="<?php echo base_url('/vendors/datatables.net-keytable/js/dataTables.keyTable.min.js'); ?>"></script>
+<script src="<?php echo base_url('/vendors/datatables.net-responsive/js/dataTables.responsive.min.js'); ?>"></script>
+<script src="<?php echo base_url('/vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js'); ?>"></script>
+<script src="<?php echo base_url('/vendors/datatables.net-scroller/js/dataTables.scroller.min.js'); ?>"></script>
+<script src="<?php echo base_url('/vendors/jszip/dist/jszip.min.js'); ?>"></script>
+<script src="<?php echo base_url('/vendors/pdfmake/build/pdfmake.min.js'); ?>"></script>
+<script src="<?php echo base_url('/vendors/pdfmake/build/vfs_fonts.js'); ?>"></script>
 <script>
     $(document).ready(function(){
         // get Edit Product
@@ -124,6 +133,7 @@
             const type = $(this).data('type');
             const price = $(this).data('price');
             const stock = $(this).data('stock');
+            const limit = $(this).data('limit');
             const size = $(this).data('size');
             const supplier = $(this).data('supplier');
             const merk = $(this).data('merk');
@@ -148,6 +158,7 @@
             $('.product_code').val(code);
             $('.product_price2').val('Rp. ' + rupiah);
             $('.product_stock2').val(stock);
+            $('.product_limit').val(limit);
             $('.product_type2').val(type);
             $('.product_supplier2').val(supplier);
             $('.product_merk2').val(merk);
@@ -254,7 +265,7 @@
     
                 // Total over all pages
                 total = api
-                    .column(6)
+                    .column(5)
                     .data()
                     .reduce(function (a, b) {
                         return intVal(a) + intVal(b);
@@ -267,7 +278,7 @@
                 var rupiah2 = rupiah1.split(']')
                 
                 // Update footer
-                $(api.column(6).footer()).html(rupiah2[0]);
+                $(api.column(5).footer()).html(rupiah2[0]);
             },
         });
     });

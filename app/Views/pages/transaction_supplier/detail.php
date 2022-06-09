@@ -2,17 +2,17 @@
 
 <?= $this->section('css'); ?>
 <!-- iCheck -->
-<link href="/vendors/iCheck/skins/flat/green.css" rel="stylesheet">
+<link href="<?php echo base_url('/vendors/iCheck/skins/flat/green.css'); ?>" rel="stylesheet">
 <!-- bootstrap-wysiwyg -->
-<link href="/vendors/google-code-prettify/bin/prettify.min.css" rel="stylesheet">
+<link href="<?php echo base_url('/vendors/google-code-prettify/bin/prettify.min.css'); ?>" rel="stylesheet">
 <!-- Select2 -->
-<link href="/vendors/select2/dist/css/select2.min.css" rel="stylesheet">
+<link href="<?php echo base_url('/vendors/select2/dist/css/select2.min.css'); ?>" rel="stylesheet">
 <!-- Switchery -->
-<link href="/vendors/switchery/dist/switchery.min.css" rel="stylesheet">
+<link href="<?php echo base_url('/vendors/switchery/dist/switchery.min.css'); ?>" rel="stylesheet">
 <!-- starrr -->
-<link href="/vendors/starrr/dist/starrr.css" rel="stylesheet">
+<link href="<?php echo base_url('/vendors/starrr/dist/starrr.css'); ?>" rel="stylesheet">
 <!-- bootstrap-daterangepicker -->
-<link href="/vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
+<link href="<?php echo base_url('/vendors/bootstrap-daterangepicker/daterangepicker.css'); ?>" rel="stylesheet">
 <?= $this->endSection(); ?>
  
 <?= $this->section('content'); ?>
@@ -88,9 +88,16 @@
                                 <label class="col-form-label col-md-12 col-sm-12" for="first-name" style="font-size: 16px;"><?= $transactions[0]->crashrepair3 ?></label>
                             </div>
                         </div>
+                        <div class="item form-group col-md-12">
+                            <label class="col-form-label col-md-3 col-sm-3" for="first-name" style="font-size: 16px; font-weight: bold;">Diskon Transaksi :
+                            </label>
+                            <div class="col-md-6 col-sm-6 ">
+                                <label class="col-form-label col-md-12 col-sm-12" for="first-name" style="font-size: 16px;"><?= $transactions[0]->discount ?>%</label>
+                            </div>
+                        </div>
                         <?php else: ?>
                         <?php endif; ?>
-                        <div class="row">
+                        <div class="row" style="display: inherit !important;">
                             <div class="col-md-12 col-sm-12 ">
                                 <div class="">
                                     <div class="x_content">
@@ -100,34 +107,35 @@
                                                     <table id="datatable" class="table table-striped table-bordered" style="width:100%">                
                                                         <thead>
                                                             <tr>
-                                                                <th>No</th>
                                                                 <th>Kode Barang</th>
                                                                 <th>Nama Barang</th>
+                                                                <th>Harga</th>
+                                                                <th>Jumlah</th>
                                                                 <?php if($type == 'checkIns'): ?>
                                                                     <th>Supplier</th>
                                                                 <?php else: ?>
+                                                                <th>Diskon</th> 
+                                                                <th>Harga Pasang</th> 
                                                                 <?php endif; ?>
-                                                                <th>Harga</th>
-                                                                <th>Jumlah</th>
                                                                 <th>Total</th>
                                                                 <th>Piihan</th>
                                                             </tr>
                                                         </thead>
 
                                                         <tbody>
-                                                            <?php $i=1; ?>
                                                             <?php foreach ($item_supplier as $item) : ?>
                                                             <tr>
-                                                                <td><?=$i++?></td>
                                                                 <td><?= $item->code_item ?></td>
                                                                 <td><?= $item->nama_item ?></td>
                                                                 <?php if($type == 'checkIns'): ?>
                                                                     <td><?= $item->name_supplier ?></td>
                                                                 <?php else: ?>
+                                                                    <td><?= $item->discount ?>%</td>
+                                                                    <td><?= "Rp. " . number_format($item->plug,0,',','.'); ?></td>
                                                                 <?php endif; ?>
                                                                 <td><?= "Rp. " . number_format($item->price,0,',','.'); ?></td>
                                                                 <td><?= $item->stock ?></td>
-                                                                <td><?= "Rp. " . number_format($item->price * $item->stock,0,',','.'); ?></td>
+                                                                <td><?= "Rp. " . number_format($item->subtotal,0,',','.'); ?></td>
                                                                 <?php if($type == 'checkIns'): ?>
                                                                     <td><a href="" class="btn-edit-transaksi" data-trns="<?=$item->code_order?>" data-trid="<?=$item->id?>" data-id="<?=$item->id_item?>" data-code="<?= $item->code_item ?>" data-availabel="<?= $item->stock_item ?>" data-price="<?= $item->price ?>" data-supplier="<?= $item->id_supplier ?>" data-stock="<?= $item->stock ?>" data- data-code data-toggle="modal" data-target="#editTransactionModal">Ubah</a></td>
                                                                 <?php else: ?>
@@ -135,8 +143,18 @@
                                                                 <?php endif; ?>
                                                             </tr>
                                                             <?php endforeach; ?>
+                                                            <?php if($type == 'checkIns'): ?>
+                                                            <?php else: ?>
+                                                                <?php if($own_service != null): ?>
+                                                                    <tr>
+                                                                        <td colspan="4" class="text-center"><?= $own_service[0]->name ?></td>
+                                                                        <td colspan="4" class="text-center"><?= "Rp. " . number_format($own_service[0]->price,0,',','.'); ?></td>
+                                                                    </tr>
+                                                                <?php else: ?>
+                                                                <?php endif; ?>
+                                                            <?php endif; ?>
                                                             <tr>
-                                                                <td colspan="4" class="text-center font-weight-bold" style="background-color: gainsboro;">Total Bayar</td>
+                                                                <td colspan="4" class="text-center font-weight-bold" style="background-color: gainsboro;">Total / <?= $transactions[0]->discount ?>%</td>
                                                                 <td colspan="4" class="text-center font-weight-bold" style="background-color: darkgray;"><?= "Rp. " . number_format($transactions[0]->total_pay,0,',','.'); ?></td>
                                                             </tr>
                                                         </tbody>

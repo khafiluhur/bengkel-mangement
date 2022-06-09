@@ -1,7 +1,7 @@
 <!-- footer content -->
-<footer>
+<footer style="position: inherit;">
     <div class="pull-right">
-    Motekar Jaya Motor</a>
+        <a><?= $name_site ?></a>
     </div>
     <div class="clearfix"></div>
 </footer>

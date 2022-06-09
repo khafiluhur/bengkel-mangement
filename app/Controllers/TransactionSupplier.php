@@ -2,15 +2,16 @@
 namespace App\Controllers;
 
 use App\Models\ItemsModel;
+use App\Models\ServiceModel;
+use App\Models\OtherCostModel;
 use App\Models\CheckSuppliersModel;
+use App\Models\DiscountModel;
 use App\Models\SuppliersModel;
 use App\Controllers\BaseController;
 use App\Models\CustomersModel;
 use App\Models\MontirsModel;
 use App\Models\CardStocksModel;
-use App\Database\Migrations\CheckSuppliers;
 use App\Models\SupplierItemsModel;
-use CodeIgniter\HTTP\Request;
 use Dompdf\Dompdf;
 
 class TransactionSupplier extends BaseController
@@ -26,6 +27,9 @@ class TransactionSupplier extends BaseController
         $this->itemModel = new ItemsModel();
         $this->supplierModel = new SuppliersModel();
         $this->supplierItemModel = new SupplierItemsModel();
+        $this->discountModel = new DiscountModel();
+        $this->otherCostModel = new OtherCostModel();
+        $this->serviceModel = new ServiceModel();
     }
 
     public function checkSupplier()
@@ -33,8 +37,14 @@ class TransactionSupplier extends BaseController
         $transactions = $this->checkSupplierModel->findAll();
         $items = $this->itemModel->findAll();
 
+        // Name Site
+        $builder_name_site = $this->db->table("setting_sites");
+        $builder_name_site->select('setting_sites.name_site');
+        $name_sites = $builder_name_site->get()->getResult();
+
         $data = [
             'title' => 'Transaksi Barang',
+            'name_site' => $name_sites[0]->name_site,
             'type' => 'checkSuppliers',
             'transactions' => $transactions,
             'items' => $items
@@ -48,6 +58,9 @@ class TransactionSupplier extends BaseController
         $items = $this->itemModel->findAll();
         $customers = $this->customerModel->findAll();
         $montirs = $this->montirsModel->findAll();
+        $discounts = $this->discountModel->findAll();
+        $othercosts = $this->otherCostModel->findAll();
+        $services = $this->serviceModel->findAll();
         
         //Generate Code Items
         $count = count($transactions);
@@ -64,21 +77,29 @@ class TransactionSupplier extends BaseController
         $builder->where('supplier_items.code_order', 'TR'.$generate_code);
         $itemPrice = $builder->get()->getResult();
 
-
         $builder = $this->db->table("supplier_items");
         $builder->select('sum(subtotal) as total_pay');
         $builder->where('code_order', 'TR'.$generate_code);
         $total_pay = $builder->get()->getResult();
 
+        // Name Site
+        $builder_name_site = $this->db->table("setting_sites");
+        $builder_name_site->select('setting_sites.name_site');
+        $name_sites = $builder_name_site->get()->getResult();        
+
         $data = [
             'title' => 'Tambah Transaksi',
+            'name_site' => $name_sites[0]->name_site,
             'type' => 'checkSuppliers',
             'new_code' => 'TR'.$generate_code,
             'items' => $items,
             'item_supplier' => $itemPrice,
             'total_pay' => $total_pay,
             'customers' => $customers,
-            'montirs' => $montirs
+            'montirs' => $montirs,
+            'discounts' => $discounts,
+            'othercosts' => $othercosts,
+            'services' => $services
         ];
 
         return view('pages/transaction_supplier/create', $data);
@@ -99,6 +120,18 @@ class TransactionSupplier extends BaseController
                     'required' => 'Harus dipilih Montir.',
                 ],
             ],
+            'discount' => [
+                'rules'  => 'required',
+                'errors' => [
+                    'required' => 'Harus dipilih Discount.',
+                ],
+            ],
+            'service' => [
+                'rules'  => 'required',
+                'errors' => [
+                    'required' => 'Harus dipilih Service.',
+                ],
+            ]
         ])) {
             session()->setFlashdata('error', $this->validator->listErrors());
             return redirect()->to(base_url('check_suppliers/store'));
@@ -107,9 +140,33 @@ class TransactionSupplier extends BaseController
         $builder = $this->db->table("supplier_items");
         $builder->select('sum(subtotal) as total_pay');
         $builder->where('code_order', $this->request->getPost('code'));
-        $total_pay = $builder->get()->getResult();
+        $total_pays = $builder->get()->getResult();
 
-        if($total_pay[0]->total_pay == null) {
+        // Discount equal
+        $discounts = $this->request->getPost('discount');
+        $services = $this->request->getPost('service');
+        $services1 = $this->serviceModel->first($services);
+        // dd($services);
+
+        if($services == '0') {
+            if($discounts == 0) {
+                $total_pay = $total_pays[0]->total_pay + 0;
+            } else {
+                $discount_amount = $discounts/100;
+                $item_amount = $total_pays[0]->total_pay;
+                $total_pay = ($item_amount - ($item_amount * $discount_amount)) + 0;
+            }
+        } else {
+            if($discounts == 0) {
+                $total_pay = $total_pays[0]->total_pay + $services1['price'];
+            } else {
+                $discount_amount = $discounts/100;
+                $item_amount = $total_pays[0]->total_pay;
+                $total_pay = ($item_amount - ($item_amount * $discount_amount)) + $services1['price'];
+            }
+        }
+
+        if($total_pays[0]->total_pay == null) {
             session()->setFlashdata('error', 'Harus memilih barang terlebih dahulu');
             return redirect()->to(base_url('check_suppliers/store'));
         } else {
@@ -118,12 +175,14 @@ class TransactionSupplier extends BaseController
                 'code_order' => $this->request->getPost('code'),
                 'customer' => $this->request->getPost('customer'),
                 'montir' => $this->request->getPost('montir'),
+                'discount' => $this->request->getPost('discount'),
+                'service' => $services,
                 'crash' => $this->request->getPost('crash'),
                 'crashrepair1' => $this->request->getPost('crashrepair1'),
                 'crashrepair2' => $this->request->getPost('crashrepair2'),
                 'crashrepair3' => $this->request->getPost('crashrepair3'),
                 'date_trasanction' => date("Y-m-d"),
-                'total_pay' => $total_pay[0]->total_pay,
+                'total_pay' => $total_pay,
                 'created_at' => date("Y-m-d H:i:s"),
                 'created_by' => session()->get('username'),
                 'updated_at' => date("Y-m-d H:i:s"),
@@ -149,7 +208,19 @@ class TransactionSupplier extends BaseController
                 'errors' => [
                     'required' => 'Stok Barang Harus diisi.',
                 ],
-            ]
+            ],
+            'discount' => [
+                'rules'  => 'required',
+                'errors' => [
+                    'required' => 'Hapus dipilih Discount.',
+                ],
+            ],
+            'plug' => [
+                'rules'  => 'required',
+                'errors' => [
+                    'required' => 'Hapus dipilih Biaya Pasang.',
+                ],
+            ],
         ])) {
             session()->setFlashdata('error', $this->validator->listErrors());
             return redirect()->to(base_url('check_suppliers/store'));
@@ -169,13 +240,25 @@ class TransactionSupplier extends BaseController
             $builder->where('id_item', $this->request->getPost('id_item'));
             $itemPrice = $builder->get()->getResult();
 
-            // Sum Request stock equal Price
-            $subtotal = $this->request->getPost('total_stock') * $itemPrice[0]->price;
+            // Discount Price
+            $discounts = $this->request->getPost('discount');
+            $plug = $this->request->getPost('plug');
+            if($discounts != 0) {
+                // Sum Request stock equal Price with discount
+                $discount_amount = $discounts/100;
+                $item_amount = $this->request->getPost('total_stock') * $itemPrice[0]->price;
+                $subtotal = $item_amount - ($item_amount * $discount_amount);
+            } else {
+                // Sum Reuquest stock equal Price with plug in
+                $subtotal = (($this->request->getPost('total_stock') * $itemPrice[0]->price) + $plug);
+            }
 
             $item = new SupplierItemsModel();
-            $item->insert([
+            $item->insert([ 
                 'code_order' => $this->request->getPost('codeTR'),
                 'id_item' => $this->request->getPost('id_item'),
+                'discount' => $this->request->getPost('discount'),
+                'plug' => $this->request->getPost('plug'),
                 'stock' => $this->request->getPost('total_stock'),
                 'subtotal' => $subtotal,
                 'created_at' => date("Y-m-d H:i:s"),
@@ -428,6 +511,9 @@ class TransactionSupplier extends BaseController
         $builder->select('check_suppliers.*');
         $builder->where('code_order', $id);
         $transactions = $builder->get()->getResult();
+        $discounts = $this->discountModel->findAll();
+        $othercosts = $this->otherCostModel->findAll();
+        $services = $this->serviceModel->findAll();
 
         // Customer //
         $customer = $this->db->table("customers");
@@ -446,15 +532,29 @@ class TransactionSupplier extends BaseController
         $builder->join('items', 'supplier_items.id_item = items.id_item');
         $builder->where('supplier_items.code_order', $transactions[0]->code_order);
         $itemPrice = $builder->get()->getResult();
+
+        $ownService = $this->db->table("services");
+        $ownService->where('id', $transactions[0]->service);
+        $ownService1 = $ownService->get()->getResult();
+
+        // Name Site
+        $builder_name_site = $this->db->table("setting_sites");
+        $builder_name_site->select('setting_sites.name_site');
+        $name_sites = $builder_name_site->get()->getResult();
         
         $data = [
             'title' => 'Detail Transaksi Keluar',
+            'name_site' => $name_sites[0]->name_site,
             'type' => 'checkSuppliers',
             'item_supplier' => $itemPrice,
             'transactions' => $transactions,
             'items' => $items,
             'customers' => $customers,
-            'montirs' => $montirs
+            'montirs' => $montirs,
+            'othercosts' => $othercosts,
+            'discounts' => $discounts,
+            'services' => $services,
+            'own_service' => $ownService1
         ];
         return view('pages/transaction_supplier/detail', $data);
     }
@@ -477,10 +577,19 @@ class TransactionSupplier extends BaseController
         $builder->where('check_suppliers.code_order', $id);
         $transactions = $builder->get()->getResult();
 
+        $builder = $this->db->table("services");
+        $builder->where('id', $transactions[0]->service);
+        $services = $builder->get()->getResult();
+
         $filename = 'invoice-'.$id.'-'.$transactions[0]->date_trasanction;
 
+        // Name Site
+        $builder_name_site = $this->db->table("setting_sites");
+        $builder_name_site->select('setting_sites.*');
+        $sites = $builder_name_site->get()->getResult();
+
         // load HTML content
-        $dompdf->loadHtml(view('/pages/transaction_supplier/cetak', ['items' => $items, 'code' => $id, 'transactions' => $transactions]));
+        $dompdf->loadHtml(view('/pages/transaction_supplier/cetak', ['items' => $items, 'code' => $id, 'transactions' => $transactions, 'sites' => $sites, 'services' => $services]));
 
         // (optional) setup the paper size and orientation
         $dompdf->setPaper('A4', 'landscape');

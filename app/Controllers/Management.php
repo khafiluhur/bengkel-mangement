@@ -11,6 +11,7 @@ class Management extends BaseController
     public function __construct()
     {
         $this->userModel = new UsersModel();
+        $this->db = db_connect();
     }
 
     public function index()
@@ -21,8 +22,15 @@ class Management extends BaseController
     public function user()
     {
         $users = $this->userModel->findAll();
+
+        // Name Site
+        $builder_name_site = $this->db->table("setting_sites");
+        $builder_name_site->select('setting_sites.name_site');
+        $name_sites = $builder_name_site->get()->getResult();
+
         $data = [
             'title' => 'Manajemen User',
+            'name_site' => $name_sites[0]->name_site,
             'users' => $users,
             'type' => 'manajemenUser'
         ];

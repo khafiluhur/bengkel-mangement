@@ -39,13 +39,37 @@
                     </div>
                     <?php if($type == 'checkSuppliers'): ?>
                     <div class="form-group">
-                        <label for="exampleInputEmail1">Harga</label>
+                        <label for="exampleInputEmail1">Harga Satuan</label>
                         <input type="text" class="form-control" id="rupiah" name="price" placeholder="Harga" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Harga Pasang</label>
+                        <div class="">
+                            <select class="form-control" id="plug" name="plug">
+                                <?php foreach ($othercosts as $item) : ?>
+                                    <option value="<?=$item['price']?>"><?= "Rp. " . number_format($item['price'],0,',','.'); ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Diskon Barang</label>
+                        <div class="">
+                            <select class="form-control" id="discount" name="discount">
+                                <?php foreach ($discounts as $item) : ?>
+                                    <option value="<?=$item['value']?>"><?=$item['value']?>%</option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
                     </div>
                     <div id="total_stock" class="form-group">
                         <label for="exampleInputEmail1">Jumlah Beli</label>
                         <input type="number" class="form-control" id="source" name="total_stock" min="0" placeholder="Jumlah Beli" oninput="this.value = Math.abs(this.value)">
                         <p id="message_stock" class="red d-none">Jumlah pembelian melebihi stok tersedia</p>
+                    </div>
+                    <div id="total_stock" class="form-group d-none">
+                        <label for="exampleInputEmail1">Total</label>
+                        <p id="" class="red" style="font-size: 20px;">Rp. 0</p>
                     </div>
                     <?php else: ?>
                     <div class="form-group">

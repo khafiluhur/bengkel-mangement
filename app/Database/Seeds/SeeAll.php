@@ -11,5 +11,8 @@ class SeeAll extends Seeder
         //
         $this->call('Level');
         $this->call('Users');
+        $this->call('Discount');
+        $this->call('OtherCost');
+        $this->call('Setting');
     }
 }

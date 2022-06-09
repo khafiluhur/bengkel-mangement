@@ -8,18 +8,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 	  <link rel="icon" href="<?= base_url(); ?>/images/favicon.ico" type="image/ico" />
 
-    <title><?php echo $title; ?> | Bengkel Motekar Jaya Motor</title>
+    <title><?= $title ?> | <?= $name_site ?></title>
 
     <!-- Bootstrap -->
-    <link href="/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="<?php echo base_url('/vendors/bootstrap/dist/css/bootstrap.min.css'); ?>" rel="stylesheet">
     <!-- Font Awesome -->
-    <link href="/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="<?php echo base_url('/vendors/font-awesome/css/font-awesome.min.css'); ?>" rel="stylesheet">
     <!-- NProgress -->
-    <link href="/vendors/nprogress/nprogress.css" rel="stylesheet">
+    <link href="<?php echo base_url('/vendors/nprogress/nprogress.css'); ?>" rel="stylesheet">
     <!-- CSS Page -->
     <?= $this->renderSection('css'); ?>
     <!-- Custom Theme Style -->
-    <link href="/build/css/custom.min.css" rel="stylesheet">
+    <link href="<?php echo base_url('/build/css/custom.min.css'); ?>" rel="stylesheet">
 </head>
 <body class="nav-md">
     <div class="container body">
@@ -38,18 +38,18 @@
     </div> 
 
     <!-- jQuery -->
-    <script src="/vendors/jquery/dist/jquery.min.js"></script>
+    <script src="<?php echo base_url('/vendors/jquery/dist/jquery.min.js'); ?>"></script>
     <!-- Bootstrap -->
-    <script src="/vendors/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="<?php echo base_url('/vendors/bootstrap/dist/js/bootstrap.bundle.min.js'); ?>"></script>
     <!-- FastClick -->
-    <script src="/vendors/fastclick/lib/fastclick.js"></script>
+    <script src="<?php echo base_url('/vendors/fastclick/lib/fastclick.js'); ?>"></script>
     <!-- NProgress -->
-    <script src="/vendors/nprogress/nprogress.js"></script>
+    <script src="<?php echo base_url('/vendors/nprogress/nprogress.js'); ?>"></script>
     <!-- iCheck -->
-    <script src="/vendors/iCheck/icheck.min.js"></script>
+    <script src="<?php echo base_url('/vendors/iCheck/icheck.min.js'); ?>"></script>
     <!-- Script Page -->
     <?= $this->renderSection('script'); ?>
     <!-- Custom Theme Scripts -->
-    <script src="/build/js/custom.min.js"></script>
+    <script src="<?php echo base_url('/build/js/custom.min.js'); ?>"></script>
 </body>
 </html>

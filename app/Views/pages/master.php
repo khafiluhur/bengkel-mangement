@@ -4,12 +4,12 @@
 <!-- Bootstrap -->
 <link href="cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
 <!-- Datatables -->
-<link href="../vendors/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
-<link href="../vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css" rel="stylesheet">
-<link href="../vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css" rel="stylesheet">
-<link href="../vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
-<link href="../vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">
-<link href="../vendors/select2/dist/css/select2.min.css" rel="stylesheet">
+<link href="<?php echo base_url('/vendors/datatables.net-bs/css/dataTables.bootstrap.min.css'); ?>" rel="stylesheet">
+<link href="<?php echo base_url('/vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css'); ?>" rel="stylesheet">
+<link href="<?php echo base_url('/vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css'); ?>" rel="stylesheet">
+<link href="<?php echo base_url('/vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css'); ?>" rel="stylesheet">
+<link href="<?php echo base_url('/vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css'); ?>" rel="stylesheet">
+<link href="<?php echo base_url('/vendors/select2/dist/css/select2.min.css'); ?>" rel="stylesheet">
 <?= $this->endSection(); ?>
 
 <?= $this->section('content'); ?>
@@ -51,17 +51,14 @@
                                         <?php if($type == 'typeItems'): ?>
                                             <thead>
                                                 <tr>
-                                                    <th>No</th>
                                                     <th>Jenis Barang</th>
                                                     <th>Pilihan</th>
                                                 </tr>
                                             </thead>
 
                                             <tbody>
-                                                <?php $i=1; ?>
                                                 <?php foreach ($items as $item) : ?>
                                                     <tr>
-                                                        <td><?=$i++?></td>
                                                         <td><?=$item['name']?></td>
                                                         <td><a href="" class="btn-edit-montir" data-toggle="modal" data-target="#editModal" data-id="<?=$item['id_type']?>" data-name="<?=$item['name']?>">Ubah</a> | <a href="<?= base_url('type_items/'.$item['id_type'].'/delete'); ?>">Hapus</a></td>
                                                     </tr>
@@ -70,17 +67,14 @@
                                         <?php elseif($type == 'merkItems'): ?>
                                             <thead>
                                                 <tr>
-                                                    <th>No</th>
                                                     <th>Merk Barang</th>
                                                     <th>Pilihan</th>
                                                 </tr>
                                             </thead>
 
                                             <tbody>
-                                                <?php $i=1; ?>
                                                 <?php foreach ($items as $item) : ?>
                                                     <tr>
-                                                        <td><?=$i++?></td>
                                                         <td><?=$item['name']?></td>
                                                         <td><a href="" class="btn-edit-montir" data-toggle="modal" data-target="#editModal" data-id="<?=$item['id_merk']?>" data-name="<?=$item['name']?>">Ubah</a> | <a href="<?= base_url('merk_items/'.$item['id_merk'].'/delete'); ?>">Hapus</a></td>
                                                     </tr>
@@ -89,7 +83,6 @@
                                         <?php elseif($type == 'suppliers'): ?>
                                             <thead>
                                                 <tr>
-                                                    <th>No</th>
                                                     <th>Kode Supplier</th>
                                                     <th>Nama Supplier</th>
                                                     <th>Nama PIC</th>
@@ -99,10 +92,8 @@
                                             </thead>
 
                                             <tbody>
-                                                <?php $i=1; ?>
                                                 <?php foreach ($items as $item) : ?>
                                                     <tr>
-                                                        <td><?=$i++?></td>
                                                         <td><?=$item['code']?></td>
                                                         <td><?=$item['name']?></td>
                                                         <td><?=$item['name_pic']?></td>
@@ -114,7 +105,6 @@
                                         <?php elseif($type == 'montirs'): ?>
                                             <thead>
                                                 <tr>
-                                                    <th>No</th>
                                                     <th>Nomor Pegawai</th>
                                                     <th>Nama</th>
                                                     <th>Telephone</th>
@@ -123,10 +113,8 @@
                                             </thead>
 
                                             <tbody>
-                                                <?php $i=1; ?>
                                                 <?php foreach ($items as $item) : ?>
                                                     <tr>
-                                                        <td><?=$i++?></td>
                                                         <td><?=$item['nip']?></td>
                                                         <td><?=$item['name']?></td>
                                                         <td><?=$item['telepone']?></td>
@@ -134,10 +122,27 @@
                                                     </tr>
                                                 <?php endforeach; ?>
                                             </tbody>
+                                        <?php elseif($type == 'services'): ?>
+                                            <thead>
+                                                <tr>
+                                                    <th>Nama Service</th>
+                                                    <th>Harga</th>
+                                                    <th>Pilihan</th>
+                                                </tr>
+                                            </thead>
+
+                                            <tbody>
+                                                <?php foreach ($items as $item) : ?>
+                                                    <tr>
+                                                        <td><?=$item['name']?></td>
+                                                        <td><?=number_format($item['price'],0,',','.');?></td>
+                                                        <td><a href="" class="btn-edit" data-toggle="modal" data-target="#editModal" data-id="<?=$item['id']?>" data-name="<?=$item['name']?>" data-price="<?=$item['price']?>">Ubah</a> | <a href="<?= base_url('services/'.$item['id'].'/delete'); ?>">Hapus</a></td>
+                                                    </tr>
+                                                <?php endforeach; ?>
+                                            </tbody>
                                         <?php else: ?>
                                             <thead>
                                                 <tr>
-                                                    <th>No</th>
                                                     <th>ID</th>
                                                     <th>Nama</th>
                                                     <th>Plat Nomor</th>
@@ -147,10 +152,8 @@
                                             </thead>
 
                                             <tbody>
-                                                <?php $i=1; ?>
                                                 <?php foreach ($items as $item) : ?>
                                                     <tr>
-                                                        <td><?=$i++?></td>
                                                         <td><?= $item['code'] ?></td>
                                                         <td><?=$item['name']?></td>
                                                         <td><?=$item['plat_nomor']?></td>
@@ -174,21 +177,21 @@
 
 <?= $this->section('script'); ?>
 <!-- Datatables -->
-<script src="../vendors/datatables.net/js/jquery.dataTables.min.js"></script>
-<script src="../vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
-<script src="../vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
-<script src="../vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
-<script src="../vendors/datatables.net-buttons/js/buttons.flash.min.js"></script>
-<script src="../vendors/datatables.net-buttons/js/buttons.html5.min.js"></script>
-<script src="../vendors/datatables.net-buttons/js/buttons.print.min.js"></script>
-<script src="../vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
-<script src="../vendors/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
-<script src="../vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
-<script src="../vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
-<script src="../vendors/datatables.net-scroller/js/dataTables.scroller.min.js"></script>
-<script src="../vendors/jszip/dist/jszip.min.js"></script>
-<script src="../vendors/pdfmake/build/pdfmake.min.js"></script>
-<script src="../vendors/pdfmake/build/vfs_fonts.js"></script>
+<script src="<?php echo base_url('/vendors/datatables.net/js/jquery.dataTables.min.js'); ?>"></script>
+<script src="<?php echo base_url('/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js'); ?>"></script>
+<script src="<?php echo base_url('/vendors/datatables.net-buttons/js/dataTables.buttons.min.js'); ?>"></script>
+<script src="<?php echo base_url('/vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js'); ?>"></script>
+<script src="<?php echo base_url('/vendors/datatables.net-buttons/js/buttons.flash.min.js'); ?>"></script>
+<script src="<?php echo base_url('/vendors/datatables.net-buttons/js/buttons.html5.min.js'); ?>"></script>
+<script src="<?php echo base_url('/vendors/datatables.net-buttons/js/buttons.print.min.js'); ?>"></script>
+<script src="<?php echo base_url('/vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js'); ?>"></script>
+<script src="<?php echo base_url('/vendors/datatables.net-keytable/js/dataTables.keyTable.min.js'); ?>"></script>
+<script src="<?php echo base_url('/vendors/datatables.net-responsive/js/dataTables.responsive.min.js'); ?>"></script>
+<script src="<?php echo base_url('/vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js'); ?>"></script>
+<script src="<?php echo base_url('/vendors/datatables.net-scroller/js/dataTables.scroller.min.js'); ?>"></script>
+<script src="<?php echo base_url('/vendors/jszip/dist/jszip.min.js'); ?>"></script>
+<script src="<?php echo base_url('/vendors/pdfmake/build/pdfmake.min.js'); ?>"></script>
+<script src="<?php echo base_url('/vendors/pdfmake/build/vfs_fonts.js'); ?>"></script>
 <script>
     $(document).ready(function(){
         // get Edit Product
@@ -221,6 +224,7 @@
             $('#dataItems').attr('action', base_url + '/items/' + id + '/update');
             $('#checkOuts').attr('action', base_url + '/check_out/' + id + '/update');
             $('#checkIns').attr('action', base_url + '/check_in/' + id + '/update');
+            $('#services').attr('action', base_url + '/services/' + id + '/update');
             $('.product_name').val(name);
             $('.product_code').val(code);
             $('.product_price2').val('Rp. ' + rupiah2);
@@ -266,4 +270,59 @@
         });
     });
 </script>
+<?php if($type == 'services'): ?>
+<script type="text/javascript">		
+    var rupiah3 = document.getElementById('rupiah3');
+    rupiah3.addEventListener('keyup', function(e){
+        // tambahkan 'Rp.' pada saat form di ketik
+        // gunakan fungsi formatRupiah() untuk mengubah angka yang di ketik menjadi format angka
+        rupiah3.value = formatRupiah(this.value, 'Rp. ');
+    });
+
+    /* Fungsi formatRupiah */
+    function formatRupiah(angka, prefix){
+        var number_string = angka.replace(/[^,\d]/g, '').toString(),
+        split   		= number_string.split(','),
+        sisa     		= split[0].length % 3,
+        rupiah3     	= split[0].substr(0, sisa),
+        ribuan     		= split[0].substr(sisa).match(/\d{3}/gi);
+
+        // tambahkan titik jika yang di input sudah menjadi angka ribuan
+        if(ribuan){
+            separator = sisa ? '.' : '';
+            rupiah3 += separator + ribuan.join('.');
+        }
+
+        rupiah3 = split[1] != undefined ? rupiah3 + ',' + split[1] : rupiah3;
+        return prefix == undefined ? rupiah3 : (rupiah3 ? 'Rp. ' + rupiah3 : '');
+    }
+</script>
+<script type="text/javascript">		
+    var rupiah4 = document.getElementById('rupiah4');
+    rupiah4.addEventListener('keyup', function(e){
+        // tambahkan 'Rp.' pada saat form di ketik
+        // gunakan fungsi formatRupiah() untuk mengubah angka yang di ketik menjadi format angka
+        rupiah4.value = formatRupiah(this.value, 'Rp. ');
+    });
+
+    /* Fungsi formatRupiah */
+    function formatRupiah(angka, prefix){
+        var number_string = angka.replace(/[^,\d]/g, '').toString(),
+        split   		= number_string.split(','),
+        sisa     		= split[0].length % 3,
+        rupiah4     	= split[0].substr(0, sisa),
+        ribuan     		= split[0].substr(sisa).match(/\d{3}/gi);
+
+        // tambahkan titik jika yang di input sudah menjadi angka ribuan
+        if(ribuan){
+            separator = sisa ? '.' : '';
+            rupiah4 += separator + ribuan.join('.');
+        }
+
+        rupiah4 = split[1] != undefined ? rupiah4 + ',' + split[1] : rupiah4;
+        return prefix == undefined ? rupiah4 : (rupiah4 ? 'Rp. ' + rupiah4 : '');
+    }
+</script>
+<?php else: ?>
+<?php endif; ?>
 <?= $this->endSection(); ?>

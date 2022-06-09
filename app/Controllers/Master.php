@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\UsersModel;
 use App\Models\ItemsModel;
+use App\Models\ServiceModel;
 use App\Models\TypeItemsModel;
 use App\Models\MerkItemsModel;
 use App\Models\SuppliersModel;
@@ -18,6 +19,7 @@ class Master extends BaseController
     {
         $this->db = db_connect();
         $this->itemModel = new ItemsModel();
+        $this->servicesModel = new ServiceModel();
         $this->typeItemModel = new TypeItemsModel();
         $this->merkItemModel = new MerkItemsModel();
         $this->supplierModel = new SuppliersModel();
@@ -42,15 +44,19 @@ class Master extends BaseController
         }
         $generate_code = sprintf('%04d', $var);
 
-        // dd($items);
         $total = [];
         foreach($items as $key => $value) {
             $total = $value['price'] * $value['stock'];
         }
-        // dd($total);
+
+        // Name Site
+        $builder_name_site = $this->db->table("setting_sites");
+        $builder_name_site->select('setting_sites.name_site');
+        $name_sites = $builder_name_site->get()->getResult();
 
         $data = [
             'title' => 'Data Barang',
+            'name_site' => $name_sites[0]->name_site, 
             'type' => 'dataItems',
             'items' => $items,
             'total' => $total,
@@ -94,6 +100,12 @@ class Master extends BaseController
                 'errors' => [
                     'required' => 'Stok Barang Harus diisi.',
                 ],
+            ],
+            'limit_stock' => [
+                'rules'  => 'required',
+                'errors' => [
+                    'required' => 'Minimal Stok Barang Harus diisi.',
+                ],
             ]
         ])) {
             session()->setFlashdata('error', $this->validator->listErrors());
@@ -118,6 +130,7 @@ class Master extends BaseController
             'id_type' => $this->request->getPost('id_type'),
             'id_merk' => $this->request->getPost('id_merk'),
             'stock' => $this->request->getPost('stock'),
+            'limit_stock' => $this->request->getPost('limit_stock'),
             'created_at' => date("Y-m-d H:i:s"),
             'created_by' => session()->get('username'),
             'updated_at' => date("Y-m-d H:i:s"),
@@ -155,6 +168,7 @@ class Master extends BaseController
             'id_type' => $this->request->getPost('id_type'),
             'id_merk' => $this->request->getPost('id_merk'),
             'stock' => $this->request->getPost('stock'),
+            'limit_stock' => $this->request->getPost('limit_stock'),
             'updated_at'  => date("Y-m-d H:i:s"),
             'updated_by'  => session()->get('username')
         ]);
@@ -200,16 +214,19 @@ class Master extends BaseController
         foreach($checkInItemSame as $key => $item) {
             $checkInItemSame = $item->code;
         }
-
+        
         $checkInItemSame1 = $this->db->table("card_stocks");
         $checkInItemSame1->select('id');
         $checkInItemSame1->where('id_item', $checkInItemSame);
         $checkInItemSame2 = $checkInItemSame1->get()->getResult();
-        foreach($checkInItemSame2 as $key => $item) {
-            $checkInItemSame2 = $item->id;
+
+        if($checkInItemSame2 != null) {
+            foreach($checkInItemSame2 as $key => $item) {
+                $checkInItemSame2 = $item->id;
+            }
+            $cardStockModel->delete($checkInItemSame2);
         }
 
-        $cardStockModel->delete($checkInItemSame2);
         $items->delete($id);
         session()->setFlashdata('success', 'Berhasil dihapus');
         return redirect()->to(base_url('items'));
@@ -218,8 +235,15 @@ class Master extends BaseController
     public function typeItem()
     {
         $items = $this->typeItemModel->findAll();
+
+        // Name Site
+        $builder_name_site = $this->db->table("setting_sites");
+        $builder_name_site->select('setting_sites.name_site');
+        $name_sites = $builder_name_site->get()->getResult();
+        
         $data = [
-            'title' => 'Jenis Barang',
+            'title' => 'Kategori Barang',
+            'name_site' => $name_sites[0]->name_site,
             'type' => 'typeItems',
             'items' => $items
         ];
@@ -275,8 +299,15 @@ class Master extends BaseController
     public function merkItem()
     {
         $items = $this->merkItemModel->findAll();
+
+        // Name Site
+        $builder_name_site = $this->db->table("setting_sites");
+        $builder_name_site->select('setting_sites.name_site');
+        $name_sites = $builder_name_site->get()->getResult();
+
         $data = [
             'title' => 'Merek Barang',
+            'name_site' => $name_sites[0]->name_site,
             'type' => 'merkItems',
             'items' => $items
         ];
@@ -332,8 +363,15 @@ class Master extends BaseController
     public function supplier()
     {
         $items = $this->supplierModel->findAll();
+
+        // Name Site
+        $builder_name_site = $this->db->table("setting_sites");
+        $builder_name_site->select('setting_sites.name_site');
+        $name_sites = $builder_name_site->get()->getResult();
+
         $data = [
-            'title' => 'Supplier',
+            'title' => 'Data Supplier',
+            'name_site' => $name_sites[0]->name_site,
             'type' => 'suppliers',
             'items' => $items
         ];
@@ -343,13 +381,6 @@ class Master extends BaseController
     public function createSupplier()
     {
         if (!$this->validate([
-            'code' => [
-                'rules' => 'required|is_unique[suppliers.code]',
-                'errors' => [
-                    'required' => 'Kode Supplier Barang Harus diisi',
-                    'is_unique' => 'Kode Supplier sudah ada di database'
-                ]
-            ],
             'name' => [
                 'rules' => 'required|is_unique[suppliers.name]',
                 'errors' => [
@@ -361,9 +392,20 @@ class Master extends BaseController
             session()->setFlashdata('error', $this->validator->listErrors());
             return redirect()->to(base_url('suppliers'));
         }
+
+        //Generate Code Items
+        $suppliers = $this->supplierModel->findAll();
+        $count = count($suppliers);
+        if($count == 0) {
+            $var = 1;
+        } else {
+            $var = $count + 1;
+        }
+        $generate_code = sprintf('%04d', $var);
+
         $items = new SuppliersModel();
         $items->insert([
-            'code' => $this->request->getPost('code'),
+            'code' => 'MJMS'.$generate_code,
             'name' => $this->request->getPost('name'),
             'name_pic' => $this->request->getPost('name_pic'),
             'telepone_pic' => $this->request->getPost('telepone_pic'),
@@ -404,8 +446,15 @@ class Master extends BaseController
     public function montir()
     {
         $items = $this->montirModel->findAll();
+
+        // Name Site
+        $builder_name_site = $this->db->table("setting_sites");
+        $builder_name_site->select('setting_sites.name_site');
+        $name_sites = $builder_name_site->get()->getResult();
+
         $data = [
             'title' => 'Data Montir',
+            'name_site' => $name_sites[0]->name_site,
             'type' => 'montirs',
             'items' => $items
         ];
@@ -415,12 +464,6 @@ class Master extends BaseController
     public function createMontir()
     {
         if (!$this->validate([
-            'nip' => [
-                'rules'  => 'required',
-                'errors' => [
-                    'required' => 'NIP Montir Harus diisi.',
-                ],
-            ],
             'name' => [
                 'rules'  => 'required',
                 'errors' => [
@@ -443,9 +486,20 @@ class Master extends BaseController
             session()->setFlashdata('error', $this->validator->listErrors());
             return redirect()->to(base_url('montirs'));
         }
+
+        //Generate Code Items
+        $montirs = $this->montirModel->findAll();
+        $count = count($montirs);
+        if($count == 0) {
+            $var = 1;
+        } else {
+            $var = $count + 1;
+        }
+        $generate_code = sprintf('%04d', $var);
+
         $items = new MontirsModel();
         $items->insert([
-            'nip' => $this->request->getPost('nip'),
+            'nip' => 'MJME'.$generate_code,
             'name' => $this->request->getPost('name'),
             'telepone' => $this->request->getPost('telepone'),
             'alamat' => $this->request->getPost('alamat'),
@@ -484,8 +538,15 @@ class Master extends BaseController
     public function customer()
     {
         $items = $this->customerModel->findAll();
+
+        // Name Site
+        $builder_name_site = $this->db->table("setting_sites");
+        $builder_name_site->select('setting_sites.name_site');
+        $name_sites = $builder_name_site->get()->getResult();
+
         $data = [
             'title' => 'Data Pelanggan',
+            'name_site' => $name_sites[0]->name_site,
             'type' => 'customer',
             'items' => $items
         ];
@@ -494,7 +555,6 @@ class Master extends BaseController
 
     public function createCustomer()
     {
-        // dd($this->request);
         if (!$this->validate([
             'name' => [
                 'rules'  => 'required',
@@ -519,9 +579,19 @@ class Master extends BaseController
             return redirect()->to(base_url('customers'));
         }
 
+        //Generate Code Items
+        $customers = $this->customerModel->findAll();
+        $count = count($customers);
+        if($count == 0) {
+            $var = 1;
+        } else {
+            $var = $count + 1;
+        }
+        $generate_code = sprintf('%04d', $var);
+
         $items = new CustomersModel();
         $items->insert([
-            'code' => time(),
+            'code' => 'MJMC'.$generate_code,
             'name' => $this->request->getPost('name'),
             'plat_nomor' => $this->request->getPost('plat_nomor'),
             'type_motor' => $this->request->getPost('type_motor'),
@@ -548,5 +618,87 @@ class Master extends BaseController
         $items->delete($id);
         session()->setFlashdata('success', 'Berhasil dihapus');
         return redirect()->to(base_url('customers'));
+    }
+
+    public function service()
+    {
+        $items = $this->servicesModel->findAll();
+
+        // Name Site
+        $builder_name_site = $this->db->table("setting_sites");
+        $builder_name_site->select('setting_sites.name_site');
+        $name_sites = $builder_name_site->get()->getResult();
+
+        $data = [
+            'title' => 'Data Service',
+            'name_site' => $name_sites[0]->name_site,
+            'type' => 'services',
+            'items' => $items
+        ];
+        return view('pages/master', $data);
+    }
+
+    public function createService()
+    {
+        if (!$this->validate([
+            'name' => [
+                'rules'  => 'required',
+                'errors' => [
+                    'required' => 'Nama Service Harus diisi.',
+                ],
+            ],
+            'price' => [
+                'rules'  => 'required',
+                'errors' => [
+                    'required' => 'Harga Service Harus diisi.',
+                ],
+            ]
+        ])) {
+            session()->setFlashdata('error', $this->validator->listErrors());
+            return redirect()->to(base_url('services'));
+        }
+
+        $convertToArray = explode(' ', $this->request->getPost('price'));
+        if(count($convertToArray) == 2) {
+            $slicedToArray = explode('.', $convertToArray[1]);
+            $joinToArray = join("",$slicedToArray);
+        } else {
+            $joinToArray = $this->request->getPost('price');
+        }
+
+        $items = new ServiceModel();
+        $items->insert([
+            'name' => $this->request->getPost('name'),
+            'price' => $joinToArray,
+        ]);
+        session()->setFlashdata('success', 'Berhasil ditambah');
+        return redirect()->to(base_url('services'));
+    }
+
+    public function updateService($id)
+    {
+        $convertToArray = explode(' ', $this->request->getPost('price'));
+        if(count($convertToArray) == 2) {
+            $slicedToArray = explode('.', $convertToArray[1]);
+            $joinToArray = join("",$slicedToArray);
+        } else {
+            $joinToArray = $this->request->getPost('price');
+        }
+
+        $items = new ServiceModel();
+        $items->update($id, [
+            'name' => $this->request->getPost('name'),
+            'price' => $joinToArray,
+        ]);
+        session()->setFlashdata('success', 'Berhasil diupdate');
+        return redirect()->to(base_url('services'));
+    }
+
+    public function deleteService($id)
+    {
+        $items = new ServiceModel();
+        $items->delete($id);
+        session()->setFlashdata('success', 'Berhasil dihapus');
+        return redirect()->to(base_url('services'));
     }
 }

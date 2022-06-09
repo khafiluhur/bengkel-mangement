@@ -38,9 +38,11 @@ class Report extends BaseController
     {
         $code_order = '';
         $customer = '';
+        $plat = '';
 
         if($_SERVER['QUERY_STRING']) {
             $keyword1 = explode("&",$_SERVER['QUERY_STRING']);
+            
             // code_order
             $keyword2 = explode("=",$keyword1[0]);
             if($keyword2 == '') {
@@ -50,22 +52,41 @@ class Report extends BaseController
             }
             
             // customer
-            $keyword3 = explode("=",$keyword1[1]);
-            $keyword4 = explode("+",$keyword3[1]);
-            $customer = join(" ",$keyword4);
+            // $keyword3 = explode("=",$keyword1[1]);
+            // $keyword4 = explode("+",$keyword3[1]);
+            // $customer = join(" ",$keyword4);
+
+            // plat number
+            $keyword5 = explode("=",$keyword1[1]);
+            $keyword6 = explode("+",$keyword5[1]);
+            $plat = join(" ",$keyword6);
         }
+
+        // if($true = $plat == null) {
+        // $code_order = 'All';
+        // $plat = null;
+        // $true = $code_order || $plat;
+        // dd($true);
+
+        // if($code_order == 'All' || $plat )
 
         $builder = $this->db->table("check_suppliers");
         $builder->select('check_suppliers.*, customers.name as nama_customer, customers.code as code_customer, customers.plat_nomor, customers.type_motor');
         $builder->join('customers', 'check_suppliers.customer = customers.id');
         $builder->like('check_suppliers.code_order', $code_order);
-        $builder->orLike('customers.name', $customer);
+        $builder->orLike('customers.plat_nomor', $plat);
         $items = $builder->get()->getResult();
+        
+        // Name Site
+        $builder_name_site = $this->db->table("setting_sites");
+        $builder_name_site->select('setting_sites.name_site');
+        $name_sites = $builder_name_site->get()->getResult();
 
         $customers = $this->customerModel->findAll();
 
         $data = [
             'title' => 'Report Riwayat Pelanggan',
+            'name_site' => $name_sites[0]->name_site,
             'type' => 'reporet',
             'items' => $items,
             'customers' => $customers,
@@ -158,8 +179,14 @@ class Report extends BaseController
         $selectTypes = $this->typeItemModel->findAll();
         $selectMerks = $this->merkItemModel->findAll();
 
+        // Name Site
+        $builder_name_site = $this->db->table("setting_sites");
+        $builder_name_site->select('setting_sites.name_site');
+        $name_sites = $builder_name_site->get()->getResult();
+
         $data = [
             'title' => 'Report Daftar Barang',
+            'name_site' => $name_sites[0]->name_site,
             'type' => 'reporetItem',
             'selectItems' => $selectItems,
             'selectTypes' => $selectTypes,
@@ -267,8 +294,14 @@ class Report extends BaseController
 
         $selectItems = $this->itemModel->findAll();
 
+        // Name Site
+        $builder_name_site = $this->db->table("setting_sites");
+        $builder_name_site->select('setting_sites.name_site');
+        $name_sites = $builder_name_site->get()->getResult();
+
         $data = [
             'title' => 'Report Kartu Stok',
+            'name_site' => $name_sites[0]->name_site,
             'type' => 'cardStock',
             'items' => $items,
             'selectItems' => $selectItems,

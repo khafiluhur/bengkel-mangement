@@ -268,6 +268,9 @@ textarea:focus,
     padding-bottom: 10px;
     font-size: 14px;
 }
+.font-weight-bold {
+    font-weight: bold
+}
  </style>
 </head>
 <body>
@@ -318,13 +321,8 @@ textarea:focus,
       <td><?= $code ?></td>
      </tr>
      <tr>
-
       <td class="meta-head">Tanggal</td>
       <td id="date"><?= $transactions[0]->date_trasanction ?></td>
-     </tr>
-     <tr>
-      <td class="meta-head">Total Pembayaran</td>
-      <td class="due"><?="Rp. " . number_format($transactions[0]->total_pay,0,',','.'); ?></td>
      </tr>
 
     </table>
@@ -332,9 +330,11 @@ textarea:focus,
 
    <table id="items">
         <tr>
-            <th>Barang</th>
+            <th>Item</th>
             <th>Harga Satuan</th>
             <th>Jumlah Barang</th>
+            <th>Diskon</th>
+            <th>Harga Pasang</th>
             <th>Harga</th>
         </tr>
         <?php foreach($items as $index => $data) { ?> 
@@ -342,26 +342,35 @@ textarea:focus,
                 <td class="item-name"><?= $data->nama_item ?></td>
                 <td class="cost"><?="Rp. " . number_format($data->price,0,',','.');?></td>
                 <td class="qty"><?= $data->stock ?></td>
+                <td class="qty"><?= $data->discount ?>%</td>
+                <td class="qty"><?= "Rp. " . number_format($data->plug,0,',','.'); ?></td>
                 <td class="price"><?="Rp. " . number_format($data->subtotal,0,',','.');?></td>
             </tr>
-        <?php } ?>   
+        <?php } ?>  
+        <tr class="item-row">
+            <td><?= $services[0]->name ?></td>
+            <td></td>
+            <td></td>
+            <td colspan="3" class="price"><?= "Rp. " . number_format($services[0]->price,0,',','.'); ?></td>
+        </tr> 
         <tr>
-            <td colspan="3" class="balance">Total</td>
-            <td class="total-value balance due"><?="Rp. " . number_format($transactions[0]->total_pay,0,',','.'); ?></td>
+            <td colspan="3" class="balance">Total / <?= $transactions[0]->discount ?>%</td>
+            <td colspan="3" class="total-value balance due"><?="Rp. " . number_format($transactions[0]->total_pay,0,',','.'); ?></td>
         </tr>
    </table>
 
    <br><br><br><br>
    <div id="terms">
-    <h5>Motekar Jaya Motor</h5>
-    <p class="pb-5">Perumahan Puri Persada Indah Ruko No 18, Sindangmulya, Kec. Cibarusah, Kabupaten Bekasi, Jawa Barat</p>
-    <p>0813-8587-0830</p>
+    <p class="pb-5 font-weight-bold">Barang yang sudah dibeli tidak dapat kembalikan</p>
+    <h5><?= $sites[0]->name_site ?></h5>
+    <p class="pb-5"><?= $sites[0]->address_site ?></p>
+    <p><?= $sites[0]->telepone_site ?></p>
    </div>
 
   </div>
  </body>
  </html>
  <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
- <script  src="js/index.js"></script>
+ <script  src="<?php echo base_url('js/index.js'); ?>"></script>
 </body>
 </html>

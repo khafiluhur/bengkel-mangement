@@ -4,12 +4,12 @@
 <!-- Bootstrap -->
 <link href="cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
 <!-- Datatables -->
-<link href="../vendors/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
-<link href="../vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css" rel="stylesheet">
-<link href="../vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css" rel="stylesheet">
-<link href="../vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
-<link href="../vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">
-<link href="../vendors/select2/dist/css/select2.min.css" rel="stylesheet">
+<link href="<?php echo base_url('/vendors/datatables.net-bs/css/dataTables.bootstrap.min.css'); ?>" rel="stylesheet">
+<link href="<?php echo base_url('/vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css'); ?>" rel="stylesheet">
+<link href="<?php echo base_url('/vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css'); ?>" rel="stylesheet">
+<link href="<?php echo base_url('/vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css'); ?>" rel="stylesheet">
+<link href="<?php echo base_url('/vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css'); ?>" rel="stylesheet">
+<link href="<?php echo base_url('/vendors/select2/dist/css/select2.min.css'); ?>" rel="stylesheet">
 <?= $this->endSection(); ?>
 
 <?= $this->section('content'); ?>
@@ -44,7 +44,7 @@
                                 </div>
                             </div>
                             <div class="form-group row col-6">
-                                <label class="control-label col-md-3 col-sm-3 mb-0 my-2">Jenis Barang</label>
+                                <label class="control-label col-md-3 col-sm-3 mb-0 my-2">Kategori Barang</label>
                                 <div class="col-md-9 col-sm-9 ">
                                     <select class="select2_single form-control" style="font-size: 12px" name="type">
                                         <option>All</option>
@@ -139,21 +139,21 @@
 
 <?= $this->section('script'); ?>
 <!-- Datatables -->
-<script src="../vendors/datatables.net/js/jquery.dataTables.min.js"></script>
-<script src="../vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
-<script src="../vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
-<script src="../vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
-<script src="../vendors/datatables.net-buttons/js/buttons.flash.min.js"></script>
-<script src="../vendors/datatables.net-buttons/js/buttons.html5.min.js"></script>
-<script src="../vendors/datatables.net-buttons/js/buttons.print.min.js"></script>
-<script src="../vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
-<script src="../vendors/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
-<script src="../vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
-<script src="../vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
-<script src="../vendors/datatables.net-scroller/js/dataTables.scroller.min.js"></script>
-<script src="../vendors/jszip/dist/jszip.min.js"></script>
-<script src="../vendors/pdfmake/build/pdfmake.min.js"></script>
-<script src="../vendors/pdfmake/build/vfs_fonts.js"></script>
+<script src="<?php echo base_url('/vendors/datatables.net/js/jquery.dataTables.min.js'); ?>"></script>
+<script src="<?php echo base_url('/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js'); ?>"></script>
+<script src="<?php echo base_url('/vendors/datatables.net-buttons/js/dataTables.buttons.min.js'); ?>"></script>
+<script src="<?php echo base_url('/vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js'); ?>"></script>
+<script src="<?php echo base_url('/vendors/datatables.net-buttons/js/buttons.flash.min.js'); ?>"></script>
+<script src="<?php echo base_url('/vendors/datatables.net-buttons/js/buttons.html5.min.js'); ?>"></script>
+<script src="<?php echo base_url('/vendors/datatables.net-buttons/js/buttons.print.min.js'); ?>"></script>
+<script src="<?php echo base_url('/vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js'); ?>"></script>
+<script src="<?php echo base_url('/vendors/datatables.net-keytable/js/dataTables.keyTable.min.js'); ?>"></script>
+<script src="<?php echo base_url('/vendors/datatables.net-responsive/js/dataTables.responsive.min.js'); ?>"></script>
+<script src="<?php echo base_url('/vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js'); ?>"></script>
+<script src="<?php echo base_url('/vendors/datatables.net-scroller/js/dataTables.scroller.min.js'); ?>"></script>
+<script src="<?php echo base_url('/vendors/jszip/dist/jszip.min.js'); ?>"></script>
+<script src="<?php echo base_url('/vendors/pdfmake/build/pdfmake.min.js'); ?>"></script>
+<script src="<?php echo base_url('/vendors/pdfmake/build/vfs_fonts.js'); ?>"></script>
 <?php if($_SERVER['QUERY_STRING']): ?>
 <script>
     $(document).ready(function () {

@@ -4,16 +4,13 @@ namespace App\Controllers;
 
 use App\Models\CheckInsModel;
 use App\Models\CheckOutsModel;
-use App\Models\CheckSuppliersModel;
 use App\Controllers\BaseController;
 use App\Models\CustomersModel;
 use App\Models\MontirsModel;
 use App\Models\CheckInItemsModel;
 use App\Models\CardStocksModel;
-use App\Database\Migrations\MerkItems;
 use App\Models\ItemsModel;
 use App\Models\SuppliersModel;
-use CodeIgniter\API\ResponseTrait;
 use DB;
 
 class Transaction extends BaseController
@@ -42,18 +39,19 @@ class Transaction extends BaseController
 
     public function checkIn()
     {
-        // $builder = $this->db->table("check_ins ");
-        // $builder->select('check_ins.*, items.name as item, items.code as code_item, items.id_item as id_item, suppliers.name as supplier, suppliers.code as code_supplier, suppliers.id_supplier as id_supplier');
-        // $builder->join('items', 'check_ins.id_item = items.id_item');
-        // $builder->join('suppliers', 'check_ins.id_supplier = suppliers.id_supplier');
-        // $transactions = $builder->get()->getResult();
         $transactions = $this->checkInModel->findAll();
         
         $items = $this->itemModel->findAll();
         $suppliers = $this->supplierModel->findAll();
 
+        // Name Site
+        $builder_name_site = $this->db->table("setting_sites");
+        $builder_name_site->select('setting_sites.name_site');
+        $name_sites = $builder_name_site->get()->getResult();
+
         $data = [
             'title' => 'Transaksi Barang Masuk',
+            'name_site' => $name_sites[0]->name_site,
             'type' => 'checkIns',
             'transactions' => $transactions,
             'items' => $items,
@@ -80,9 +78,15 @@ class Transaction extends BaseController
         $builder->join('suppliers', 'check_in_items.id_supplier = suppliers.id_supplier');
         $builder->where('check_in_items.code_order', $transactions[0]->code_order);
         $itemPrice = $builder->get()->getResult();
+
+        // Name Site
+        $builder_name_site = $this->db->table("setting_sites");
+        $builder_name_site->select('setting_sites.name_site');
+        $name_sites = $builder_name_site->get()->getResult();
         
         $data = [
             'title' => 'Detail Transaksi Masuk',
+            'name_site' => $name_sites[0]->name_site,
             'type' => 'checkIns',
             'item_supplier' => $itemPrice,
             'transactions' => $transactions,
@@ -114,15 +118,20 @@ class Transaction extends BaseController
         $builder->join('suppliers', 'check_in_items.id_supplier = suppliers.id_supplier');
         $builder->where('check_in_items.code_order', 'TRIN'.$generate_code);
         $itemPrice = $builder->get()->getResult();
-        // dd($itemPrice);
 
         $builder = $this->db->table("check_in_items");
         $builder->select('sum(subtotal) as total_pay');
         $builder->where('code_order', 'TRIN'.$generate_code);
         $total_pay = $builder->get()->getResult();
 
+        // Name Site
+        $builder_name_site = $this->db->table("setting_sites");
+        $builder_name_site->select('setting_sites.name_site');
+        $name_sites = $builder_name_site->get()->getResult();
+
         $data = [
             'title' => 'Tambah Transaksi',
+            'name_site' => $name_sites[0]->name_site,
             'type' => 'checkIns',
             'new_code' => 'TRIN'.$generate_code,
             'items' => $items,
@@ -499,7 +508,6 @@ class Transaction extends BaseController
         ];
         return view('pages/transaction', $data);
     }
-
 
     public function createCheckOut()
     {

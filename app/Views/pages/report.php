@@ -4,16 +4,16 @@
 <!-- Bootstrap -->
 <link href="cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
 <!-- Datatables -->
-<link href="../vendors/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
-<link href="../vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css" rel="stylesheet">
-<link href="../vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css" rel="stylesheet">
-<link href="../vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
-<link href="../vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">
-<link href="../vendors/select2/dist/css/select2.min.css" rel="stylesheet">
+<link href="<?php echo base_url('/vendors/datatables.net-bs/css/dataTables.bootstrap.min.css'); ?>" rel="stylesheet">
+<link href="<?php echo base_url('/vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css'); ?>" rel="stylesheet">
+<link href="<?php echo base_url('/vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css'); ?>" rel="stylesheet">
+<link href="<?php echo base_url('/vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css'); ?>" rel="stylesheet">
+<link href="<?php echo base_url('/vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css'); ?>" rel="stylesheet">
+<link href="<?php echo base_url('/vendors/select2/dist/css/select2.min.css'); ?>" rel="stylesheet">
 <!-- bootstrap-daterangepicker -->
-<link href="../vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
+<link href="<?php echo base_url('/vendors/bootstrap-daterangepicker/daterangepicker.css'); ?>" rel="stylesheet">
 <!-- Ion.RangeSlider -->
-<script src="../vendors/ion.rangeSlider/js/ion.rangeSlider.min.js"></script>
+<script src="<?php echo base_url('/vendors/ion.rangeSlider/js/ion.rangeSlider.min.js'); ?>"></script>
 <?= $this->endSection(); ?>
 
 <?= $this->section('content'); ?>
@@ -39,25 +39,22 @@
                             <div class="form-group row col-6 left">
                                 <label class="control-label col-md-3 col-sm-3 mb-0 my-2">Nomor Transaksi</label>
                                 <div class="col-md-9 col-sm-9 ">
-                                    <input type="text" name="code_order" class="form-control" placeholder="" style="font-size: 12px">
+                                    <input type="text" name="code_order" class="form-control" style="font-size: 12px" placeholder="TRXXXXX">
                                 </div>
                             </div>
-                            <div class="form-group row col-6">
-                                <label class="control-label col-md-3 col-sm-3 mb-0 my-2">Nama Pelanggan</label>
+                            <div class="form-group row col-6 left">
+                                <label class="control-label col-md-3 col-sm-3 mb-0 my-2">Plat Nomor</label>
                                 <div class="col-md-9 col-sm-9 ">
-                                    <select class="select2_single form-control" tabindex="-1" style="font-size: 12px" name="customer">
-                                        <option>All</option>
-                                        <?php foreach($customers as $key => $customer): ?>
-                                            <option value="<?= $customer['name'] ?>"><?= $customer['name'] ?></option>
-                                        <?php endforeach; ?>
-                                    </select>
+                                    <input type="text" name="plat_nomor" class="form-control" placeholder="BX 1234 XXX" style="font-size: 12px">
                                 </div>
                             </div>
-                            <button type="submit" class="btn btn-secondary">Generate</button>
-                            <?php if($_SERVER['QUERY_STRING']): ?>
-                            <a href="<?= base_url(); ?>/report/cetakhc?<?= $_SERVER['QUERY_STRING']; ?>" class="btn btn-success">Print</a>
-                            <?php else: ?>
-                            <?php endif; ?>
+                            <div class="form-group row col-12">
+                                <button type="submit" class="btn btn-secondary">Generate</button>
+                                <?php if($_SERVER['QUERY_STRING']): ?>
+                                <a href="<?= base_url(); ?>/report/cetakhc?<?= $_SERVER['QUERY_STRING']; ?>" class="btn btn-success">Print</a>
+                                <?php else: ?>
+                                <?php endif; ?>
+                            </div>
                         </div>
                     </form>
                     <div class="x_content">
@@ -159,22 +156,23 @@
 
 <?= $this->section('script'); ?>
 <!-- Datatables -->
-<script src="../vendors/datatables.net/js/jquery.dataTables.min.js"></script>
-<script src="../vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
-<script src="../vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
-<script src="../vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
-<script src="../vendors/datatables.net-buttons/js/buttons.flash.min.js"></script>
-<script src="../vendors/datatables.net-buttons/js/buttons.html5.min.js"></script>
-<script src="../vendors/datatables.net-buttons/js/buttons.print.min.js"></script>
-<script src="../vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
-<script src="../vendors/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
-<script src="../vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
-<script src="../vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
-<script src="../vendors/datatables.net-scroller/js/dataTables.scroller.min.js"></script>
-<script src="../vendors/jszip/dist/jszip.min.js"></script>
-<script src="../vendors/pdfmake/build/pdfmake.min.js"></script>
-<script src="../vendors/pdfmake/build/vfs_fonts.js"></script>
-<script src="../vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+<script src="<?php echo base_url('/vendors/datatables.net/js/jquery.dataTables.min.js'); ?>"></script>
+<script src="<?php echo base_url('/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js'); ?>"></script>
+<script src="<?php echo base_url('/vendors/datatables.net-buttons/js/dataTables.buttons.min.js'); ?>"></script>
+<script src="<?php echo base_url('/vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js'); ?>"></script>
+<script src="<?php echo base_url('/vendors/datatables.net-buttons/js/buttons.flash.min.js'); ?>"></script>
+<script src="<?php echo base_url('/vendors/datatables.net-buttons/js/buttons.html5.min.js'); ?>"></script>
+<script src="<?php echo base_url('/vendors/datatables.net-buttons/js/buttons.print.min.js'); ?>"></script>
+<script src="<?php echo base_url('/vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js'); ?>"></script>
+<script src="<?php echo base_url('/vendors/datatables.net-keytable/js/dataTables.keyTable.min.js'); ?>"></script>
+<script src="<?php echo base_url('/vendors/datatables.net-responsive/js/dataTables.responsive.min.js'); ?>"></script>
+<script src="<?php echo base_url('/vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js'); ?>"></script>
+<script src="<?php echo base_url('/vendors/datatables.net-scroller/js/dataTables.scroller.min.js'); ?>"></script>
+<script src="<?php echo base_url('/vendors/jszip/dist/jszip.min.js'); ?>"></script>
+<script src="<?php echo base_url('/vendors/pdfmake/build/pdfmake.min.js'); ?>"></script>
+<script src="<?php echo base_url('/vendors/pdfmake/build/vfs_fonts.js'); ?>"></script>
+<script src="<?php echo base_url('/vendors/bootstrap-daterangepicker/daterangepicker.js'); ?>"></script>
 <!-- Ion.RangeSlider -->
-<script src="../vendors/ion.rangeSlider/js/ion.rangeSlider.min.js"></script>
+<script src="<?php echo base_url('/vendors/ion.rangeSlider/js/ion.rangeSlider.min.js'); ?>"></script>
+
 <?= $this->endSection(); ?>

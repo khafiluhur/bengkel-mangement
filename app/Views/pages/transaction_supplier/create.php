@@ -2,17 +2,17 @@
 
 <?= $this->section('css'); ?>
 <!-- iCheck -->
-<link href="/vendors/iCheck/skins/flat/green.css" rel="stylesheet">
+<link href="<?php echo base_url('/vendors/iCheck/skins/flat/green.css'); ?>" rel="stylesheet">
 <!-- bootstrap-wysiwyg -->
-<link href="/vendors/google-code-prettify/bin/prettify.min.css" rel="stylesheet">
+<link href="<?php echo base_url('/vendors/google-code-prettify/bin/prettify.min.css'); ?>" rel="stylesheet">
 <!-- Select2 -->
-<link href="/vendors/select2/dist/css/select2.min.css" rel="stylesheet">
+<link href="<?php echo base_url('/vendors/select2/dist/css/select2.min.css'); ?>" rel="stylesheet">
 <!-- Switchery -->
-<link href="/vendors/switchery/dist/switchery.min.css" rel="stylesheet">
+<link href="<?php echo base_url('/vendors/switchery/dist/switchery.min.css'); ?>" rel="stylesheet">
 <!-- starrr -->
-<link href="/vendors/starrr/dist/starrr.css" rel="stylesheet">
+<link href="<?php echo base_url('/vendors/starrr/dist/starrr.css'); ?>" rel="stylesheet">
 <!-- bootstrap-daterangepicker -->
-<link href="/vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
+<link href="<?php echo base_url('/vendors/bootstrap-daterangepicker/daterangepicker.css'); ?>" rel="stylesheet">
 <style>
     .close {
         font-size: 15px !important;
@@ -122,6 +122,29 @@
                                 <textarea id="crashrepair3" class="form-control" name="crashrepair3"></textarea>
                                 </div>
                             </div>
+                            <div class="item form-group">
+                                <label class="col-form-label col-md-3 col-sm-3" for="first-name" style="font-size: 16px; font-weight: bold;">Diskon Transaksi
+                                </label>
+                                <div class="col-md-6 col-sm-6 ">
+                                    <select class="form-control" name="discount">
+                                        <?php foreach ($discounts as $item) : ?>
+                                            <option value="<?=$item['value']?>"><?=$item['value']?>%</option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="item form-group">
+                                <label class="col-form-label col-md-3 col-sm-3" for="first-name" style="font-size: 16px; font-weight: bold;">Service
+                                </label>
+                                <div class="col-md-6 col-sm-6 ">
+                                    <select class="form-control" name="service">
+                                        <option value="0">Pilih Service</option>
+                                        <?php foreach ($services as $item) : ?>
+                                            <option value="<?=$item['id']?>" data-price="<?=$item['price']?>"><?=$item['name']?> (<?="Rp. " . number_format($item['price'],0,',','.');?>)</option>
+                                        <?php endforeach; ?>
+                                    </select>   `
+                                </div>
+                            </div>
                             <?php else: ?>
                             <?php endif; ?>
                             <div class="row">
@@ -134,12 +157,13 @@
                                                         <table id="datatable" class="table table-striped table-bordered" style="width:100%">                
                                                             <thead>
                                                                 <tr>
-                                                                    <th>No</th>
                                                                     <th>Kode Barang</th>
                                                                     <th>Nama Barang</th>
                                                                     <?php if($type == 'checkIns'): ?>
                                                                     <th>Supplier</th>
                                                                     <?php else: ?>
+                                                                    <th>Diskon</th> 
+                                                                    <th>Pasang</th> 
                                                                     <?php endif; ?>
                                                                     <th>Jumlah</th>
                                                                     <th>Harga</th>
@@ -149,15 +173,15 @@
                                                             </thead>
 
                                                             <tbody>
-                                                                <?php $i=1; ?>
                                                                 <?php foreach ($item_supplier as $item) : ?>
                                                                 <tr>
-                                                                    <td><?=$i++?></td>
                                                                     <td><?= $item->code_item ?></td>
                                                                     <td><?= $item->nama_item ?></td>
                                                                     <?php if($type == 'checkIns'): ?>
                                                                         <td><?= $item->name_supplier ?></td>
                                                                     <?php else: ?>
+                                                                    <td><?= $item->discount ?>%</td>  
+                                                                    <td><?= "Rp. " . number_format($item->plug,0,',','.'); ?></td>
                                                                     <?php endif; ?>
                                                                     <td><?= $item->stock ?></td>
                                                                     <td><?= "Rp. " . number_format($item->price,0,',','.'); ?></td>
@@ -408,36 +432,36 @@
         });
 </script>
 <!-- jQuery -->
-<script src="../vendors/jquery/dist/jquery.min.js"></script>
+<script src="<?php echo base_url('/vendors/jquery/dist/jquery.min.js'); ?>"></script>
 <!-- Bootstrap -->
-<script src="../vendors/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="<?php echo base_url('/vendors/bootstrap/dist/js/bootstrap.bundle.min.js'); ?>"></script>
 <!-- FastClick -->
-<script src="../vendors/fastclick/lib/fastclick.js"></script>
+<script src="<?php echo base_url('/vendors/fastclick/lib/fastclick.js'); ?>"></script>
 <!-- NProgress -->
-<script src="../vendors/nprogress/nprogress.js"></script>
+<script src="<?php echo base_url('/vendors/nprogress/nprogress.js'); ?>"></script>
 <!-- bootstrap-progressbar -->
-<script src="../vendors/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
+<script src="<?php echo base_url('/vendors/bootstrap-progressbar/bootstrap-progressbar.min.js'); ?>"></script>
 <!-- iCheck -->
-<script src="../vendors/iCheck/icheck.min.js"></script>
+<script src="<?php echo base_url('/vendors/iCheck/icheck.min.js'); ?>"></script>
 <!-- bootstrap-daterangepicker -->
-<script src="../vendors/moment/min/moment.min.js"></script>
-<script src="../vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+<script src="<?php echo base_url('/vendors/moment/min/moment.min.js'); ?>"></script>
+<script src="<?php echo base_url('/vendors/bootstrap-daterangepicker/daterangepicker.js'); ?>"></script>
 <!-- bootstrap-wysiwyg -->
-<script src="../vendors/bootstrap-wysiwyg/js/bootstrap-wysiwyg.min.js"></script>
-<script src="../vendors/jquery.hotkeys/jquery.hotkeys.js"></script>
-<script src="../vendors/google-code-prettify/src/prettify.js"></script>
+<script src="<?php echo base_url('/vendors/bootstrap-wysiwyg/js/bootstrap-wysiwyg.min.js'); ?>"></script>
+<script src="<?php echo base_url('/vendors/jquery.hotkeys/jquery.hotkeys.js'); ?>"></script>
+<script src="<?php echo base_url('/vendors/google-code-prettify/src/prettify.js'); ?>"></script>
 <!-- jQuery Tags Input -->
-<script src="../vendors/jquery.tagsinput/src/jquery.tagsinput.js"></script>
+<script src="<?php echo base_url('/vendors/jquery.tagsinput/src/jquery.tagsinput.js'); ?>"></script>
 <!-- Switchery -->
-<script src="../vendors/switchery/dist/switchery.min.js"></script>
+<script src="<?php echo base_url('/vendors/switchery/dist/switchery.min.js'); ?>"></script>
 <!-- Select2 -->
-<script src="../vendors/select2/dist/js/select2.full.min.js"></script>
+<script src="<?php echo base_url('/vendors/select2/dist/js/select2.full.min.js'); ?>"></script>
 <!-- Parsley -->
-<script src="../vendors/parsleyjs/dist/parsley.min.js"></script>
+<script src="<?php echo base_url('/vendors/parsleyjs/dist/parsley.min.js'); ?>"></script>
 <!-- Autosize -->
-<script src="../vendors/autosize/dist/autosize.min.js"></script>
+<script src="<?php echo base_url('/vendors/autosize/dist/autosize.min.js'); ?>"></script>
 <!-- jQuery autocomplete -->
-<script src="../vendors/devbridge-autocomplete/dist/jquery.autocomplete.min.js"></script>
+<script src="<?php echo base_url('/vendors/devbridge-autocomplete/dist/jquery.autocomplete.min.js'); ?>"></script>
 <!-- starrr -->
-<script src="../vendors/starrr/dist/starrr.js"></script>
+<script src="<?php echo base_url('/vendors/starrr/dist/starrr.js'); ?>"></script>
 <?= $this->endSection(); ?>
