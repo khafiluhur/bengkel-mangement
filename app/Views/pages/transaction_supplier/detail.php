@@ -160,6 +160,20 @@
                                                                     </tr>
                                                                 <?php else: ?>
                                                                 <?php endif; ?>
+                                                                <?php if($own_service1 != null): ?>
+                                                                    <tr>
+                                                                        <td colspan="4" class="text-center"><?= $own_service1[0]->name ?></td>
+                                                                        <td colspan="4" class="text-center"><?= "Rp. " . number_format($own_service1[0]->price,0,',','.'); ?></td>
+                                                                    </tr>
+                                                                <?php else: ?>
+                                                                <?php endif; ?>
+                                                                <?php if($own_service2 != null): ?>
+                                                                    <tr>
+                                                                        <td colspan="4" class="text-center"><?= $own_service2[0]->name ?></td>
+                                                                        <td colspan="4" class="text-center"><?= "Rp. " . number_format($own_service2[0]->price,0,',','.'); ?></td>
+                                                                    </tr>
+                                                                <?php else: ?>
+                                                                <?php endif; ?>
                                                             <?php endif; ?>
                                                             <tr>
                                                                 <td colspan="4" class="text-center font-weight-bold" style="background-color: gainsboro;">Total / 

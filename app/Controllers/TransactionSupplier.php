@@ -131,6 +131,18 @@ class TransactionSupplier extends BaseController
                 'errors' => [
                     'required' => 'Harus dipilih Service.',
                 ],
+            ],
+            'service1' => [
+                'rules'  => 'required',
+                'errors' => [
+                    'required' => 'Harus dipilih Service.',
+                ],
+            ],
+            'service2' => [
+                'rules'  => 'required',
+                'errors' => [
+                    'required' => 'Harus dipilih Service.',
+                ],
             ]
         ])) {
             session()->setFlashdata('error', $this->validator->listErrors());
@@ -144,9 +156,24 @@ class TransactionSupplier extends BaseController
 
         // Discount equal
         $discounts = $this->request->getPost('discount');
+
         $services = $this->request->getPost('service');
-        $services1 = $this->serviceModel->first($services);
-        // dd($services);
+        $builder = $this->db->table("services");
+        $builder->select('*');
+        $builder->where('id', $services);
+        $services1 = $builder->get()->getResult();
+
+        $services11 = $this->request->getPost('service1');
+        $builder = $this->db->table("services");
+        $builder->select('*');
+        $builder->where('id', $services11);
+        $services2 = $builder->get()->getResult();
+
+        $services12 = $this->request->getPost('service2');
+        $builder = $this->db->table("services");
+        $builder->select('*');
+        $builder->where('id', $services12);
+        $services3 = $builder->get()->getResult();
 
         if($services == '0') {
             if($discounts == 0) {
@@ -158,11 +185,11 @@ class TransactionSupplier extends BaseController
             }
         } else {
             if($discounts == 0) {
-                $total_pay = $total_pays[0]->total_pay + $services1['price'];
+                $total_pay = $total_pays[0]->total_pay + $services1[0]->price + $services2[0]->price + $services3[0]->price;
             } else {
                 $discount_amount = $discounts/100;
                 $item_amount = $total_pays[0]->total_pay;
-                $total_pay = ($item_amount - ($item_amount * $discount_amount)) + $services1['price'];
+                $total_pay = ($item_amount - ($item_amount * $discount_amount)) + $services1[0]->price + $services2[0]->price + $services3[0]->price;
             }
         }
 
@@ -177,6 +204,8 @@ class TransactionSupplier extends BaseController
                 'montir' => $this->request->getPost('montir'),
                 'discount' => $this->request->getPost('discount'),
                 'service' => $services,
+                'service1' => $services11,
+                'service2' => $services12,
                 'crash' => $this->request->getPost('crash'),
                 'crashrepair1' => $this->request->getPost('crashrepair1'),
                 'crashrepair2' => $this->request->getPost('crashrepair2'),
@@ -569,6 +598,14 @@ class TransactionSupplier extends BaseController
         $ownService->where('id', $transactions[0]->service);
         $ownService1 = $ownService->get()->getResult();
 
+        $ownService3 = $this->db->table("services");
+        $ownService3->where('id', $transactions[0]->service1);
+        $ownService2 = $ownService3->get()->getResult();
+
+        $ownService5 = $this->db->table("services");
+        $ownService5->where('id', $transactions[0]->service2);
+        $ownService4 = $ownService5->get()->getResult();
+
         // Name Site
         $builder_name_site = $this->db->table("setting_sites");
         $builder_name_site->select('setting_sites.name_site');
@@ -586,7 +623,9 @@ class TransactionSupplier extends BaseController
             'othercosts' => $othercosts,
             'discounts' => $discounts,
             'services' => $services,
-            'own_service' => $ownService1
+            'own_service' => $ownService1,
+            'own_service1' => $ownService2,
+            'own_service2' => $ownService4,
         ];
         return view('pages/transaction_supplier/detail', $data);
     }
@@ -613,6 +652,14 @@ class TransactionSupplier extends BaseController
         $builder->where('id', $transactions[0]->service);
         $services = $builder->get()->getResult();
 
+        $builder1 = $this->db->table("services");
+        $builder1->where('id', $transactions[0]->service1);
+        $services1 = $builder1->get()->getResult();
+
+        $builder2 = $this->db->table("services");
+        $builder2->where('id', $transactions[0]->service2);
+        $services2 = $builder2->get()->getResult();
+
         $filename = 'invoice-'.$id.'-'.$transactions[0]->date_trasanction;
 
         // Name Site
@@ -621,7 +668,7 @@ class TransactionSupplier extends BaseController
         $sites = $builder_name_site->get()->getResult();
 
         // load HTML content
-        $dompdf->loadHtml(view('/pages/transaction_supplier/cetak', ['items' => $items, 'code' => $id, 'transactions' => $transactions, 'sites' => $sites, 'services' => $services]));
+        $dompdf->loadHtml(view('/pages/transaction_supplier/cetak', ['items' => $items, 'code' => $id, 'transactions' => $transactions, 'sites' => $sites, 'services' => $services, 'services1' => $services1, 'services2' => $services2]));
 
         // (optional) setup the paper size and orientation
         $dompdf->setPaper('A4', 'landscape');

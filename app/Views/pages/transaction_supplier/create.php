@@ -134,11 +134,35 @@
                                 </div>
                             </div>
                             <div class="item form-group">
-                                <label class="col-form-label col-md-3 col-sm-3" for="first-name" style="font-size: 16px; font-weight: bold;">Service
+                                <label class="col-form-label col-md-3 col-sm-3" for="first-name" style="font-size: 16px; font-weight: bold;">Service 1
                                 </label>
                                 <div class="col-md-6 col-sm-6 ">
                                     <select class="form-control" name="service">
-                                        <option value="0">Pilih Service</option>
+                                        <option value="0">Pilih Service 1</option>
+                                        <?php foreach ($services as $item) : ?>
+                                            <option value="<?=$item['id']?>" data-price="<?=$item['price']?>"><?=$item['name']?> (<?="Rp. " . number_format($item['price'],0,',','.');?>)</option>
+                                        <?php endforeach; ?>
+                                    </select>   `
+                                </div>
+                            </div>
+                            <div class="item form-group">
+                                <label class="col-form-label col-md-3 col-sm-3" for="first-name" style="font-size: 16px; font-weight: bold;">Service 2
+                                </label>
+                                <div class="col-md-6 col-sm-6 ">
+                                    <select class="form-control" name="service1">
+                                        <option value="0">Pilih Service 2</option>
+                                        <?php foreach ($services as $item) : ?>
+                                            <option value="<?=$item['id']?>" data-price="<?=$item['price']?>"><?=$item['name']?> (<?="Rp. " . number_format($item['price'],0,',','.');?>)</option>
+                                        <?php endforeach; ?>
+                                    </select>   `
+                                </div>
+                            </div>
+                            <div class="item form-group">
+                                <label class="col-form-label col-md-3 col-sm-3" for="first-name" style="font-size: 16px; font-weight: bold;">Service 3
+                                </label>
+                                <div class="col-md-6 col-sm-6 ">
+                                    <select class="form-control" name="service2">
+                                        <option value="0">Pilih Service 3</option>
                                         <?php foreach ($services as $item) : ?>
                                             <option value="<?=$item['id']?>" data-price="<?=$item['price']?>"><?=$item['name']?> (<?="Rp. " . number_format($item['price'],0,',','.');?>)</option>
                                         <?php endforeach; ?>

@@ -346,13 +346,34 @@ textarea:focus,
                 <td class="qty"><?= "Rp. " . number_format($data->plug,0,',','.'); ?></td>
                 <td class="price"><?="Rp. " . number_format($data->subtotal,0,',','.');?></td>
             </tr>
-        <?php } ?>  
-        <tr class="item-row">
-            <td><?= $services[0]->name ?></td>
-            <td></td>
-            <td></td>
-            <td colspan="3" class="price"><?= "Rp. " . number_format($services[0]->price,0,',','.'); ?></td>
-        </tr> 
+        <?php } ?> 
+        <?php if($services != null): ?> 
+            <tr class="item-row">
+                <td><?= $services[0]->name ?></td>
+                <td></td>
+                <td></td>
+                <td colspan="3" class="price"><?= "Rp. " . number_format($services[0]->price,0,',','.'); ?></td>
+            </tr> 
+        <?php else:?>
+        <?php endif; ?> 
+        <?php if($services1 != null): ?> 
+            <tr class="item-row">
+                <td><?= $services1[0]->name ?></td>
+                <td></td>
+                <td></td>
+                <td colspan="3" class="price"><?= "Rp. " . number_format($services1[0]->price,0,',','.'); ?></td>
+            </tr> 
+        <?php else:?>
+        <?php endif; ?> 
+        <?php if($services2 != null): ?> 
+            <tr class="item-row">
+                <td><?= $services2[0]->name ?></td>
+                <td></td>
+                <td></td>
+                <td colspan="3" class="price"><?= "Rp. " . number_format($services2[0]->price,0,',','.'); ?></td>
+            </tr> 
+        <?php else:?>
+        <?php endif; ?> 
         <tr>
             <td colspan="3" class="balance">Total / <?= $transactions[0]->discount ?>%</td>
             <td colspan="3" class="total-value balance due"><?="Rp. " . number_format($transactions[0]->total_pay,0,',','.'); ?></td>
