@@ -434,9 +434,16 @@ class TransactionSupplier extends BaseController
     public function deleteCheckItemSupplier($id)
     {
         $stockNewItem = $this->db->table("supplier_items");
-        $stockNewItem->select('code_order');
+        $stockNewItem->select('code_order, id_item, stock');
         $stockNewItem->where('id', $id);
         $itemStock = $stockNewItem->get()->getResult();
+        $stockNewItems = $itemStock[0]->stock;
+
+        $builder = $this->db->table("items");
+        $builder->select('stock, code');
+        $builder->where('id_item', $itemStock[0]->id_item);
+        $itemPrice = $builder->get()->getResult();
+        $stockItems = $itemPrice[0]->stock;
 
         // Delete Card Stock Saldo In
         $checkInItemSame1 = $this->db->table("card_stocks");
@@ -449,6 +456,13 @@ class TransactionSupplier extends BaseController
             $cardStocks = new CardStocksModel();
             $cardStocks->delete($array[$key]);
         }
+
+        $save_items = new ItemsModel();
+        $save_items->update($itemStock[0]->id_item, [
+            'stock' =>  $stockItems + $stockNewItems,
+            'updated_at'  => date("Y-m-d H:i:s"),
+            'updated_by'  => session()->get('username')
+        ]);
 
         $items = new SupplierItemsModel();
         $items->delete($id);

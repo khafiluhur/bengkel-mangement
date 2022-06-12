@@ -141,8 +141,28 @@
                     </div>
                     <?php if($type == 'checkSuppliers'): ?>
                     <div class="form-group">
-                        <label for="exampleInputEmail1">Harga</label>
+                        <label for="exampleInputEmail1">Harga Satuan</label>
                         <input type="text" class="form-control product_price2" id="rupiah1" name="price1" placeholder="Harga" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Harga Pasang</label>
+                        <div class="">
+                            <select class="form-control product_plug" id="plug" name="plug">
+                                <?php foreach ($othercosts as $item) : ?>
+                                    <option value="<?=$item['price']?>"><?= "Rp. " . number_format($item['price'],0,',','.'); ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Diskon Barang</label>
+                        <div class="">
+                            <select class="form-control product_discount" id="discount" name="discount">
+                                <?php foreach ($discounts as $item) : ?>
+                                    <option value="<?=$item['value']?>"><?=$item['value']?>%</option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
                     </div>
                     <div id="total_stock1" class="form-group">
                         <label for="exampleInputEmail1">Jumlah Beli</label>

@@ -188,7 +188,7 @@
                                                                     <td><?= "Rp. " . number_format($item->subtotal,0,',','.'); ?></td>
                                                                     <?php if($type == 'checkSuppliers'): ?>
                                                                         <td>
-                                                                        <a href="" class="btn btn-warning btn-edit-transaksi" data-toggle="modal" data-target="#editTransactionModal" data-trns="<?=$item->code_order?>" data-trid="<?=$item->id?>" data-id="<?=$item->id_item?>" data-code="<?= $item->code_item ?>" data-availabel="<?= $item->stock_item ?>" data-price="<?= $item->price ?>" data-stock="<?= $item->stock ?>" style="font-size: 12px;"><i class="fa fa-edit"></i></a>
+                                                                        <a href="" class="btn btn-warning btn-edit-transaksi" data-toggle="modal" data-target="#editTransactionModal" data-trns="<?=$item->code_order?>" data-trid="<?=$item->id?>" data-id="<?=$item->id_item?>" data-code="<?= $item->code_item ?>" data-availabel="<?= $item->stock_item ?>" data-price="<?= $item->price ?>" data-stock="<?= $item->stock ?>" data-discount="<?= $item->discount ?>" data-plug="<?= $item->plug ?>"  style="font-size: 12px;"><i class="fa fa-edit"></i></a>
                                                                         <a href="<?= base_url(); ?>/check_suppliers/<?= $item->id ?>/delete" class="btn btn-danger" style="font-size: 12px; color: white;">X</a>
                                                                         </td>
                                                                     <?php else: ?>
@@ -388,6 +388,8 @@
             const stock = $(this).data('stock');
             const supplier = $(this).data('supplier');
             const price = $(this).data('price');
+            const discount = $(this).data('discount');
+            const plug = $(this).data('plug');
 
             // Convert to Rupiah            
             var	number_string = price.toString(),
@@ -427,6 +429,8 @@
             $('.product_price2').val('Rp. ' + rupiah);
             $('.product_supplier').val(supplier);
             $('.product_stock').val(stock);
+            $('.product_discount').val(discount);
+            $('.product_plug').val(plug);
             // Call Modal Edit
             $('#editTransactionModal').modal('show');
         });
