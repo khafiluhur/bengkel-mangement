@@ -10,9 +10,9 @@ class Setting extends Seeder
     {
         //
         $data = [
-            'name_site' => 'Bengkel Indonesia',
-            'address_site' => 'Jl.Masjid Nurul Mutaqin.RT 003/004.Pekayon jaya Bekasi Selatan, RT.003/RW.026, Pekayon Jaya, Kec. Bekasi Sel., Kota Bks, Jawa Barat 17148',
-            'telephone_site' => '081296409634',
+            'name_site' => 'Moteker Jaya Motor',
+            'address_site' => 'Perumahan Puri Persada Indah Ruko No 18, Sindangmulya, Kec. Cibarusa, Kabupaten Bekasi, Jawa Barat',
+            'telephone_site' => '081385870830',
         ];
 
         $this->db->table('setting_sites')->insert($data);
