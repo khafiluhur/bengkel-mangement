@@ -333,6 +333,8 @@ class TransactionSupplier extends BaseController
         $items = new SupplierItemsModel();
         $items->update($id, [
             'stock' => $this->request->getPost('total_stock'),
+            'discount' => $this->request->getPost('discount'),
+            'plug' => $this->request->getPost('plug'),
             'subtotal' =>  $itemPrice[0]->price * $this->request->getPost('total_stock'),
             'updated_at'  => date("Y-m-d H:i:s"),
             'updated_by'  => session()->get('username')
