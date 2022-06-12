@@ -12,7 +12,7 @@ class Setting extends Seeder
         $data = [
             'name_site' => 'Moteker Jaya Motor',
             'address_site' => 'Perumahan Puri Persada Indah Ruko No 18, Sindangmulya, Kec. Cibarusa, Kabupaten Bekasi, Jawa Barat',
-            'telephone_site' => '081385870830',
+            'telephone_site' => '081286460347',
         ];
 
         $this->db->table('setting_sites')->insert($data);
