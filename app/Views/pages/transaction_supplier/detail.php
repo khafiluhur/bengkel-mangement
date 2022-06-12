@@ -92,7 +92,11 @@
                             <label class="col-form-label col-md-3 col-sm-3" for="first-name" style="font-size: 16px; font-weight: bold;">Diskon Transaksi :
                             </label>
                             <div class="col-md-6 col-sm-6 ">
-                                <label class="col-form-label col-md-12 col-sm-12" for="first-name" style="font-size: 16px;"><?= $transactions[0]->discount ?>%</label>
+                                <?php if($transactions[0]->discount == null): ?>
+                                    <label class="col-form-label col-md-12 col-sm-12" for="first-name" style="font-size: 16px;">0%</label>
+                                <?php else: ?>
+                                    <label class="col-form-label col-md-12 col-sm-12" for="first-name" style="font-size: 16px;"><?= $transactions[0]->discount ?>%</label>
+                                <?php endif; ?>
                             </div>
                         </div>
                         <?php else: ?>
@@ -127,14 +131,18 @@
                                                             <tr>
                                                                 <td><?= $item->code_item ?></td>
                                                                 <td><?= $item->nama_item ?></td>
+                                                                <td><?= "Rp. " . number_format($item->price,0,',','.'); ?></td>
+                                                                <td><?= $item->stock ?></td>
                                                                 <?php if($type == 'checkIns'): ?>
                                                                     <td><?= $item->name_supplier ?></td>
                                                                 <?php else: ?>
-                                                                    <td><?= $item->discount ?>%</td>
+                                                                    <?php if($item->discount == null): ?>
+                                                                        <td>0%</td>
+                                                                    <?php else: ?>
+                                                                        <td><?= $item->discount ?>%</td>
+                                                                    <?php endif; ?>
                                                                     <td><?= "Rp. " . number_format($item->plug,0,',','.'); ?></td>
                                                                 <?php endif; ?>
-                                                                <td><?= "Rp. " . number_format($item->price,0,',','.'); ?></td>
-                                                                <td><?= $item->stock ?></td>
                                                                 <td><?= "Rp. " . number_format($item->subtotal,0,',','.'); ?></td>
                                                                 <?php if($type == 'checkIns'): ?>
                                                                     <td><a href="" class="btn-edit-transaksi" data-trns="<?=$item->code_order?>" data-trid="<?=$item->id?>" data-id="<?=$item->id_item?>" data-code="<?= $item->code_item ?>" data-availabel="<?= $item->stock_item ?>" data-price="<?= $item->price ?>" data-supplier="<?= $item->id_supplier ?>" data-stock="<?= $item->stock ?>" data- data-code data-toggle="modal" data-target="#editTransactionModal">Ubah</a></td>
@@ -154,7 +162,13 @@
                                                                 <?php endif; ?>
                                                             <?php endif; ?>
                                                             <tr>
-                                                                <td colspan="4" class="text-center font-weight-bold" style="background-color: gainsboro;">Total / <?= $transactions[0]->discount ?>%</td>
+                                                                <td colspan="4" class="text-center font-weight-bold" style="background-color: gainsboro;">Total / 
+                                                                    <?php if($transactions[0]->discount == null): ?>    
+                                                                        0%
+                                                                    <?php else: ?>
+                                                                        <?= $transactions[0]->discount ?>%
+                                                                    <?php endif; ?>
+                                                                </td>
                                                                 <td colspan="4" class="text-center font-weight-bold" style="background-color: darkgray;"><?= "Rp. " . number_format($transactions[0]->total_pay,0,',','.'); ?></td>
                                                             </tr>
                                                         </tbody>
