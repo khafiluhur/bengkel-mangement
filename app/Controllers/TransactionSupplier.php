@@ -330,12 +330,28 @@ class TransactionSupplier extends BaseController
         $itemStock = $stockNewItem->get()->getResult();
         $stockNewItems = $itemStock[0]->stock;
 
+        // Discount equal
+        $total_pays = $itemPrice[0]->price * $this->request->getPost('total_stock');
+
+        // Discount Price
+        $discounts = $this->request->getPost('discount');
+        $plug = $this->request->getPost('plug');
+        if($discounts != 0) {
+            // Sum Request stock equal Price with discount
+            $discount_amount = $discounts/100;
+            $item_amount = $total_pays;
+            $subtotal = $item_amount - ($item_amount * $discount_amount);
+        } else {
+            // Sum Reuquest stock equal Price with plug in
+            $subtotal = (($total_pays) + $plug);
+        }
+
         $items = new SupplierItemsModel();
         $items->update($id, [
             'stock' => $this->request->getPost('total_stock'),
             'discount' => $this->request->getPost('discount'),
             'plug' => $this->request->getPost('plug'),
-            'subtotal' =>  $itemPrice[0]->price * $this->request->getPost('total_stock'),
+            'subtotal' =>  $subtotal,
             'updated_at'  => date("Y-m-d H:i:s"),
             'updated_by'  => session()->get('username')
         ]);
