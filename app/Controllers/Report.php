@@ -39,43 +39,47 @@ class Report extends BaseController
         $code_order = '';
         $customer = '';
         $plat = '';
+        $items = [];
 
         if($_SERVER['QUERY_STRING']) {
             $keyword1 = explode("&",$_SERVER['QUERY_STRING']);
             
             // code_order
             $keyword2 = explode("=",$keyword1[0]);
-            if($keyword2 == '') {
-                $code_order = 'All';
-            } else {
-                $code_order = $keyword2[1];
-            }
-            
-            // customer
-            // $keyword3 = explode("=",$keyword1[1]);
-            // $keyword4 = explode("+",$keyword3[1]);
-            // $customer = join(" ",$keyword4);
+            $code_order = $keyword2[1];
 
             // plat number
             $keyword5 = explode("=",$keyword1[1]);
             $keyword6 = explode("+",$keyword5[1]);
             $plat = join(" ",$keyword6);
+            // dd($plat);
+               
+            if($code_order == $code_order && $plat == $plat) {
+                $builder = $this->db->table("check_suppliers");
+                $builder->select('check_suppliers.*, customers.name as nama_customer, customers.code as code_customer, customers.plat_nomor, customers.type_motor');
+                $builder->join('customers', 'check_suppliers.customer = customers.id');
+                $builder->like('check_suppliers.code_order', $code_order);
+                $builder->orLike('customers.plat_nomor', $plat);
+                $items = $builder->get()->getResult();
+            } elseif($code_order == $code_order && $plat == "") {
+                $builder = $this->db->table("check_suppliers");
+                $builder->select('check_suppliers.*, customers.name as nama_customer, customers.code as code_customer, customers.plat_nomor, customers.type_motor');
+                $builder->join('customers', 'check_suppliers.customer = customers.id');
+                $builder->where('check_suppliers.code_order', $code_order);
+                $items = $builder->get()->getResult();
+            } elseif($code_order == "" && $plat == $plat) {
+                $builder = $this->db->table("check_suppliers");
+                $builder->select('check_suppliers.*, customers.name as nama_customer, customers.code as code_customer, customers.plat_nomor, customers.type_motor');
+                $builder->join('customers', 'check_suppliers.customer = customers.id');
+                $builder->where('customers.plat_nomor', $plat);
+                $items = $builder->get()->getResult();
+            } else {
+                $builder = $this->db->table("check_suppliers");
+                $builder->select('check_suppliers.*, customers.name as nama_customer, customers.code as code_customer, customers.plat_nomor, customers.type_motor');
+                $builder->join('customers', 'check_suppliers.customer = customers.id');
+                $items = $builder->get()->getResult();
+            }
         }
-
-        // if($true = $plat == null) {
-        // $code_order = 'All';
-        // $plat = null;
-        // $true = $code_order || $plat;
-        // dd($true);
-
-        // if($code_order == 'All' || $plat )
-
-        $builder = $this->db->table("check_suppliers");
-        $builder->select('check_suppliers.*, customers.name as nama_customer, customers.code as code_customer, customers.plat_nomor, customers.type_motor');
-        $builder->join('customers', 'check_suppliers.customer = customers.id');
-        $builder->like('check_suppliers.code_order', $code_order);
-        $builder->orLike('customers.plat_nomor', $plat);
-        $items = $builder->get()->getResult();
         
         // Name Site
         $builder_name_site = $this->db->table("setting_sites");

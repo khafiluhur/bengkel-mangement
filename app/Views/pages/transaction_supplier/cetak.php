@@ -45,9 +45,8 @@ table th {
     height: 15px;
     width: 100%;
     margin: 20px 0;
-    background: #222;
     text-align: center;
-    color: white;
+    color: black;
     font: bold 15px Helvetica, Sans-Serif;
     text-decoration: uppercase;
     letter-spacing: 20px;
@@ -280,7 +279,7 @@ textarea:focus,
  </head>
  <body>
   <div id="page-wrap">
-   <textarea id="header">INVOICE</textarea>
+   <p id="header">INVOICE</p>
 
    <div id="customer">
     <table id="meta">
@@ -303,10 +302,6 @@ textarea:focus,
 
    <div id="customer">
         <table id="meta">
-            <tr>
-                <td class="meta-head">Nomor Montir</td>
-                <td><?= $transactions[0]->code_montirs ?></td>
-            </tr>
             <tr>
                 <td class="meta-head">Nama Montir</td>
                 <td id="date"><?= $transactions[0]->name_montirs ?></td>
@@ -333,17 +328,18 @@ textarea:focus,
             <th>Item</th>
             <th>Harga Satuan</th>
             <th>Jumlah Barang</th>
-            <th>Diskon</th>
-            <th>Harga Pasang</th>
             <th>Harga</th>
         </tr>
         <?php foreach($items as $index => $data) { ?> 
             <tr class="item-row">
-                <td class="item-name"><?= $data->nama_item ?></td>
+                <td class="item-name"><?= $data->nama_item ?>
+                <?php if($data->plug != "0"): ?>
+                    + Pasang
+                <?php else: ?>
+                <?php endif; ?>
+                </td>
                 <td class="cost"><?="Rp. " . number_format($data->price,0,',','.');?></td>
                 <td class="qty"><?= $data->stock ?></td>
-                <td class="qty"><?= $data->discount ?>%</td>
-                <td class="qty"><?= "Rp. " . number_format($data->plug,0,',','.'); ?></td>
                 <td class="price"><?="Rp. " . number_format($data->subtotal,0,',','.');?></td>
             </tr>
         <?php } ?> 
@@ -352,7 +348,7 @@ textarea:focus,
                 <td><?= $services[0]->name ?></td>
                 <td></td>
                 <td></td>
-                <td colspan="3" class="price"><?= "Rp. " . number_format($services[0]->price,0,',','.'); ?></td>
+                <td class="price"><?= "Rp. " . number_format($services[0]->price,0,',','.'); ?></td>
             </tr> 
         <?php else:?>
         <?php endif; ?> 
@@ -361,7 +357,7 @@ textarea:focus,
                 <td><?= $services1[0]->name ?></td>
                 <td></td>
                 <td></td>
-                <td colspan="3" class="price"><?= "Rp. " . number_format($services1[0]->price,0,',','.'); ?></td>
+                <td class="price"><?= "Rp. " . number_format($services1[0]->price,0,',','.'); ?></td>
             </tr> 
         <?php else:?>
         <?php endif; ?> 
@@ -370,13 +366,13 @@ textarea:focus,
                 <td><?= $services2[0]->name ?></td>
                 <td></td>
                 <td></td>
-                <td colspan="3" class="price"><?= "Rp. " . number_format($services2[0]->price,0,',','.'); ?></td>
+                <td class="price"><?= "Rp. " . number_format($services2[0]->price,0,',','.'); ?></td>
             </tr> 
         <?php else:?>
         <?php endif; ?> 
         <tr>
-            <td colspan="3" class="balance">Total / <?= $transactions[0]->discount ?>%</td>
-            <td colspan="3" class="total-value balance due"><?="Rp. " . number_format($transactions[0]->total_pay,0,',','.'); ?></td>
+            <td colspan="3" class="balance">Total</td>
+            <td colspan="1" class="total-value balance due"><?="Rp. " . number_format($transactions[0]->total_pay,0,',','.'); ?></td>
         </tr>
    </table>
 

@@ -78,7 +78,7 @@
                                                     <?php foreach ($items as $item) : ?>
                                                     <tr>
                                                         <td><?=$item->code_order?></td>
-                                                        <td><?=$item->nama_customer?></td>
+                                                        <td><?=$item->nama_customer?> (<?=$item->plat_nomor?>)</td>
                                                         <td><?=$item->type_motor?></td>
                                                         <td><?=number_format($item->total_pay,0,',','.')?></td>
                                                         <td><?=$item->date_trasanction?></td>
