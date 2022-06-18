@@ -174,17 +174,17 @@
                                                                     </tr>
                                                                 <?php else: ?>
                                                                 <?php endif; ?>
+                                                                <tr>
+                                                                    <td colspan="4" class="text-center font-weight-bold" style="background-color: gainsboro;">Total / 
+                                                                        <?php if($transactions[0]->discount == null): ?>    
+                                                                            0%
+                                                                        <?php else: ?>
+                                                                            <?= $transactions[0]->discount ?>%
+                                                                        <?php endif; ?>
+                                                                    </td>
+                                                                    <td colspan="4" class="text-center font-weight-bold" style="background-color: darkgray;"><?= "Rp. " . number_format($transactions[0]->total_pay,0,',','.'); ?></td>
+                                                                </tr>
                                                             <?php endif; ?>
-                                                            <tr>
-                                                                <td colspan="4" class="text-center font-weight-bold" style="background-color: gainsboro;">Total / 
-                                                                    <?php if($transactions[0]->discount == null): ?>    
-                                                                        0%
-                                                                    <?php else: ?>
-                                                                        <?= $transactions[0]->discount ?>%
-                                                                    <?php endif; ?>
-                                                                </td>
-                                                                <td colspan="4" class="text-center font-weight-bold" style="background-color: darkgray;"><?= "Rp. " . number_format($transactions[0]->total_pay,0,',','.'); ?></td>
-                                                            </tr>
                                                         </tbody>
                                                     </table>
                                                 </div>
