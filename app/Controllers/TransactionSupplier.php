@@ -223,10 +223,10 @@ class TransactionSupplier extends BaseController
             }
         }
 
-        if($total_pays[0]->total_pay == null) {
-            session()->setFlashdata('error', 'Harus memilih barang terlebih dahulu');
-            return redirect()->to(base_url('check_suppliers/store'));
-        } else {
+        // if($total_pays[0]->total_pay == null) {
+        //     session()->setFlashdata('error', 'Harus memilih barang terlebih dahulu');
+        //     return redirect()->to(base_url('check_suppliers/store'));
+        // } else {
             $item = new CheckSuppliersModel();
             $item->insert([
                 'code_order' => $this->request->getPost('code'),
@@ -247,7 +247,7 @@ class TransactionSupplier extends BaseController
                 'updated_at' => date("Y-m-d H:i:s"),
                 'updated_by' => session()->get('username')
             ]);
-        }
+        // }
 
         session()->setFlashdata('success', 'Berhasil ditambah');
         return redirect()->to(base_url('check_suppliers'));
