@@ -326,7 +326,6 @@ textarea:focus,
    <table id="items">
         <tr>
             <th>Item</th>
-            <th>Harga Satuan</th>
             <th>Jumlah Barang</th>
             <th>Harga</th>
         </tr>
@@ -338,7 +337,6 @@ textarea:focus,
                 <?php else: ?>
                 <?php endif; ?>
                 </td>
-                <td class="cost"><?="Rp. " . number_format($data->price,0,',','.');?></td>
                 <td class="qty"><?= $data->stock ?></td>
                 <td class="price"><?="Rp. " . number_format($data->subtotal,0,',','.');?></td>
             </tr>
@@ -346,7 +344,6 @@ textarea:focus,
         <?php if($services != null): ?> 
             <tr class="item-row">
                 <td><?= $services[0]->name ?></td>
-                <td></td>
                 <td></td>
                 <td class="price"><?= "Rp. " . number_format($services[0]->price,0,',','.'); ?></td>
             </tr> 
@@ -356,7 +353,6 @@ textarea:focus,
             <tr class="item-row">
                 <td><?= $services1[0]->name ?></td>
                 <td></td>
-                <td></td>
                 <td class="price"><?= "Rp. " . number_format($services1[0]->price,0,',','.'); ?></td>
             </tr> 
         <?php else:?>
@@ -365,13 +361,12 @@ textarea:focus,
             <tr class="item-row">
                 <td><?= $services2[0]->name ?></td>
                 <td></td>
-                <td></td>
                 <td class="price"><?= "Rp. " . number_format($services2[0]->price,0,',','.'); ?></td>
             </tr> 
         <?php else:?>
         <?php endif; ?> 
         <tr>
-            <td colspan="3" class="balance">Total</td>
+            <td colspan="2" class="balance">Total</td>
             <td colspan="1" class="total-value balance due"><?="Rp. " . number_format($transactions[0]->total_pay,0,',','.'); ?></td>
         </tr>
    </table>
