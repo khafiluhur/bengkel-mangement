@@ -202,9 +202,24 @@ class TransactionSupplier extends BaseController
                 }
                 $total_pay = $total_pays[0]->total_pay + $services1 + $services2 + $services3;
             } else {
+                if($services1 == null) {
+                    $services1 = 0;
+                } else {
+                    $services1 = $services1[0]->price;
+                }
+                if($services2 == null) {
+                    $services2 = 0;
+                } else {
+                    $services2 = $services2[0]->price;
+                }
+                if($services3 == null) {
+                    $services3 = 0;
+                } else {
+                    $services3 = $services3[0]->price;
+                }
                 $discount_amount = $discounts/100;
                 $item_amount = $total_pays[0]->total_pay;
-                $total_pay = ($item_amount - ($item_amount * $discount_amount)) + $services1[0]->price + $services2[0]->price + $services3[0]->price;
+                $total_pay = ($item_amount - ($item_amount * $discount_amount)) + $services1 + $services2 + $services3;
             }
         }
 
