@@ -51,7 +51,7 @@
                                         <?php if($type == 'typeItems'): ?>
                                             <thead>
                                                 <tr>
-                                                    <th>Jenis Barang</th>
+                                                    <th>Kategori</th>
                                                     <th>Pilihan</th>
                                                 </tr>
                                             </thead>

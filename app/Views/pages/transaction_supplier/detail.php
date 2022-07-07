@@ -147,7 +147,7 @@
                                                                 <?php if($type == 'checkIns'): ?>
                                                                     <td><a href="" class="btn-edit-transaksi" data-trns="<?=$item->code_order?>" data-trid="<?=$item->id?>" data-id="<?=$item->id_item?>" data-code="<?= $item->code_item ?>" data-availabel="<?= $item->stock_item ?>" data-price="<?= $item->price ?>" data-supplier="<?= $item->id_supplier ?>" data-stock="<?= $item->stock ?>" data- data-code data-toggle="modal" data-target="#editTransactionModal">Ubah</a></td>
                                                                 <?php else: ?>
-                                                                    <td><a href="" class="btn-edit-transaksi" data-trns="<?=$item->code_order?>" data-trid="<?=$item->id?>" data-id="<?=$item->id_item?>" data-code="<?= $item->code_item ?>" data-availabel="<?= $item->stock_item ?>" data-price="<?= $item->price ?>" data-stock="<?= $item->stock ?>" data- data-code data-toggle="modal" data-target="#editTransactionModal">Ubah</a></td>
+                                                                    <td><a href="" class="btn-edit-transaksi" data-trns="<?=$item->code_order?>" data-trid="<?=$item->id?>" data-id="<?=$item->id_item?>" data-code="<?= $item->code_item ?>" data-availabel="<?= $item->stock_item ?>" data-price="<?= $item->price ?>" data-stock="<?= $item->stock ?>" data-plug="<?= $item->plug ?>" data-discount="<?= $item->discount ?>" data- data-code data-toggle="modal" data-target="#editTransactionModal">Ubah</a></td>
                                                                 <?php endif; ?>
                                                             </tr>
                                                             <?php endforeach; ?>
@@ -245,6 +245,7 @@
         });
     });
 </script>
+<?php if($type == 'checkIns'): ?>
 <script>
     $('.btn-edit-transaksi').on('click',function(){
             // get data from button edit
@@ -259,12 +260,12 @@
             const price = $(this).data('price');
 
             // Convert to Rupiah            
-            var	number_string = price.toString(),
+            var	number_string = price.toString()
 
-            sisa 	= number_string.length % 3,
-            rupiah 	= number_string.substr(0, sisa),
-            ribuan 	= number_string.substr(sisa).match(/\d{3}/g);
-                
+            sisa 	= number_string.length % 3
+            rupiah 	= number_string.substr(0, sisa)
+            ribuan 	= number_string.substr(sisa).match(/\d{3}/g)
+
             if (ribuan) {
                 separator = sisa ? '.' : '';
                 rupiah += separator + ribuan.join('.');
@@ -284,6 +285,68 @@
             $('#editTransactionModal').modal('show');
         });
 </script>
+<?php else: ?>
+<script>
+    $('.btn-edit-transaksi').on('click',function(){
+            // get data from button edit
+            const trid = $(this).data('trid');
+            const trns = $(this).data('trns');
+            const id = $(this).data('id');
+            var base_url = '<?php echo base_url();?>'
+            const code = $(this).data('code');
+            const availabel = $(this).data('availabel');
+            const stock = $(this).data('stock');
+            const supplier = $(this).data('supplier');
+            const price = $(this).data('price');
+            const plug = $(this).data('plug');
+            const discount = $(this).data('discount');
+
+            // Convert to Rupiah            
+            var	number_string = price.toString(),
+
+            sisa 	= number_string.length % 3,
+            rupiah 	= number_string.substr(0, sisa),
+            ribuan 	= number_string.substr(sisa).match(/\d{3}/g);
+
+            if (ribuan) {
+                separator = sisa ? '.' : '';
+                rupiah += separator + ribuan.join('.');
+            }
+
+            const req_stock = document.getElementById('source1');
+            
+            var element = document.getElementById("total_stock1");
+            var element1 = document.getElementById("message_stock1");
+            req_stock.addEventListener('input', function() {
+                // Do something
+                if(availabel - this.value < 0) {
+                    element.classList.add("bad");
+                    element1.classList.remove("d-none");
+                    document.getElementById("button_simpan1").disabled = true;
+                } else {
+                    element.classList.remove("bad");
+                    element1.classList.add("d-none");
+                    document.getElementById("button_simpan1").disabled = false;
+                }
+            });
+
+            // Set data to Form Edit
+            $('#checkIns').attr('action', base_url + '/check_in/' + trid + '/detail-update');
+            $('#checkSuppliers').attr('action', base_url + '/check_suppliers/' + trid + '/detail-update');
+            $('.product_trns').val(trns);
+            $('.product_id').val(id);
+            $('.product_code').val(code);
+            $('.product_availabel').val(availabel);
+            $('.product_price2').val('Rp. ' + rupiah);
+            $('.product_supplier').val(supplier);
+            $('.product_stock').val(stock);
+            $('.product_plug').val(plug);
+            $('.product_discount').val(discount);
+            // Call Modal Edit
+            $('#editTransactionModal').modal('show');
+        });
+</script>
+<?php endif; ?>
 <script type="text/javascript">		
         var rupiah1 = document.getElementById('rupiah1');
         rupiah1.addEventListener('keyup', function(e){

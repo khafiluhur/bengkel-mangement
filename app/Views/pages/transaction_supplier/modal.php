@@ -140,55 +140,55 @@
                         <input type="hidden" class="form-control product_trns" name="codeTR" class="form-control" value="">
                     </div>
                     <?php if($type == 'checkSuppliers'): ?>
-                    <div class="form-group">
-                        <label for="exampleInputEmail1">Harga Satuan</label>
-                        <input type="text" class="form-control product_price2" id="rupiah1" name="price1" placeholder="Harga" disabled>
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleInputEmail1">Harga Pasang</label>
-                        <div class="">
-                            <select class="form-control product_plug" id="plug" name="plug">
-                                <?php foreach ($othercosts as $item) : ?>
-                                    <option value="<?=$item['price']?>"><?= "Rp. " . number_format($item['price'],0,',','.'); ?></option>
-                                <?php endforeach; ?>
-                            </select>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Harga Satuan</label>
+                            <input type="text" class="form-control product_price2" id="rupiah1" name="price1" placeholder="Harga" disabled>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleInputEmail1">Diskon Barang</label>
-                        <div class="">
-                            <select class="form-control product_discount" id="discount" name="discount">
-                                <?php foreach ($discounts as $item) : ?>
-                                    <option value="<?=$item['value']?>"><?=$item['value']?>%</option>
-                                <?php endforeach; ?>
-                            </select>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Harga Pasang</label>
+                            <div class="">
+                                <select class="form-control product_plug" id="plug" name="plug">
+                                    <?php foreach ($othercosts as $item) : ?>
+                                        <option value="<?=$item['price']?>"><?= "Rp. " . number_format($item['price'],0,',','.'); ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
                         </div>
-                    </div>
-                    <div id="total_stock1" class="form-group">
-                        <label for="exampleInputEmail1">Jumlah Beli</label>
-                        <input type="number" class="form-control product_stock" id="source1" name="total_stock" min="0" placeholder="Jumlah Beli" oninput="this.value = Math.abs(this.value)">
-                        <p id="message_stock1" class="red d-none">Jumlah pembelian melebihi stok tersedia</p>
-                    </div>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Diskon Barang</label>
+                            <div class="">
+                                <select class="form-control product_discount" id="discount" name="discount">
+                                    <?php foreach ($discounts as $item) : ?>
+                                        <option value="<?=$item['value']?>"><?=$item['value']?>%</option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div id="total_stock1" class="form-group">
+                            <label for="exampleInputEmail1">Jumlah Beli</label>
+                            <input type="number" class="form-control product_stock" id="source1" name="total_stock" min="0" placeholder="Jumlah Beli" oninput="this.value = Math.abs(this.value)">
+                            <p id="message_stock1" class="red d-none">Jumlah pembelian melebihi stok tersedia</p>
+                        </div>
                     <?php else: ?>
-                    <div class="form-group">
-                        <label for="exampleInputEmail1">Harga</label>
-                        <input type="text" class="form-control product_price2" id="rupiah1" name="price" placeholder="Harga">
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleInputEmail1">Supplier</label>
-                        <div class="">
-                            <select class="form-control product_supplier" id="id_supplier" name="id_supplier">
-                                <option value="">Pilih Supplier</option>
-                                <?php foreach ($suppliers as $item) : ?>
-                                    <option data-code="<?=$item['code']?>" value="<?=$item['id_supplier']?>"><?=$item['name']?></option>
-                                <?php endforeach; ?>
-                            </select>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Harga</label>
+                            <input type="text" class="form-control product_price2" id="rupiah1" name="price" placeholder="Harga">
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleInputEmail1">Jumlah Beli</label>
-                        <input type="number" class="form-control product_stock" min="0" name="total_stock" placeholder="Jumlah Beli" oninput="this.value = Math.abs(this.value)">
-                    </div>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Supplier</label>
+                            <div class="">
+                                <select class="form-control product_supplier" id="id_supplier" name="id_supplier">
+                                    <option value="">Pilih Supplier</option>
+                                    <?php foreach ($suppliers as $item) : ?>
+                                        <option data-code="<?=$item['code']?>" value="<?=$item['id_supplier']?>"><?=$item['name']?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Jumlah Beli</label>
+                            <input type="number" class="form-control product_stock" min="0" name="total_stock" placeholder="Jumlah Beli" oninput="this.value = Math.abs(this.value)">
+                        </div>
                     <?php endif; ?>
                 </div>
                 <div class="modal-footer">

@@ -73,11 +73,13 @@ class Transaction extends BaseController
         $items = $this->itemModel->findAll();
 
         $builder = $this->db->table("check_in_items");
-        $builder->select('check_in_items.*, items.name as nama_item, items.code as code_item, items.stock as stock_item, suppliers.name as name_supplier, suppliers.code as code_supplier, suppliers.id_supplier as id_supplier');
-        $builder->join('items', 'check_in_items.id_item = items.id_item');
-        $builder->join('suppliers', 'check_in_items.id_supplier = suppliers.id_supplier');
+        $builder->select('check_in_items.id, check_in_items.id_item, check_in_items.code_order, check_in_items.created_at, check_in_items.price, check_in_items.stock, check_in_items.subtotal, items.name as nama_item, items.code as code_item, items.stock as stock_item, suppliers.name as name_supplier, suppliers.code as code_supplier, suppliers.id_supplier as id_supplier');
+        $builder->join('items', 'check_in_items.id_item = items.id_item','left');
+        $builder->join('suppliers', 'check_in_items.id_supplier = suppliers.id_supplier','left');
         $builder->where('check_in_items.code_order', $transactions[0]->code_order);
         $itemPrice = $builder->get()->getResult();
+
+        // dd($itemPrice);
 
         // Name Site
         $builder_name_site = $this->db->table("setting_sites");
@@ -323,15 +325,16 @@ class Transaction extends BaseController
             $cardStocks->delete($array[$key]);
         }
 
-        foreach ($itemSuppliers as $item) {
-            $builder = $this->db->table("items");
-            $builder->select('items.*');
-            $builder->where('id_item', $item->id_item);
-            $itemSuppliers = $builder->get()->getResult();
+        foreach ($itemSuppliers as $key => $item) {
+
+            $itemCheckIn = $this->db->table("items");
+            $itemCheckIn->select('items.*');
+            $itemCheckIn->where('id_item', $item->id_item);
+            $itemCheckIn = $itemCheckIn->get()->getResult();
 
             $save_items = new ItemsModel();
             $save_items->update($item->id_item, [
-                'stock' =>  $itemSuppliers[0]->stock - $item->stock,
+                'stock' =>  $itemCheckIn[0]->stock - $item->stock,
                 'updated_at'  => date("Y-m-d H:i:s"),
                 'updated_by'  => session()->get('username')
             ]);
@@ -386,6 +389,40 @@ class Transaction extends BaseController
         $checkInItemSame1->where('id_item', $this->request->getPost('id_item'));
         $checkInItemSame = $checkInItemSame1->get()->getResult();
 
+        // Check Price Item
+        $itemBuy = $this->db->table("items");
+        $itemBuy->select('*');
+        $itemBuy->where('id_item', $this->request->getPost('id_item'));
+        $itemBuy = $itemBuy->get()->getResult();
+
+        // dd($itemBuy);
+
+        // Check Type Item
+        if($itemBuy[0]->id_type == 0) {
+            $itemType = null;
+        } else {
+            $itemType = $this->db->table("type_items");
+            $itemType->select('*');
+            $itemType->where('id_type', $itemBuy[0]->id_type);
+            $itemType = $itemType->get()->getResult();
+            foreach($itemType as $key => $item) {
+                $itemType = $item->name;
+            }
+        }
+
+        // Check Merk Item
+        if($itemBuy[0]->id_merk == 0) {
+            $itemMerk = null;
+        } else {
+            $itemMerk = $this->db->table("merk_items");
+            $itemMerk->select('*');
+            $itemMerk->where('id_merk', $itemBuy[0]->id_merk);
+            $itemMerk = $itemMerk->get()->getResult();
+            foreach($itemMerk as $key => $item) {
+                $itemMerk = $item->name;
+            }
+        }
+
         if($checkInItemSame == null) {
             $convertToArray = explode(' ', $this->request->getPost('price1'));
             $slicedToArray = explode('.', $convertToArray[1]);
@@ -405,7 +442,13 @@ class Transaction extends BaseController
                 'created_at' => date("Y-m-d H:i:s"),
                 'created_by' => session()->get('username'),
                 'updated_at' => date("Y-m-d H:i:s"),
-                'updated_by' => session()->get('username')
+                'updated_by' => session()->get('username'),
+                'code_item' => $itemBuy[0]->code,
+                'name_item' => $itemBuy[0]->name,
+                'price_item' => $itemBuy[0]->price,
+                'size_item' => $itemBuy[0]->size,
+                'merk_item' => $itemMerk,
+                'type_item' => $itemType,
             ]);
 
             // Create Card Stock Saldo In

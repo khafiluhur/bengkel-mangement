@@ -33,7 +33,7 @@
                 <li><a><i class="fa fa-edit"></i> Data Master <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                         <li><a href="<?= base_url(); ?>/items">Data Barang</a></li>
-                        <li><a href="<?= base_url(); ?>/type_items">Kategori Barang</a></li>
+                        <li><a href="<?= base_url(); ?>/type_items">Kategori</a></li>
                         <li><a href="<?= base_url(); ?>/merk_items">Merek Barang</a></li>
                         <li><a href="<?= base_url(); ?>/services">Data Service</a></li>
                         <li><a href="<?= base_url(); ?>/suppliers">Data Supplier</a></li>

@@ -428,6 +428,7 @@
             }
 
             const req_stock = document.getElementById('source1');
+            console.log(req_stock);
             var element = document.getElementById("total_stock1");
             var element1 = document.getElementById("message_stock1");
             req_stock.addEventListener('input', function() {

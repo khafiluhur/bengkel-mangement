@@ -34,13 +34,19 @@ class TransactionSupplier extends BaseController
 
     public function checkSupplier()
     {
-        $transactions = $this->checkSupplierModel->findAll();
+        // $transactions = $this->checkSupplierModel->findAll();
         $items = $this->itemModel->findAll();
 
         // Name Site
         $builder_name_site = $this->db->table("setting_sites");
         $builder_name_site->select('setting_sites.name_site');
         $name_sites = $builder_name_site->get()->getResult();
+
+        // Transaction
+        $builder_transaction = $this->db->table("check_suppliers");
+        $builder_transaction->select('check_suppliers.code_order, check_suppliers.date_trasanction, customers.plat_nomor, check_suppliers.total_pay');
+        $builder_transaction->join('customers', 'check_suppliers.customer = customers.id');
+        $transactions = $builder_transaction->get()->getResult();
 
         $data = [
             'title' => 'Transaksi Barang',
@@ -295,9 +301,35 @@ class TransactionSupplier extends BaseController
         if($checkInItemSame == null) {
             // Check Price Item
             $builder = $this->db->table("items");
-            $builder->select('price');
+            $builder->select('*');
             $builder->where('id_item', $this->request->getPost('id_item'));
             $itemPrice = $builder->get()->getResult();
+
+            // Check Type Item
+            if($itemPrice[0]->id_type == 0) {
+                $itemType = null;
+            } else {
+                $itemType = $this->db->table("type_items");
+                $itemType->select('*');
+                $itemType->where('id_type', $itemPrice[0]->id_type);
+                $itemType = $itemType->get()->getResult();
+                foreach($itemType as $key => $item) {
+                    $itemType = $item->name;
+                }
+            }
+
+            // Check Merk Item
+            if($itemPrice[0]->id_merk == 0) {
+                $itemMerk = null;
+            } else {
+                $itemMerk = $this->db->table("merk_items");
+                $itemMerk->select('*');
+                $itemMerk->where('id_merk', $itemPrice[0]->id_merk);
+                $itemMerk = $itemMerk->get()->getResult();
+                foreach($itemMerk as $key => $item) {
+                    $itemMerk = $item->name;
+                }
+            }
 
             // Discount Price
             $discounts = $this->request->getPost('discount');
@@ -323,7 +355,13 @@ class TransactionSupplier extends BaseController
                 'created_at' => date("Y-m-d H:i:s"),
                 'created_by' => session()->get('username'),
                 'updated_at' => date("Y-m-d H:i:s"),
-                'updated_by' => session()->get('username')
+                'updated_by' => session()->get('username'),
+                'code_item' => $itemPrice[0]->code,
+                'name_item' => $itemPrice[0]->name,
+                'price_item' => $itemPrice[0]->price,
+                'size_item' => $itemPrice[0]->size,
+                'merk_item' => $itemMerk,
+                'type_item' => $itemType,
             ]);
 
             // Create Card Stock Saldo Out

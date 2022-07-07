@@ -114,6 +114,7 @@ data transaction :
                                                     <th>No</th>
                                                     <th>Kode Transaksi</th>
                                                     <th>Tanggal Transaksi</th>
+                                                    <th>Plat Nomor</th>
                                                     <th>Total Bayar</th>
                                                     <th>Pilihan</th>
                                                 </tr>
@@ -121,16 +122,17 @@ data transaction :
 
                                             <tbody>
                                                 <?php $i=1; ?>
-                                                <?php foreach ($transactions as $transaction) : ?>
+                                                <?php foreach ($transactions as $key => $transaction) : ?>
                                                     <tr>
                                                         <td><?=$i++?></td>
-                                                        <td><?=$transaction['code_order']?></td>
-                                                        <td><?=$transaction['date_trasanction']?></td>
-                                                        <td><?="Rp. " . number_format($transaction['total_pay'],0,',','.');?></td>
+                                                        <td><?=$transactions[$key]->code_order?></td>
+                                                        <td><?=$transactions[$key]->date_trasanction?></td>
+                                                        <td><?=$transactions[$key]->plat_nomor?></td>
+                                                        <td><?="Rp. " . number_format($transactions[$key]->total_pay,0,',','.');?></td>
                                                         <td>
-                                                            <a href="<?= base_url(); ?>/check_suppliers/<?= $transaction['code_order'] ?>/detail" class="btn btn-warning btn-sm" style="color: black">Detail</a>
-                                                            <a href="<?= base_url(); ?>/check_suppliers/<?= $transaction['code_order'] ?>/delete-supplier" class="btn btn-danger btn-sm" style="color: white;">Hapus</a>
-                                                            <a href="<?= base_url(); ?>/check_suppliers/<?= $transaction['code_order'] ?>/cetak" class="btn btn-success btn-sm" style="color: white;">Cetak</a>
+                                                            <a href="<?= base_url(); ?>/check_suppliers/<?= $transactions[$key]->code_order ?>/detail" class="btn btn-warning btn-sm" style="color: black">Detail</a>
+                                                            <a href="<?= base_url(); ?>/check_suppliers/<?= $transactions[$key]->code_order ?>/delete-supplier" class="btn btn-danger btn-sm" style="color: white;">Hapus</a>
+                                                            <a href="<?= base_url(); ?>/check_suppliers/<?= $transactions[$key]->code_order ?>/cetak" class="btn btn-success btn-sm" style="color: white;">Cetak</a>
                                                         </td>
                                                     </tr>
                                                 <?php endforeach; ?>

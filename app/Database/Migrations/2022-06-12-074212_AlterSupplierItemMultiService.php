@@ -26,6 +26,18 @@ class AlterSupplierItemMultiService extends Migration
     public function down()
     {
         //
-        $this->forge->dropColumn('items', 'service2, service1');
+        $fields = array(
+            'service1' => array(
+                'type' => 'VARCHAR',
+                'constraint' => '100',
+                'null' => true
+            ),
+            'service2' => array(
+                'type' => 'VARCHAR',
+                'constraint' => '100',
+                'null' => true
+            ),
+        );
+        $this->forge->dropColumn('items', $fields);
     }
 }

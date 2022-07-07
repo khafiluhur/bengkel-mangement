@@ -53,8 +53,11 @@
                                                 <tr>
                                                     <th>Kode Barang</th>
                                                     <th>Nama Barang</th>
+                                                    <th>Kategori</th>
+                                                    <th>Merk</th>
                                                     <th>Ukuran</th>
                                                     <th>Stock</th>
+                                                    <th>Min Stock</th>
                                                     <th>Harga Jual</th>
                                                     <th>Total</th>
                                                     <th>Pilihan</th>
@@ -66,30 +69,58 @@
                                                     <?php if($item['stock'] <= $item['limit_stock'] ): ?>
                                                         <tr>
                                                         <td class="red"><?=$item['code']?></td>
-                                                            <td class="red"><?=$item['name']?></td>
+                                                        <td class="red"><?=$item['name']?></td>
+                                                        <?php if($item['id_type'] == 0): ?>
+                                                            <td class="red">-</td>
+                                                        <?php else: ?>
+                                                            <td class="red"><?=$item['name_type']?></td>
+                                                        <?php endif; ?>
+                                                        <?php if($item['id_merk'] == 0): ?>
+                                                            <td class="">-</td>
+                                                        <?php else: ?>
+                                                            <td class="red"><?=$item['name_merk']?></td>
+                                                        <?php endif; ?>
                                                             <td class="red"><?=$item['size']?></td>
                                                             <td class="red"><?=$item['stock']?></td>
+                                                            <td class="red"><?=$item['limit_stock']?></td>
                                                             <td class="red"><?=number_format($item['price'],0,',','.');?></td>
                                                             <td class="red"><?=number_format($item['stock'] * $item['price'],0,',','.');?></td>
-                                                            <td class="red"><a href="" class="btn-edit" data-toggle="modal" data-target="#editModal" data-id="<?=$item['id_item']?>" data-code="<?=$item['code']?>" data-name="<?=$item['name']?>" data-price="<?=$item['price']?>" data-image="<?=$item['image']?>" data-type="<?=$item['id_type']?>" data-merk="<?=$item['id_merk']?>" data-stock="<?=$item['stock']?>" data-size="<?=$item['size']?>" data-limit="<?=$item['limit_stock']?>">Ubah</a> | <a href="<?= base_url('items/'.$item['id_item'].'/delete'); ?>">Hapus</a></td>
+                                                            <td class="red"><a href="" class="btn-edit" data-toggle="modal" data-target="#editModal" data-id="<?=$item['id_item']?>" data-code="<?=$item['code']?>" data-name="<?=$item['name']?>" data-price="<?=$item['price']?>" data-image="<?=$item['image']?>" data-type="<?=$item['id_type']?>" data-merk="<?=$item['id_merk']?>" data-stock="<?=$item['stock']?>" data-size="<?=$item['size']?>" data-limit="<?=$item['limit_stock']?>"><i class="fa fa-pencil red"></i></a> | <a data-toggle="modal" data-target="#deleteModal"><i class="fa fa-trash red"></i></a></td>
                                                         </tr>
                                                     <?php else: ?>
                                                         <tr>
                                                         <td><?=$item['code']?></td>
-                                                            <td><?=$item['name']?></td>
+                                                        <td><?=$item['name']?></td>
+                                                        <?php if($item['id_type'] == 0): ?>
+                                                            <td class="">-</td>
+                                                        <?php else: ?>
+                                                            <td class=""><?=$item['name_type']?></td>
+                                                        <?php endif; ?>
+                                                        <?php if($item['id_merk'] == 0): ?>
+                                                            <td class="">-</td>
+                                                        <?php else: ?>
+                                                            <td class=""><?=$item['name_merk']?></td>
+                                                        <?php endif; ?>
                                                             <td><?=$item['size']?></td>
                                                             <td><?=$item['stock']?></td>
+                                                            <td class=""><?=$item['limit_stock']?></td>
                                                             <td><?=number_format($item['price'],0,',','.');?></td>
                                                             <td><?=number_format($item['stock'] * $item['price'],0,',','.');?></td>
-                                                            <td><a href="" class="btn-edit" data-toggle="modal" data-target="#editModal" data-id="<?=$item['id_item']?>" data-code="<?=$item['code']?>" data-name="<?=$item['name']?>" data-price="<?=$item['price']?>" data-image="<?=$item['image']?>" data-type="<?=$item['id_type']?>" data-merk="<?=$item['id_merk']?>" data-stock="<?=$item['stock']?>" data-size="<?=$item['size']?>" data-limit="<?=$item['limit_stock']?>">Ubah</a> | <a href="<?= base_url('items/'.$item['id_item'].'/delete'); ?>">Hapus</a></td>
+                                                            <td>
+                                                                <a href="" class="btn-edit" data-toggle="modal" data-target="#editModal" data-id="<?=$item['id_item']?>" data-code="<?=$item['code']?>" data-name="<?=$item['name']?>" data-price="<?=$item['price']?>" data-image="<?=$item['image']?>" data-type="<?=$item['id_type']?>" data-merk="<?=$item['id_merk']?>" data-stock="<?=$item['stock']?>" data-size="<?=$item['size']?>" data-limit="<?=$item['limit_stock']?>"><i class="fa fa-pencil"></i></a>
+                                                                <?php if($item['count_suppiler_item'] == 0 && $item['count_check_in_item'] == 0): ?>
+                                                                    | <a href="" class="btn-delete" data-toggle="modal" data-target="#deleteModal" data-id="<?=$item['id_item']?>" data-name="<?=$item['name']?>"><i class="fa fa-trash"></i></a>
+                                                                <?php else: ?>
+                                                                <?php endif; ?>
+                                                            </td>
                                                         </tr>
                                                     <?php endif; ?>
                                                 <?php endforeach; ?> 
                                             </tbody>
                                             <tfoot style="background-color: rgba(0,0,0,.05)">
                                                 <tr>
-                                                    <th colspan="5" style="text-align:center">Total:</th>
-                                                    <th colspan="2" style="text-align:center"></th>
+                                                    <th colspan="7" style="text-align:center">Total:</th>
+                                                    <th colspan="3" style="text-align:center"></th>
                                                 </tr>
                                             </tfoot>
                                     </table>
@@ -198,6 +229,15 @@
             $('.product_code').val(code);
             $('#createModal').modal('show');
         });
+
+        $('.btn-delete').on('click', function(){
+            const id = $(this).data('id');
+            var base_url = '<?php echo base_url();?>'
+            const name = $(this).data('name');
+            $('#deleteItems').attr('action', base_url + '/items/' + id + '/delete');
+            $('.product_name').html(name);
+            $('#deleteModal').modal('show');
+        });
     });
 </script>
 <script type="text/javascript">		
@@ -265,7 +305,7 @@
     
                 // Total over all pages
                 total = api
-                    .column(5)
+                    .column(8)
                     .data()
                     .reduce(function (a, b) {
                         return intVal(a) + intVal(b);
@@ -278,7 +318,7 @@
                 var rupiah2 = rupiah1.split(']')
                 
                 // Update footer
-                $(api.column(5).footer()).html(rupiah2[0]);
+                $(api.column(8).footer()).html(rupiah2[0]);
             },
         });
     });

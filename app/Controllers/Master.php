@@ -12,12 +12,13 @@ use App\Controllers\BaseController;
 use App\Models\CustomersModel;
 use App\Models\MontirsModel;
 use App\Models\CardStocksModel;
+use Config\Database;
 
 class Master extends BaseController
 {
     public function __construct()
     {
-        $this->db = db_connect();
+        $this->db = Database::connect();
         $this->itemModel = new ItemsModel();
         $this->servicesModel = new ServiceModel();
         $this->typeItemModel = new TypeItemsModel();
@@ -43,10 +44,76 @@ class Master extends BaseController
             $var = $count + 1;
         }
         $generate_code = sprintf('%04d', $var);
-
+        $code_items = "BRG".$generate_code;
+        // Check Code Items
+        $checkCodeItem = $this->db->table("items");
+        $checkCodeItem->select('code');
+        $checkCodeItem->where('code', $code_items);
+        $checkCodeItem = $checkCodeItem->get()->getResult();
+        if($checkCodeItem = true) {
+            $var = $count + 2;
+            $generate_item_code = "BRG".sprintf('%04d', $var);
+        } else {
+            $var = $count + 1;
+            $generate_item_code = "BRG".sprintf('%04d', $var);
+        }
+        
         $total = [];
         foreach($items as $key => $value) {
             $total = $value['price'] * $value['stock'];
+        }
+
+        $array = [];
+        foreach($items as $key => $item) {
+            $array[$key]['id_item'] = $items[$key]['id_item'];
+            $array[$key]['code'] = $items[$key]['code'];
+            $array[$key]['name'] = $items[$key]['name'];
+            $array[$key]['price'] = $items[$key]['price'];
+            $array[$key]['image'] = $items[$key]['image'];
+            $array[$key]['size'] = $items[$key]['size'];
+            $array[$key]['id_type'] = $items[$key]['id_type'];
+            $array[$key]['id_merk'] = $items[$key]['id_merk'];
+
+            //Check Type Item
+            $array[$key]['name_type'] = null;
+            if($items[$key]['id_type'] == 0) {
+                $array[$key]['name_type'] = null;
+            } else {
+                $checkTypeItem = $this->db->table("type_items");
+                $checkTypeItem->select('*');
+                $checkTypeItem->where('id_type', $items[$key]['id_type']);
+                $checkTypeItem = $checkTypeItem->get()->getResult();
+                $array[$key]['name_type'] = $checkTypeItem[0]->name;
+            }
+            
+            //Check Merk Item
+            $array[$key]['name_merk'] = null;
+            if($items[$key]['id_merk'] == 0) {
+                $array[$key]['name_merk'] = null;
+            } else {
+                $checkMerkItem = $this->db->table("merk_items");
+                $checkMerkItem->select('*');
+                $checkMerkItem->where('id_merk', $items[$key]['id_merk']);
+                $checkMerkItem = $checkMerkItem->get()->getResult();
+                $array[$key]['name_merk'] = $checkMerkItem[0]->name;
+            }
+
+            $array[$key]['stock'] = $items[$key]['stock'];
+            $array[$key]['limit_stock'] = $items[$key]['limit_stock'];
+
+            //Check Supplier Item in Same
+            $checkSupplierItemSame = $this->db->table("supplier_items");
+            $checkSupplierItemSame->select('COUNT(*) as total_supplier_item');
+            $checkSupplierItemSame->where('id_item', $array[$key]['id_item']);
+            $checkInItemSame = $checkSupplierItemSame->get()->getResult();
+            $array[$key]['count_suppiler_item'] = $checkInItemSame[0]->total_supplier_item;
+
+            //Check In Item in Same
+            $checkInItemSame = $this->db->table("check_in_items");
+            $checkInItemSame->select('COUNT(*) as total_check_in_item');
+            $checkInItemSame->where('id_item', $array[$key]['id_item']);
+            $checkInItemSame = $checkInItemSame->get()->getResult();
+            $array[$key]['count_check_in_item'] = $checkInItemSame[0]->total_check_in_item;
         }
 
         // Name Site
@@ -58,9 +125,9 @@ class Master extends BaseController
             'title' => 'Data Barang',
             'name_site' => $name_sites[0]->name_site, 
             'type' => 'dataItems',
-            'items' => $items,
+            'items' => $array,
             'total' => $total,
-            'new_code' => 'BRG'.$generate_code,
+            'new_code' => $generate_item_code,
             'typeitem' => $type,
             'merkitem' => $merk,
             'supplier' => $supplier
@@ -71,6 +138,12 @@ class Master extends BaseController
     public function createItem()
     {
         if (!$this->validate([
+            'code' => [
+                'rules'  => 'required|is_unique[items.code]',
+                'errors' => [
+                    'is_unique' => 'Kode Barang Tidak Boleh Sama.',
+                ],
+            ],
             'name' => [
                 'rules'  => 'required',
                 'errors' => [
@@ -81,18 +154,6 @@ class Master extends BaseController
                 'rules'  => 'required',
                 'errors' => [
                     'required' => 'Harga Barang Harus diisi.',
-                ],
-            ],
-            'id_type' => [
-                'rules'  => 'required',
-                'errors' => [
-                    'required' => 'Harus dipilih Jenis Barang',
-                ],
-            ],
-            'id_merk' => [
-                'rules'  => 'required',
-                'errors' => [
-                    'required' => 'Harus dipilih Merek Barang.',
                 ],
             ],
             'stock' => [
@@ -167,7 +228,7 @@ class Master extends BaseController
             'size' => $this->request->getPost('size'),
             'id_type' => $this->request->getPost('id_type'),
             'id_merk' => $this->request->getPost('id_merk'),
-            'stock' => $this->request->getPost('stock'),
+            // 'stock' => $this->request->getPost('stock'),
             'limit_stock' => $this->request->getPost('limit_stock'),
             'updated_at'  => date("Y-m-d H:i:s"),
             'updated_by'  => session()->get('username')
@@ -185,7 +246,7 @@ class Master extends BaseController
         $checkInItemSame1->select('*');
         $checkInItemSame1->where('id_item', $checkInItemSame);
         $checkInItemSame = $checkInItemSame1->get()->getResult();
-        // dd($checkInItemSame);
+
         if($checkInItemSame == null) {
             $cardStocks = new CardStocksModel();
             $cardStocks->insert([
@@ -194,11 +255,11 @@ class Master extends BaseController
                 'id_item' => $this->request->getPost('code'),
                 'stock_in' => "",
                 'stock_out' => "",
-                'saldo' => $this->request->getPost('stock'),
+                // 'saldo' => $this->request->getPost('stock'),
             ]);
         }
         
-        session()->setFlashdata('success', 'Berhasil diupdate');
+        session()->setFlashdata('success', 'Berhasil diupdate ');
         return redirect()->to(base_url('items'));
     }
 
@@ -240,9 +301,14 @@ class Master extends BaseController
         $builder_name_site = $this->db->table("setting_sites");
         $builder_name_site->select('setting_sites.name_site');
         $name_sites = $builder_name_site->get()->getResult();
+
+        // Check Type use Transaction
+        $builder_name_site = $this->db->table("setting_sites");
+        $builder_name_site->select('*');
+        $name_sites = $builder_name_site->get()->getResult();
         
         $data = [
-            'title' => 'Kategori Barang',
+            'title' => 'Kategori',
             'name_site' => $name_sites[0]->name_site,
             'type' => 'typeItems',
             'items' => $items
@@ -256,8 +322,8 @@ class Master extends BaseController
             'name' => [
                 'rules' => 'required|is_unique[type_items.name]',
                 'errors' => [
-                    'required' => 'Nama Jenis Barang Harus diisi',
-                    'is_unique' => 'Jenis Barang sudah ada di database'
+                    'required' => 'Kategori Harus diisi',
+                    'is_unique' => 'Kategori sudah ada di database'
                 ]
             ],
         ])) {

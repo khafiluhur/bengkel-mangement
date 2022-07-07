@@ -24,6 +24,16 @@ class AlterSupplierItems extends Migration
     public function down()
     {
         //
-        $this->forge->dropColumn('news', ['discount','plug']);
+        $fields = array(
+            'discount' => array(
+                'type' => 'INT',
+                'constraint' => '100',
+            ),
+            'plug' => array(
+                'type' => 'VARCHAR',
+                'constraint' => '100',
+            ),
+        );
+        $this->forge->dropColumn('news', $fields);
     }
 }
