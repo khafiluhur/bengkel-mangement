@@ -179,7 +179,11 @@
                                                         <td><?=$item['name']?></td>
                                                         <td><?=$item['plat_nomor']?></td>
                                                         <td><?=$item['type_motor']?></td>
-                                                        <td><a href="" class="btn-edit-montir" data-id="<?=$item['id']?>" data-code="<?=$item['name']?>" data-name="<?=$item['plat_nomor']?>" data-type="<?=$item['type_motor']?>" data-toggle="modal" data-target="#editModal" >Ubah</a> | <a href="<?= base_url('customers/'.$item['id'].'/delete'); ?>">Hapus</a></td>
+                                                        <td><a href="" class="btn-edit-montir" data-id="<?=$item['id']?>" data-code="<?=$item['name']?>" data-name="<?=$item['plat_nomor']?>" data-type="<?=$item['type_motor']?>" data-toggle="modal" data-target="#editModal" >Ubah</a>
+                                                        <?php if($item['count_customer'] == 0): ?>
+                                                        | <a href="" class="btn-delete" data-toggle="modal" data-target="#deleteModal" data-id="<?=$item['id']?>" data-name="<?=$item['name']?>">Hapus</a></td>
+                                                        <?php else: ?>
+                                                        <?php endif; ?>
                                                     </tr>
                                                 <?php endforeach; ?>
                                             </tbody>
@@ -299,6 +303,7 @@
             $('#merkDelete').attr('action', base_url + '/merk_items/' + id + '/delete');
             $('#supplierDelete').attr('action', base_url + '/suppliers/' + id + '/delete');
             $('#montirDelete').attr('action', base_url + '/montirs/' + id + '/delete');
+            $('#customerDelete').attr('action', base_url + '/customers/' + id + '/delete');
             $('.product_name').html(name);
             $('#deleteModal').modal('show');
         });

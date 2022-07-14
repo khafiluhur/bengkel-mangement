@@ -681,25 +681,16 @@
                     </div>
                 </form>
             <?php else: ?>
-                <form id="customers" method="post" action="">
+                <form id="customerDelete" method="post" action="">
                     <?= csrf_field() ?>
                     <div class="modal-body">
                         <div class="form-group">
-                            <label for="exampleInputEmail1">Nama Customer</label>
-                            <input type="text" class="form-control product_code" name="name" placeholder="Nama Customer">
-                        </div>
-                        <div class="form-group">
-                            <label for="exampleInputEmail1">Plat Nomor</label>
-                            <input type="text" class="form-control product_name" name="plat_nomor" placeholder="Plat Nomor">
-                        </div>
-                        <div class="form-group">
-                            <label for="exampleInputEmail1">Type Motor</label>
-                            <input type="text" class="form-control product_type" name="type_motor" placeholder="Type Motor">
+                            <label for="messageDelete">Apakah anda yakin ingin menghapus data ?</label> <label class="product_name font-weight-bold"></label>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary btn-sm">Simpan</button>
+                        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Tidak</button>
+                        <button type="submit" class="btn btn-primary btn-sm">Ya</button>
                     </div>
                 </form>
             <?php endif; ?>

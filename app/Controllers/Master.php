@@ -666,6 +666,22 @@ class Master extends BaseController
     {
         $items = $this->customerModel->findAll();
 
+        $array = [];
+        foreach($items as $key => $item) {
+            $array[$key]['id'] = $items[$key]['id'];
+            $array[$key]['code'] = $items[$key]['code'];
+            $array[$key]['name'] = $items[$key]['name'];
+            $array[$key]['plat_nomor'] = $items[$key]['plat_nomor'];
+            $array[$key]['type_motor'] = $items[$key]['type_motor'];
+
+            //Check Supplier Service in Same
+            $checkInItemSame = $this->db->table("check_suppliers");
+            $checkInItemSame->select('COUNT(*) as customer');
+            $checkInItemSame->where('customer', $array[$key]['id']);
+            $checkInItemSame = $checkInItemSame->get()->getResult();
+            $array[$key]['count_customer'] = $checkInItemSame[0]->customer;
+        }
+
         // Name Site
         $builder_name_site = $this->db->table("setting_sites");
         $builder_name_site->select('setting_sites.name_site');
@@ -675,7 +691,7 @@ class Master extends BaseController
             'title' => 'Data Pelanggan',
             'name_site' => $name_sites[0]->name_site,
             'type' => 'customer',
-            'items' => $items
+            'items' => $array
         ];
         return view('pages/master', $data);
     }
