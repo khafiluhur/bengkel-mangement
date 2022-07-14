@@ -677,9 +677,7 @@ class TransactionSupplier extends BaseController
         $discounts = $this->discountModel->findAll();
         $othercosts = $this->otherCostModel->findAll();
         $services = $this->serviceModel->findAll();
-
-        // dd($transactions);
-
+        
         // Customer //
         $customer = $this->db->table("customers");
         $customer->where('customers.id', $transactions[0]->customer);

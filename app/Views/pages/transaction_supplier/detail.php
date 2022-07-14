@@ -153,21 +153,21 @@
                                                             <?php endforeach; ?>
                                                             <?php if($type == 'checkIns'): ?>
                                                             <?php else: ?>
-                                                                <?php if($transactions[0]->service != null): ?>
+                                                                <?php if($transactions[0]->service != 0): ?>
                                                                     <tr>
                                                                         <td colspan="4" class="text-center"><?= $transactions[0]->service_name ?></td>
                                                                         <td colspan="4" class="text-center"><?= "Rp. " . number_format($transactions[0]->service_price,0,',','.'); ?></td>
                                                                     </tr>
                                                                 <?php else: ?>
                                                                 <?php endif; ?>
-                                                                <?php if($transactions[0]->service1 != null): ?>
+                                                                <?php if($transactions[0]->service1 != 0): ?>
                                                                     <tr>
                                                                         <td colspan="4" class="text-center"><?= $transactions[0]->service_name1 ?></td>
                                                                         <td colspan="4" class="text-center"><?= "Rp. " . number_format($transactions[0]->service_price1,0,',','.'); ?></td>
                                                                     </tr>
                                                                 <?php else: ?>
                                                                 <?php endif; ?>
-                                                                <?php if($transactions[0]->service2 != null): ?>
+                                                                <?php if($transactions[0]->service2 != 0): ?>
                                                                     <tr>
                                                                         <td colspan="4" class="text-center"><?= $transactions[0]->service_name2 ?></td>
                                                                         <td colspan="4" class="text-center"><?= "Rp. " . number_format($transactions[0]->service_price2,0,',','.'); ?></td>
