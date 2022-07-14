@@ -310,7 +310,6 @@ class Master extends BaseController
 
             $array[$key]['count_type'] = $checkInItemSame[0]->type;
         }
-        // dd($array);
 
         // Name Site
         $builder_name_site = $this->db->table("setting_sites");
@@ -381,6 +380,20 @@ class Master extends BaseController
     {
         $items = $this->merkItemModel->findAll();
 
+        $array = [];
+        foreach($items as $key => $item) {
+            $array[$key]['id_merk'] = $items[$key]['id_merk'];
+            $array[$key]['name'] = $items[$key]['name'];
+
+            //Check Supplier Service in Same
+            $checkSupplierItemSame = $this->db->table("items");
+            $checkSupplierItemSame->select('COUNT(*) as type');
+            $checkSupplierItemSame->where('id_merk', $array[$key]['id_merk']);
+            $checkInItemSame = $checkSupplierItemSame->get()->getResult();
+
+            $array[$key]['count_merk'] = $checkInItemSame[0]->type;
+        }
+
         // Name Site
         $builder_name_site = $this->db->table("setting_sites");
         $builder_name_site->select('setting_sites.name_site');
@@ -390,7 +403,7 @@ class Master extends BaseController
             'title' => 'Merek Barang',
             'name_site' => $name_sites[0]->name_site,
             'type' => 'merkItems',
-            'items' => $items
+            'items' => $array
         ];
         return view('pages/master', $data);
     }
