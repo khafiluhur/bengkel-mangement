@@ -458,6 +458,23 @@ class Master extends BaseController
     {
         $items = $this->supplierModel->findAll();
 
+        $array = [];
+        foreach($items as $key => $item) {
+            $array[$key]['id_supplier'] = $items[$key]['id_supplier'];
+            $array[$key]['code'] = $items[$key]['code'];
+            $array[$key]['name'] = $items[$key]['name'];
+            $array[$key]['name_pic'] = $items[$key]['name_pic'];
+            $array[$key]['telepone_pic'] = $items[$key]['telepone_pic'];
+            $array[$key]['alamat'] = $items[$key]['alamat'];
+
+            //Check Supplier Service in Same
+            $checkInItemSame = $this->db->table("check_in_items");
+            $checkInItemSame->select('COUNT(*) as supplier');
+            $checkInItemSame->where('id_supplier', $array[$key]['id_supplier']);
+            $checkInItemSame = $checkInItemSame->get()->getResult();
+            $array[$key]['count_supplier'] = $checkInItemSame[0]->supplier;
+        }
+
         // Name Site
         $builder_name_site = $this->db->table("setting_sites");
         $builder_name_site->select('setting_sites.name_site');
@@ -467,7 +484,7 @@ class Master extends BaseController
             'title' => 'Data Supplier',
             'name_site' => $name_sites[0]->name_site,
             'type' => 'suppliers',
-            'items' => $items
+            'items' => $array
         ];
         return view('pages/master', $data);
     }

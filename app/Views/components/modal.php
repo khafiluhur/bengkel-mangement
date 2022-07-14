@@ -573,35 +573,16 @@
                     </div>
                 </form>
             <?php elseif($type == 'suppliers'): ?>
-                <form id="suppliers" method="post" action="">
+                <form id="supplierDelete" method="post" action="">
                 <?= csrf_field() ?>
-                    <div class="modal-body">
+                <div class="modal-body">
                         <div class="form-group">
-                            <label for="exampleInputEmail1">Nama Supplier</label>
-                            <input type="text" class="form-control product_name" name="name" placeholder="Nama Supplier" value="">
-                        </div>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label for="exampleInputEmail1">Nama PIC</label>
-                            <input type="text" class="form-control product_price2" name="name_pic" placeholder="Nama PIC" value="">
-                        </div>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label for="exampleInputEmail1">Telephone PIC</label>
-                            <input type="text" class="form-control product_stock" name="telepone_pic" placeholder="Telephone PIC" value="">
-                        </div>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label for="exampleInputEmail1">Alamat</label>
-                            <input type="text" class="form-control product_type" name="alamat" placeholder="Alamat" value="">
+                            <label for="messageDelete">Apakah anda yakin ingin menghapus data ?</label> <label class="product_name font-weight-bold"></label>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary btn-sm">Simpan</button>
+                        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Tidak</button>
+                        <button type="submit" class="btn btn-primary btn-sm">Ya</button>
                     </div>
                 </form>
             <?php elseif($type == 'manajemenUser'): ?>

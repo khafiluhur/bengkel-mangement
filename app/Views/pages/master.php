@@ -106,7 +106,11 @@
                                                         <td><?=$item['name']?></td>
                                                         <td><?=$item['name_pic']?></td>
                                                         <td><?=$item['telepone_pic']?></td>
-                                                        <td><a href="" class="btn-edit-montir" data-toggle="modal" data-target="#editModal" data-id="<?=$item['id_supplier']?>" data-name="<?=$item['name']?>" data-price="<?=$item['name_pic']?>" data-stock="<?=$item['telepone_pic']?>"  data-type="<?=$item['alamat']?>">Ubah</a> | <a href="<?= base_url('suppliers/'.$item['id_supplier'].'/delete'); ?>">Hapus</a></td>
+                                                        <td><a href="" class="btn-edit-montir" data-toggle="modal" data-target="#editModal" data-id="<?=$item['id_supplier']?>" data-name="<?=$item['name']?>" data-price="<?=$item['name_pic']?>" data-stock="<?=$item['telepone_pic']?>"  data-type="<?=$item['alamat']?>">Ubah</a>
+                                                        <?php if($item['count_supplier'] == 0): ?>
+                                                        | <a href="" class="btn-delete" data-toggle="modal" data-target="#deleteModal" data-id="<?=$item['id_supplier']?>" data-name="<?=$item['name']?>">Hapus</a></td>
+                                                        <?php else: ?>
+                                                        <?php endif; ?>
                                                     </tr>
                                                 <?php endforeach; ?>
                                             </tbody>
@@ -289,6 +293,7 @@
             $('#servicesDelete').attr('action', base_url + '/services/' + id + '/delete');
             $('#typeDelete').attr('action', base_url + '/type_items/' + id + '/delete');
             $('#merkDelete').attr('action', base_url + '/merk_items/' + id + '/delete');
+            $('#supplierDelete').attr('action', base_url + '/suppliers/' + id + '/delete');
             $('.product_name').html(name);
             $('#deleteModal').modal('show');
         });
