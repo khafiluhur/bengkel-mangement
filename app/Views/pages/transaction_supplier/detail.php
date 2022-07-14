@@ -153,24 +153,24 @@
                                                             <?php endforeach; ?>
                                                             <?php if($type == 'checkIns'): ?>
                                                             <?php else: ?>
-                                                                <?php if($own_service != null): ?>
+                                                                <?php if($transactions[0]->service != null): ?>
                                                                     <tr>
-                                                                        <td colspan="4" class="text-center"><?= $own_service[0]->name ?></td>
-                                                                        <td colspan="4" class="text-center"><?= "Rp. " . number_format($own_service[0]->price,0,',','.'); ?></td>
+                                                                        <td colspan="4" class="text-center"><?= $transactions[0]->service_name ?></td>
+                                                                        <td colspan="4" class="text-center"><?= "Rp. " . number_format($transactions[0]->service_price,0,',','.'); ?></td>
                                                                     </tr>
                                                                 <?php else: ?>
                                                                 <?php endif; ?>
-                                                                <?php if($own_service1 != null): ?>
+                                                                <?php if($transactions[0]->service1 != null): ?>
                                                                     <tr>
-                                                                        <td colspan="4" class="text-center"><?= $own_service1[0]->name ?></td>
-                                                                        <td colspan="4" class="text-center"><?= "Rp. " . number_format($own_service1[0]->price,0,',','.'); ?></td>
+                                                                        <td colspan="4" class="text-center"><?= $transactions[0]->service_name1 ?></td>
+                                                                        <td colspan="4" class="text-center"><?= "Rp. " . number_format($transactions[0]->service_price1,0,',','.'); ?></td>
                                                                     </tr>
                                                                 <?php else: ?>
                                                                 <?php endif; ?>
-                                                                <?php if($own_service2 != null): ?>
+                                                                <?php if($transactions[0]->service2 != null): ?>
                                                                     <tr>
-                                                                        <td colspan="4" class="text-center"><?= $own_service2[0]->name ?></td>
-                                                                        <td colspan="4" class="text-center"><?= "Rp. " . number_format($own_service2[0]->price,0,',','.'); ?></td>
+                                                                        <td colspan="4" class="text-center"><?= $transactions[0]->service_name2 ?></td>
+                                                                        <td colspan="4" class="text-center"><?= "Rp. " . number_format($transactions[0]->service_price2,0,',','.'); ?></td>
                                                                     </tr>
                                                                 <?php else: ?>
                                                                 <?php endif; ?>

@@ -168,18 +168,21 @@ class TransactionSupplier extends BaseController
         $builder->select('*');
         $builder->where('id', $services);
         $services1 = $builder->get()->getResult();
+        $servicesDetail = $services1;
 
         $services11 = $this->request->getPost('service1');
         $builder = $this->db->table("services");
         $builder->select('*');
         $builder->where('id', $services11);
         $services2 = $builder->get()->getResult();
+        $servicesDetail2 = $services2;
 
         $services12 = $this->request->getPost('service2');
         $builder = $this->db->table("services");
         $builder->select('*');
         $builder->where('id', $services12);
         $services3 = $builder->get()->getResult();
+        $servicesDetail3 = $services3;
 
         if($services == '0') {
             if($discounts == 0) {
@@ -229,6 +232,31 @@ class TransactionSupplier extends BaseController
             }
         }
 
+
+        if($servicesDetail == null) {
+            $servicesDetailName = null;
+            $servicesDetailPrice = null;
+        } else {
+            $servicesDetailName = $servicesDetail[0]->name;
+            $servicesDetailPrice = $servicesDetail[0]->price;
+        }
+
+        if($servicesDetail2 == null) {
+            $servicesDetailName2 = null;
+            $servicesDetailPrice2 = null;
+        } else {
+            $servicesDetailName2 = $servicesDetail2[0]->name;
+            $servicesDetailPrice2 = $servicesDetail2[0]->price;
+        }
+
+        if($servicesDetail3 == null) {
+            $servicesDetailName3 = null;
+            $servicesDetailPrice3 = null;
+        } else {
+            $servicesDetailName3 = $servicesDetail3[0]->name;
+            $servicesDetailPrice3 = $servicesDetail3[0]->price;
+        }
+
         // if($total_pays[0]->total_pay == null) {
         //     session()->setFlashdata('error', 'Harus memilih barang terlebih dahulu');
         //     return redirect()->to(base_url('check_suppliers/store'));
@@ -240,8 +268,14 @@ class TransactionSupplier extends BaseController
                 'montir' => $this->request->getPost('montir'),
                 'discount' => $this->request->getPost('discount'),
                 'service' => $services,
+                'service_name' => $servicesDetailName,
+                'service_price' => $servicesDetailPrice,
                 'service1' => $services11,
+                'service_name1' => $servicesDetailName2,
+                'service_price1' => $servicesDetailPrice2,
                 'service2' => $services12,
+                'service_name2' => $servicesDetailName3,
+                'service_price2' => $servicesDetailPrice3,
                 'crash' => $this->request->getPost('crash'),
                 'crashrepair1' => $this->request->getPost('crashrepair1'),
                 'crashrepair2' => $this->request->getPost('crashrepair2'),
@@ -643,6 +677,8 @@ class TransactionSupplier extends BaseController
         $discounts = $this->discountModel->findAll();
         $othercosts = $this->otherCostModel->findAll();
         $services = $this->serviceModel->findAll();
+
+        // dd($transactions);
 
         // Customer //
         $customer = $this->db->table("customers");

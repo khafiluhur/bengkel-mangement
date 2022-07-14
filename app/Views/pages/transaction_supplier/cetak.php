@@ -341,27 +341,27 @@ textarea:focus,
                 <td class="price"><?="Rp. " . number_format($data->subtotal,0,',','.');?></td>
             </tr>
         <?php } ?> 
-        <?php if($services != null): ?> 
+        <?php if($transactions[0]->service != null): ?> 
             <tr class="item-row">
-                <td><?= $services[0]->name ?></td>
+                <td><?= $transactions[0]->service_name ?></td>
                 <td></td>
-                <td class="price"><?= "Rp. " . number_format($services[0]->price,0,',','.'); ?></td>
+                <td class="price"><?= "Rp. " . number_format($transactions[0]->service_price,0,',','.'); ?></td>
             </tr> 
         <?php else:?>
         <?php endif; ?> 
-        <?php if($services1 != null): ?> 
+        <?php if($transactions[0]->service1 != null): ?> 
             <tr class="item-row">
-                <td><?= $services1[0]->name ?></td>
+                <td><?= $transactions[0]->service_name1 ?></td>
                 <td></td>
-                <td class="price"><?= "Rp. " . number_format($services1[0]->price,0,',','.'); ?></td>
+                <td class="price"><?= "Rp. " . number_format($transactions[0]->service_price1,0,',','.'); ?></td>
             </tr> 
         <?php else:?>
         <?php endif; ?> 
-        <?php if($services2 != null): ?> 
+        <?php if($transactions[0]->service2 != null): ?> 
             <tr class="item-row">
-                <td><?= $services2[0]->name ?></td>
+                <td><?= $transactions[0]->service_name2 ?></td>
                 <td></td>
-                <td class="price"><?= "Rp. " . number_format($services2[0]->price,0,',','.'); ?></td>
+                <td class="price"><?= "Rp. " . number_format($transactions[0]->service_price2,0,',','.'); ?></td>
             </tr> 
         <?php else:?>
         <?php endif; ?> 

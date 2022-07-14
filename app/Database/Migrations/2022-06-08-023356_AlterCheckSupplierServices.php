@@ -21,6 +21,6 @@ class AlterCheckSupplierServices extends Migration
     public function down()
     {
         //
-        $this->forge->dropColumn('news', 'service');
+        $this->forge->dropColumn('check_suppliers', 'service');
     }
 }

@@ -38,6 +38,6 @@ class AlterSupplierItemMultiService extends Migration
                 'null' => true
             ),
         );
-        $this->forge->dropColumn('items', $fields);
+        $this->forge->dropColumn('check_suppliers', $fields);
     }
 }

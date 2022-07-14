@@ -690,6 +690,35 @@ class Master extends BaseController
     {
         $items = $this->servicesModel->findAll();
 
+        // dd($items);
+
+        $array = [];
+        foreach($items as $key => $item) {
+            $array[$key]['id'] = $items[$key]['id'];
+            $array[$key]['name'] = $items[$key]['name'];
+            $array[$key]['price'] = $items[$key]['price'];
+
+            //Check Supplier Service in Same
+            $checkSupplierItemSame = $this->db->table("check_suppliers");
+            $checkSupplierItemSame->select('COUNT(*) as service');
+            $checkSupplierItemSame->where('service', $array[$key]['id']);
+            $checkInItemSame = $checkSupplierItemSame->get()->getResult();
+
+            //Check Supplier Service in Same
+            $checkSupplierItemSame = $this->db->table("check_suppliers");
+            $checkSupplierItemSame->select('COUNT(*) as service1');
+            $checkSupplierItemSame->where('service1', $array[$key]['id']);
+            $checkInItemSame1 = $checkSupplierItemSame->get()->getResult();
+
+            //Check Supplier Service in Same
+            $checkSupplierItemSame = $this->db->table("check_suppliers");
+            $checkSupplierItemSame->select('COUNT(*) as service2');
+            $checkSupplierItemSame->where('service2', $array[$key]['id']);
+            $checkInItemSame2 = $checkSupplierItemSame->get()->getResult();
+
+            $array[$key]['count_suppiler_service'] = $checkInItemSame[0]->service + $checkInItemSame1[0]->service1 + $checkInItemSame2[0]->service2;
+        }
+        
         // Name Site
         $builder_name_site = $this->db->table("setting_sites");
         $builder_name_site->select('setting_sites.name_site');
@@ -699,7 +728,7 @@ class Master extends BaseController
             'title' => 'Data Service',
             'name_site' => $name_sites[0]->name_site,
             'type' => 'services',
-            'items' => $items
+            'items' => $array
         ];
         return view('pages/master', $data);
     }
