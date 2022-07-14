@@ -60,7 +60,11 @@
                                                 <?php foreach ($items as $item) : ?>
                                                     <tr>
                                                         <td><?=$item['name']?></td>
-                                                        <td><a href="" class="btn-edit-montir" data-toggle="modal" data-target="#editModal" data-id="<?=$item['id_type']?>" data-name="<?=$item['name']?>">Ubah</a> | <a href="<?= base_url('type_items/'.$item['id_type'].'/delete'); ?>">Hapus</a></td>
+                                                        <td><a href="" class="btn-edit-montir" data-toggle="modal" data-target="#editModal" data-id="<?=$item['id_type']?>" data-name="<?=$item['name']?>">Ubah</a>
+                                                        <?php if($item['count_type'] == 0): ?>
+                                                            | <a href="" class="btn-delete" data-toggle="modal" data-target="#deleteModal" data-id="<?=$item['id_type']?>" data-name="<?=$item['name']?>">Hapus</a></td>
+                                                        <?php else: ?>
+                                                        <?php endif; ?>
                                                     </tr>
                                                 <?php endforeach; ?>
                                             </tbody>
@@ -279,6 +283,7 @@
             var base_url = '<?php echo base_url();?>'
             const name = $(this).data('name');
             $('#servicesDelete').attr('action', base_url + '/services/' + id + '/delete');
+            $('#typeDelete').attr('action', base_url + '/type_items/' + id + '/delete');
             $('.product_name').html(name);
             $('#deleteModal').modal('show');
         });

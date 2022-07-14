@@ -538,7 +538,7 @@
                 <?= csrf_field() ?>
                     <div class="modal-body">
                         <div class="form-group">
-                            <label for="messageDelete">Apakah anda yakin ingin menghapus data ?</label> <label class="product_name"></label>
+                            <label for="messageDelete">Apakah anda yakin ingin menghapus data ?</label> <label class="product_name font-weight-bold"></label>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -547,17 +547,16 @@
                     </div>
                 </form>
             <?php elseif($type == 'typeItems'): ?>
-                <form id="typeItems" method="post" action="">
+                <form id="typeDelete" method="get">
                 <?= csrf_field() ?>
                     <div class="modal-body">
                         <div class="form-group">
-                            <label for="exampleInputEmail1">Kategori Barang</label>
-                            <input type="text" class="form-control product_name" name="name" placeholder="Kategori Barang" value="">
+                            <label for="messageDelete">Apakah anda yakin ingin menghapus data ?</label> <label class="product_name font-weight-bold"></label>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary btn-sm">Simpan</button>
+                        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Tidak</button>
+                        <button type="submit" class="btn btn-primary btn-sm">Ya</button>
                     </div>
                 </form>
             <?php elseif($type == 'merkItems'): ?>
@@ -698,7 +697,7 @@
                     <?= csrf_field() ?>
                     <div class="modal-body">
                         <div class="form-group">
-                            <label for="messageDelete">Apakah anda yakin ingin menghapus data ?</label> <label class="product_name"></label>
+                            <label for="messageDelete">Apakah anda yakin ingin menghapus data ?</label> <label class="product_name font-weight-bold"></label>
                         </div>
                     </div>
                     <div class="modal-footer">

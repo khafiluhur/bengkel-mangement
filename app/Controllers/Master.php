@@ -297,6 +297,21 @@ class Master extends BaseController
     {
         $items = $this->typeItemModel->findAll();
 
+        $array = [];
+        foreach($items as $key => $item) {
+            $array[$key]['id_type'] = $items[$key]['id_type'];
+            $array[$key]['name'] = $items[$key]['name'];
+
+            //Check Supplier Service in Same
+            $checkSupplierItemSame = $this->db->table("items");
+            $checkSupplierItemSame->select('COUNT(*) as type');
+            $checkSupplierItemSame->where('id_type', $array[$key]['id_type']);
+            $checkInItemSame = $checkSupplierItemSame->get()->getResult();
+
+            $array[$key]['count_type'] = $checkInItemSame[0]->type;
+        }
+        // dd($array);
+
         // Name Site
         $builder_name_site = $this->db->table("setting_sites");
         $builder_name_site->select('setting_sites.name_site');
@@ -311,7 +326,7 @@ class Master extends BaseController
             'title' => 'Kategori',
             'name_site' => $name_sites[0]->name_site,
             'type' => 'typeItems',
-            'items' => $items
+            'items' => $array
         ];
         return view('pages/master', $data);
     }
@@ -689,8 +704,6 @@ class Master extends BaseController
     public function service()
     {
         $items = $this->servicesModel->findAll();
-
-        // dd($items);
 
         $array = [];
         foreach($items as $key => $item) {
