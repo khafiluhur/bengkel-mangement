@@ -130,7 +130,11 @@
                                                         <td><?=$item['nip']?></td>
                                                         <td><?=$item['name']?></td>
                                                         <td><?=$item['telepone']?></td>
-                                                        <td><a href="" class="btn-edit-montir" data-id="<?=$item['id']?>" data-code="<?=$item['nip']?>" data-name="<?=$item['name']?>" data-type="<?=$item['telepone']?>" data-stock="<?=$item['alamat']?>" data-toggle="modal" data-target="#editModal" >Ubah</a> | <a href="<?= base_url('montirs/'.$item['id'].'/delete'); ?>">Hapus</a></td>
+                                                        <td><a href="" class="btn-edit-montir" data-id="<?=$item['id']?>" data-code="<?=$item['nip']?>" data-name="<?=$item['name']?>" data-type="<?=$item['telepone']?>" data-stock="<?=$item['alamat']?>" data-toggle="modal" data-target="#editModal" >Ubah</a>
+                                                        <?php if($item['count_montir'] == 0): ?>
+                                                        | <a href="" class="btn-delete" data-toggle="modal" data-target="#deleteModal" data-id="<?=$item['id']?>" data-name="<?=$item['name']?>">Hapus</a></td>
+                                                        <?php else: ?>
+                                                        <?php endif; ?>
                                                     </tr>
                                                 <?php endforeach; ?>
                                             </tbody>
@@ -294,6 +298,7 @@
             $('#typeDelete').attr('action', base_url + '/type_items/' + id + '/delete');
             $('#merkDelete').attr('action', base_url + '/merk_items/' + id + '/delete');
             $('#supplierDelete').attr('action', base_url + '/suppliers/' + id + '/delete');
+            $('#montirDelete').attr('action', base_url + '/montirs/' + id + '/delete');
             $('.product_name').html(name);
             $('#deleteModal').modal('show');
         });

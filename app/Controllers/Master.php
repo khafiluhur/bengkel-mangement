@@ -558,6 +558,22 @@ class Master extends BaseController
     {
         $items = $this->montirModel->findAll();
 
+        $array = [];
+        foreach($items as $key => $item) {
+            $array[$key]['id'] = $items[$key]['id'];
+            $array[$key]['nip'] = $items[$key]['nip'];
+            $array[$key]['name'] = $items[$key]['name'];
+            $array[$key]['telepone'] = $items[$key]['telepone'];
+            $array[$key]['alamat'] = $items[$key]['alamat'];
+
+            //Check Supplier Service in Same
+            $checkInItemSame = $this->db->table("check_suppliers");
+            $checkInItemSame->select('COUNT(*) as montir');
+            $checkInItemSame->where('montir', $array[$key]['id']);
+            $checkInItemSame = $checkInItemSame->get()->getResult();
+            $array[$key]['count_montir'] = $checkInItemSame[0]->montir;
+        }
+
         // Name Site
         $builder_name_site = $this->db->table("setting_sites");
         $builder_name_site->select('setting_sites.name_site');
@@ -567,7 +583,7 @@ class Master extends BaseController
             'title' => 'Data Montir',
             'name_site' => $name_sites[0]->name_site,
             'type' => 'montirs',
-            'items' => $items
+            'items' => $array
         ];
         return view('pages/master', $data);
     }

@@ -461,6 +461,10 @@
                     <?= csrf_field() ?>
                     <div class="modal-body">
                         <div class="form-group">
+                            <label for="exampleInputEmail1">Nomor Pegawai</label>
+                            <input type="text" class="form-control product_code" name="name" placeholder="Nama" disabled>
+                        </div>
+                        <div class="form-group">
                             <label for="exampleInputEmail1">Nama</label>
                             <input type="text" class="form-control product_name" name="name" placeholder="Nama">
                         </div>
@@ -575,7 +579,7 @@
             <?php elseif($type == 'suppliers'): ?>
                 <form id="supplierDelete" method="post" action="">
                 <?= csrf_field() ?>
-                <div class="modal-body">
+                    <div class="modal-body">
                         <div class="form-group">
                             <label for="messageDelete">Apakah anda yakin ingin menghapus data ?</label> <label class="product_name font-weight-bold"></label>
                         </div>
@@ -651,25 +655,16 @@
                     </div>
                 </form>
             <?php elseif($type == 'montirs'): ?>
-                <form id="montirs" method="post" action="">
+                <form id="montirDelete" method="post" action="">
                     <?= csrf_field() ?>
                     <div class="modal-body">
                         <div class="form-group">
-                            <label for="exampleInputEmail1">Nama</label>
-                            <input type="text" class="form-control product_name" name="name" placeholder="Nama">
-                        </div>
-                        <div class="form-group">
-                            <label for="exampleInputEmail1">Telephone</label>
-                            <input type="text" class="form-control product_type" name="telepone" placeholder="Telepone">
-                        </div>
-                        <div class="form-group">
-                            <label for="exampleInputEmail1">Alamat</label>
-                            <textarea type="text" class="form-control product_stock" name="alamat" placeholder="Alamat"></textarea>
+                            <label for="messageDelete">Apakah anda yakin ingin menghapus data ?</label> <label class="product_name font-weight-bold"></label>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary btn-sm">Simpan</button>
+                        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Tidak</button>
+                        <button type="submit" class="btn btn-primary btn-sm">Ya</button>
                     </div>
                 </form>
             <?php elseif($type == 'services'): ?>
