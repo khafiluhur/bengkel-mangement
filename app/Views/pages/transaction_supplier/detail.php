@@ -131,7 +131,7 @@
                                                             <tr>
                                                                 <td><?= $item->code_item ?></td>
                                                                 <td><?= $item->nama_item ?></td>
-                                                                <td><?= "Rp. " . number_format($item->price,0,',','.'); ?></td>
+                                                                <td><?= "Rp. " . number_format($item->price_item,0,',','.'); ?></td>
                                                                 <td><?= $item->stock ?></td>
                                                                 <?php if($type == 'checkIns'): ?>
                                                                     <td><?= $item->name_supplier ?></td>

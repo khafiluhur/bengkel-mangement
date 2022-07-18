@@ -26,10 +26,13 @@ data transaction :
 <div class="right_col" role="main">
     <div class="">
     <div class="page-title">
+        <?php if (!empty(session()->getFlashdata('success'))) : ?>
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <?php echo session()->getFlashdata('success'); ?>
+            </div>
+        <?php endif; ?>
         <?php if (!empty(session()->getFlashdata('error'))) : ?>
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <h4>Periksa Entrian Form</h4>
-                </hr />
                 <?php echo session()->getFlashdata('error'); ?>
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -80,7 +83,7 @@ data transaction :
                                                         <td><?="Rp. " . number_format($transaction['total_pay'],0,',','.');?></td>
                                                         <td>
                                                             <a href="<?= base_url(); ?>/check_in/<?= $transaction['code_order'] ?>/detail" class="btn btn-warning btn-sm" style="color: black">Detail</a>
-                                                            <a href="<?= base_url(); ?>/check_in/<?= $transaction['code_order'] ?>/delete-supplier" class="btn btn-danger btn-sm" style="color: white;">Hapus</a>
+                                                            <a href="" data-toggle="modal" data-target="#deleteModal" data-id="<?=$transaction['code_order']?>" data-name="<?=$transaction['code_order']?>" class="btn btn-delete btn-danger btn-sm" style="color: white;">Hapus</a>
                                                         </td>
                                                     </tr>
                                                 <?php endforeach; ?>
@@ -131,7 +134,7 @@ data transaction :
                                                         <td><?="Rp. " . number_format($transactions[$key]->total_pay,0,',','.');?></td>
                                                         <td>
                                                             <a href="<?= base_url(); ?>/check_suppliers/<?= $transactions[$key]->code_order ?>/detail" class="btn btn-warning btn-sm" style="color: black">Detail</a>
-                                                            <a href="<?= base_url(); ?>/check_suppliers/<?= $transactions[$key]->code_order ?>/delete-supplier" class="btn btn-danger btn-sm" style="color: white;">Hapus</a>
+                                                            <a href="" data-toggle="modal" data-target="#deleteModal" data-id="<?=$transactions[$key]->code_order?>" data-name="<?=$transactions[$key]->code_order?>" class="btn btn-delete btn-danger btn-sm" style="color: white;">Hapus</a>
                                                             <a href="<?= base_url(); ?>/check_suppliers/<?= $transactions[$key]->code_order ?>/cetak" class="btn btn-success btn-sm" style="color: white;">Cetak</a>
                                                         </td>
                                                     </tr>
@@ -253,6 +256,16 @@ data transaction :
             const code = $(this).data('code');
             $('.product_code').val(code);
             $('#createModal').modal('show');
+        });
+
+        $('.btn-delete').on('click', function(){
+            const id = $(this).data('id');
+            var base_url = '<?php echo base_url();?>'
+            const name = $(this).data('name');
+            $('#checkOutsDelete').attr('action', base_url + '/check_suppliers/' + id + '/delete');
+            $('#checkInsDelete').attr('action', base_url + '/check_in/' + id + '/delete');
+            $('.product_name').html('#' + name);
+            $('#deleteModal').modal('show');
         });
     });
 </script>

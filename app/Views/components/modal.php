@@ -680,8 +680,34 @@
                         <button type="submit" class="btn btn-primary btn-sm">Ya</button>
                     </div>
                 </form>
+            <?php elseif($type == 'checkIns'): ?>
+                <form id="checkInsDelete" method="get">
+                    <?= csrf_field() ?>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="messageDelete">Apakah anda yakin ingin menghapus data ?</label> <label class="product_name font-weight-bold"></label>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Tidak</button>
+                        <button type="submit" class="btn btn-primary btn-sm">Ya</button>
+                    </div>
+                </form>
+            <?php elseif($type == 'checkSuppliers'): ?>
+                <form id="checkOutsDelete" method="get">
+                    <?= csrf_field() ?>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="messageDelete">Apakah anda yakin ingin menghapus data ?</label> <label class="product_name font-weight-bold"></label>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Tidak</button>
+                        <button type="submit" class="btn btn-primary btn-sm">Ya</button>
+                    </div>
+                </form>
             <?php else: ?>
-                <form id="customerDelete" method="post" action="">
+                <form id="customerDelete" method="get">
                     <?= csrf_field() ?>
                     <div class="modal-body">
                         <div class="form-group">

@@ -77,16 +77,7 @@ class AlterCheckSupplierServiceDetail extends Migration
                 'constraint' => '100',
                 'null' => true
             ),
-            'service1' => array(
-                'type' => 'VARCHAR',
-                'constraint' => '100',
-                'null' => true
-            ),
-            'service2' => array(
-                'type' => 'VARCHAR',
-                'constraint' => '100',
-                'null' => true
-            ),
         );
+        $this->forge->dropColumn('check_suppliers', $fields);
     }
 }

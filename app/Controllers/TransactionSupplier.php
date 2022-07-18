@@ -67,6 +67,7 @@ class TransactionSupplier extends BaseController
         $discounts = $this->discountModel->findAll();
         $othercosts = $this->otherCostModel->findAll();
         $services = $this->serviceModel->findAll();
+
         
         //Generate Code Items
         $count = count($transactions);
@@ -232,7 +233,6 @@ class TransactionSupplier extends BaseController
             }
         }
 
-
         if($servicesDetail == null) {
             $servicesDetailName = null;
             $servicesDetailPrice = null;
@@ -257,37 +257,100 @@ class TransactionSupplier extends BaseController
             $servicesDetailPrice3 = $servicesDetail3[0]->price;
         }
 
-        // if($total_pays[0]->total_pay == null) {
-        //     session()->setFlashdata('error', 'Harus memilih barang terlebih dahulu');
-        //     return redirect()->to(base_url('check_suppliers/store'));
-        // } else {
+        if($total_pays[0]->total_pay != null) {
             $item = new CheckSuppliersModel();
-            $item->insert([
-                'code_order' => $this->request->getPost('code'),
-                'customer' => $this->request->getPost('customer'),
-                'montir' => $this->request->getPost('montir'),
-                'discount' => $this->request->getPost('discount'),
-                'service' => $services,
-                'service_name' => $servicesDetailName,
-                'service_price' => $servicesDetailPrice,
-                'service1' => $services11,
-                'service_name1' => $servicesDetailName2,
-                'service_price1' => $servicesDetailPrice2,
-                'service2' => $services12,
-                'service_name2' => $servicesDetailName3,
-                'service_price2' => $servicesDetailPrice3,
-                'crash' => $this->request->getPost('crash'),
-                'crashrepair1' => $this->request->getPost('crashrepair1'),
-                'crashrepair2' => $this->request->getPost('crashrepair2'),
-                'crashrepair3' => $this->request->getPost('crashrepair3'),
-                'date_trasanction' => date("Y-m-d"),
-                'total_pay' => $total_pay,
-                'created_at' => date("Y-m-d H:i:s"),
-                'created_by' => session()->get('username'),
-                'updated_at' => date("Y-m-d H:i:s"),
-                'updated_by' => session()->get('username')
-            ]);
-        // }
+                        $item->insert([
+                            'code_order' => $this->request->getPost('code'),
+                            'customer' => $this->request->getPost('customer'),
+                            'montir' => $this->request->getPost('montir'),
+                            'discount' => $this->request->getPost('discount'),
+                            'service' => $services,
+                            'service_name' => $servicesDetailName,
+                            'service_price' => $servicesDetailPrice,
+                            'service1' => $services11,
+                            'service_name1' => $servicesDetailName2,
+                            'service_price1' => $servicesDetailPrice2,
+                            'service2' => $services12,
+                            'service_name2' => $servicesDetailName3,
+                            'service_price2' => $servicesDetailPrice3,
+                            'crash' => $this->request->getPost('crash'),
+                            'crashrepair1' => $this->request->getPost('crashrepair1'),
+                            'crashrepair2' => $this->request->getPost('crashrepair2'),
+                            'crashrepair3' => $this->request->getPost('crashrepair3'),
+                            'date_trasanction' => date("Y-m-d"),
+                            'total_pay' => $total_pay,
+                            'created_at' => date("Y-m-d H:i:s"),
+                            'created_by' => session()->get('username'),
+                            'updated_at' => date("Y-m-d H:i:s"),
+                            'updated_by' => session()->get('username')
+                        ]);
+        } else {
+            if($servicesDetail != null) {
+                if($servicesDetail2 != null) {
+                    $item = new CheckSuppliersModel();
+                    $item->insert([
+                        'code_order' => $this->request->getPost('code'),
+                        'customer' => $this->request->getPost('customer'),
+                        'montir' => $this->request->getPost('montir'),
+                        'discount' => $this->request->getPost('discount'),
+                        'service' => $services,
+                        'service_name' => $servicesDetailName,
+                        'service_price' => $servicesDetailPrice,
+                        'service1' => $services11,
+                        'service_name1' => $servicesDetailName2,
+                        'service_price1' => $servicesDetailPrice2,
+                        'service2' => $services12,
+                        'service_name2' => $servicesDetailName3,
+                        'service_price2' => $servicesDetailPrice3,
+                        'crash' => $this->request->getPost('crash'),
+                        'crashrepair1' => $this->request->getPost('crashrepair1'),
+                        'crashrepair2' => $this->request->getPost('crashrepair2'),
+                        'crashrepair3' => $this->request->getPost('crashrepair3'),
+                        'date_trasanction' => date("Y-m-d"),
+                        'total_pay' => $total_pay,
+                        'created_at' => date("Y-m-d H:i:s"),
+                        'created_by' => session()->get('username'),
+                        'updated_at' => date("Y-m-d H:i:s"),
+                        'updated_by' => session()->get('username')
+                    ]);
+                } else {
+                    if($servicesDetail3 != null) {
+                        session()->setFlashdata('error', 'Service 2 Harus di isi terlebih dahulu');
+                        return redirect()->to(base_url('check_suppliers/store'));
+                    } else {
+                        $item = new CheckSuppliersModel();
+                        $item->insert([
+                            'code_order' => $this->request->getPost('code'),
+                            'customer' => $this->request->getPost('customer'),
+                            'montir' => $this->request->getPost('montir'),
+                            'discount' => $this->request->getPost('discount'),
+                            'service' => $services,
+                            'service_name' => $servicesDetailName,
+                            'service_price' => $servicesDetailPrice,
+                            'service1' => $services11,
+                            'service_name1' => $servicesDetailName2,
+                            'service_price1' => $servicesDetailPrice2,
+                            'service2' => $services12,
+                            'service_name2' => $servicesDetailName3,
+                            'service_price2' => $servicesDetailPrice3,
+                            'crash' => $this->request->getPost('crash'),
+                            'crashrepair1' => $this->request->getPost('crashrepair1'),
+                            'crashrepair2' => $this->request->getPost('crashrepair2'),
+                            'crashrepair3' => $this->request->getPost('crashrepair3'),
+                            'date_trasanction' => date("Y-m-d"),
+                            'total_pay' => $total_pay,
+                            'created_at' => date("Y-m-d H:i:s"),
+                            'created_by' => session()->get('username'),
+                            'updated_at' => date("Y-m-d H:i:s"),
+                            'updated_by' => session()->get('username')
+                        ]);
+                    }
+                }
+            } else {
+                session()->setFlashdata('error', 'Barang & Service 1 & Harus di isi terlebih dahulu');
+                return redirect()->to(base_url('check_suppliers/store'));
+            }
+        }
 
         session()->setFlashdata('success', 'Berhasil ditambah');
         return redirect()->to(base_url('check_suppliers'));
@@ -305,7 +368,7 @@ class TransactionSupplier extends BaseController
             'total_stock' => [
                 'rules'  => 'required',
                 'errors' => [
-                    'required' => 'Stok Barang Harus diisi.',
+                    'required' => 'Jumlah Beli Harus diisi.',
                 ],
             ],
             'discount' => [
@@ -467,6 +530,7 @@ class TransactionSupplier extends BaseController
         // Discount Price
         $discounts = $this->request->getPost('discount');
         $plug = $this->request->getPost('plug');
+        dd($this->request->getPost('plug'));
         if($discounts != 0) {
             // Sum Request stock equal Price with discount
             $discount_amount = $discounts/100;
@@ -481,7 +545,7 @@ class TransactionSupplier extends BaseController
         $items->update($id, [
             'stock' => $this->request->getPost('total_stock'),
             'discount' => $this->request->getPost('discount'),
-            'plug' => $this->request->getPost('plug'),
+            'plug' => $plug,
             'subtotal' =>  $subtotal,
             'updated_at'  => date("Y-m-d H:i:s"),
             'updated_by'  => session()->get('username')
@@ -497,7 +561,7 @@ class TransactionSupplier extends BaseController
         }
         $cardStocks = new CardStocksModel();
         $cardStocks->update($checkInItemSame, [
-            'stock_in' => $this->request->getPost('total_stock'),
+            'stock_out' => $this->request->getPost('total_stock'),
             'saldo' => ($stockItems + $stockNewItems) - $this->request->getPost('total_stock'),
         ]);
 
@@ -539,10 +603,17 @@ class TransactionSupplier extends BaseController
         $priceStock = $priceNewItem->get()->getResult();
         $priceNewItems = $priceStock[0]->total_pay;
 
+        $plug = $this->request->getPost('plug');
+        $discounts = $this->request->getPost('discount');
+        $discount_amount = $discounts/100;
+
+        $subtotal = (($itemPrice[0]->price * $this->request->getPost('total_stock')) + $plug) - (($itemPrice[0]->price * $this->request->getPost('total_stock')) * $discount_amount) ;
         $items = new SupplierItemsModel();
         $items->update($id, [
             'stock' => $this->request->getPost('total_stock'),
-            'subtotal' =>  $itemPrice[0]->price * $this->request->getPost('total_stock'),
+            'subtotal' =>  $subtotal,
+            'discount' => $discounts,
+            'plug' => $plug,
             'updated_at'  => date("Y-m-d H:i:s"),
             'updated_by'  => session()->get('username')
         ]);
@@ -557,14 +628,30 @@ class TransactionSupplier extends BaseController
         }
         $cardStocks = new CardStocksModel();
         $cardStocks->update($checkInItemSame, [
-            'stock_in' => $this->request->getPost('total_stock'),
+            'stock_out' => $this->request->getPost('total_stock'),
             'saldo' => ($stockItems + $stockNewItems) - $this->request->getPost('total_stock'),
         ]);
 
-        // balance price
+        $checkTransaction = $this->db->table("supplier_items");
+        $checkTransaction->select('*');
+        $checkTransaction->like('code_order', $idItems[0]->code_order);
+        $checkTransaction = $checkTransaction->get()->getResult();
+        foreach($checkTransaction as $key => $item) {
+            $checkTransaction[$key] = $checkTransaction[$key]->subtotal;
+        }
+        $checkSupplier = $this->db->table("check_suppliers");
+        $checkSupplier->select('*');
+        $checkSupplier->like('code_order', $idItems[0]->code_order);
+        $checkSupplier = $checkSupplier->get()->getResult();
+        foreach($checkSupplier as $key => $item) {
+            $checkSupplier = $item;
+        }
+        $discount_amount_supplier = $checkSupplier->discount/100;
+        $total_pay = ((array_sum($checkTransaction) + $checkSupplier->service_price + $checkSupplier->service_price1 + $checkSupplier->service_price2) - ((array_sum($checkTransaction) + $checkSupplier->service_price + $checkSupplier->service_price1 + $checkSupplier->service_price2) * $discount_amount_supplier));
+
         $price_items = new CheckSuppliersModel();
         $price_items->update($idItems[0]->id_check_ins, [
-            'total_pay' =>  ($priceNewItems - $itemStock[0]->subtotal) + ($itemPrice[0]->price * $this->request->getPost('total_stock')),
+            'total_pay' =>  $total_pay,
             'updated_at'  => date("Y-m-d H:i:s"),
             'updated_by'  => session()->get('username')
         ]);
@@ -583,10 +670,15 @@ class TransactionSupplier extends BaseController
     public function deleteCheckItemSupplier($id)
     {
         $stockNewItem = $this->db->table("supplier_items");
-        $stockNewItem->select('code_order, id_item, stock');
-        $stockNewItem->where('id', $id);
+        $stockNewItem->select('id, code_order, id_item, stock');
+        $stockNewItem->where('code_order', $id);
         $itemStock = $stockNewItem->get()->getResult();
         $stockNewItems = $itemStock[0]->stock;
+
+        $checkOuts = $this->db->table("check_suppliers");
+        $checkOuts->select('id');
+        $checkOuts->where('code_order', $id);
+        $checkOutsResult = $checkOuts->get()->getResult();
 
         $builder = $this->db->table("items");
         $builder->select('stock, code');
@@ -594,10 +686,12 @@ class TransactionSupplier extends BaseController
         $itemPrice = $builder->get()->getResult();
         $stockItems = $itemPrice[0]->stock;
 
+        $key_like = $itemStock[0]->code_order.' '.'Barang Keluar';
+
         // Delete Card Stock Saldo In
         $checkInItemSame1 = $this->db->table("card_stocks");
         $checkInItemSame1->select('id');
-        $checkInItemSame1->like('information', $itemStock[0]->code_order);
+        $checkInItemSame1->like('information', $key_like);
         $checkInItemSame = $checkInItemSame1->get()->getResult();
         $array = [];
         foreach($checkInItemSame as $key => $item) {
@@ -614,9 +708,11 @@ class TransactionSupplier extends BaseController
         ]);
 
         $items = new SupplierItemsModel();
-        $items->delete($id);
+        $itemsCheckSupplier = new CheckSuppliersModel();
+        $items->delete($itemStock[0]->id);
+        $itemsCheckSupplier->delete($checkOutsResult[0]->id);
         session()->setFlashdata('success', 'Berhasil dihapus');
-        return redirect()->to(base_url('check_suppliers/store'));
+        return redirect()->to(base_url('check_suppliers'));
     }
 
     public function deleteCheckSupplier($id)
@@ -677,7 +773,7 @@ class TransactionSupplier extends BaseController
         $discounts = $this->discountModel->findAll();
         $othercosts = $this->otherCostModel->findAll();
         $services = $this->serviceModel->findAll();
-        
+
         // Customer //
         $customer = $this->db->table("customers");
         $customer->where('customers.id', $transactions[0]->customer);
@@ -729,6 +825,7 @@ class TransactionSupplier extends BaseController
             'own_service1' => $ownService2,
             'own_service2' => $ownService4,
         ];
+        // dd($data);
         return view('pages/transaction_supplier/detail', $data);
     }
 

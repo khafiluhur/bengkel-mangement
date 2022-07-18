@@ -77,7 +77,7 @@
                                     <select class="form-control" name="customer">
                                         <option value="">Pilih Pelanggan</option>
                                         <?php foreach ($customers as $item) : ?>
-                                            <option value="<?=$item['id']?>"><?=$item['name']?>(<?=$item['plat_nomor']?>)</option>
+                                            <option value="<?= $item['id'] ?>" ><?=$item['name']?>(<?=$item['plat_nomor']?>)</option>
                                         <?php endforeach; ?>
                                     </select>
                                 </div>
@@ -98,7 +98,7 @@
                                 <label class="col-form-label col-md-3 col-sm-3" for="first-name" style="font-size: 16px; font-weight: bold;">Kerusakan
                                 </label>
                                 <div class="col-md-6 col-sm-6 ">
-                                <textarea id="crash" class="form-control" name="crash" data-parsley-trigger="keyup"></textarea>
+                                <textarea id="crash" class="form-control" name="crash" data-parsley-trigger="keyup" ></textarea>
                                 </div>
                             </div>
                             <div class="item form-group">

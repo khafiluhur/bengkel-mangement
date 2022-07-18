@@ -307,6 +307,12 @@ class Transaction extends BaseController
         $builder->where('code_order', $id);
         $items = $builder->get()->getResult();
 
+        // Check Item //
+        $builder = $this->db->table("items");
+        $builder->select('items.*');
+        $builder->where('id_item', $items[0]->code_order);
+        $itemSuppliers = $builder->get()->getResult();
+
         // Check Item Supplier //
         $builder = $this->db->table("check_in_items");
         $builder->select('check_in_items.*');
@@ -374,7 +380,7 @@ class Transaction extends BaseController
             'total_stock' => [
                 'rules'  => 'required',
                 'errors' => [
-                    'required' => 'Stok Barang Harus diisi.',
+                    'required' => 'Qty Barang Harus diisi.',
                 ],
             ]
         ])) {
@@ -424,67 +430,70 @@ class Transaction extends BaseController
         }
 
         if($checkInItemSame == null) {
-            $convertToArray = explode(' ', $this->request->getPost('price1'));
-            $slicedToArray = explode('.', $convertToArray[1]);
-            $joinToArray = join("",$slicedToArray);
+            if($this->request->getPost('total_stock') == 0) {
+                session()->setFlashData('error', 'Qty Barang tidak boleh 0, Harap isi Qty Barang');
+            } else {
+                $convertToArray = explode(' ', $this->request->getPost('price1'));
+                $slicedToArray = explode('.', $convertToArray[1]);
+                $joinToArray = join("",$slicedToArray);
 
-            // Sum Request stock equal Price
-            $subtotal = $this->request->getPost('total_stock') * $joinToArray;
+                // Sum Request stock equal Price
+                $subtotal = $this->request->getPost('total_stock') * $joinToArray;
 
-            $item = new CheckInItemsModel();
-            $item->insert([
-                'code_order' => $this->request->getPost('codeTR'),
-                'id_item' => $this->request->getPost('id_item'),
-                'id_supplier' => $this->request->getPost('id_supplier'),
-                'price' => $joinToArray,
-                'stock' => $this->request->getPost('total_stock'),
-                'subtotal' => $subtotal,
-                'created_at' => date("Y-m-d H:i:s"),
-                'created_by' => session()->get('username'),
-                'updated_at' => date("Y-m-d H:i:s"),
-                'updated_by' => session()->get('username'),
-                'code_item' => $itemBuy[0]->code,
-                'name_item' => $itemBuy[0]->name,
-                'price_item' => $itemBuy[0]->price,
-                'size_item' => $itemBuy[0]->size,
-                'merk_item' => $itemMerk,
-                'type_item' => $itemType,
-            ]);
+                $item = new CheckInItemsModel();
+                $item->insert([
+                    'code_order' => $this->request->getPost('codeTR'),
+                    'id_item' => $this->request->getPost('id_item'),
+                    'id_supplier' => $this->request->getPost('id_supplier'),
+                    'price' => $joinToArray,
+                    'stock' => $this->request->getPost('total_stock'),
+                    'subtotal' => $subtotal,
+                    'created_at' => date("Y-m-d H:i:s"),
+                    'created_by' => session()->get('username'),
+                    'updated_at' => date("Y-m-d H:i:s"),
+                    'updated_by' => session()->get('username'),
+                    'code_item' => $itemBuy[0]->code,
+                    'name_item' => $itemBuy[0]->name,
+                    'price_item' => $itemBuy[0]->price,
+                    'size_item' => $itemBuy[0]->size,
+                    'merk_item' => $itemMerk,
+                    'type_item' => $itemType,
+                ]);
 
-            // Create Card Stock Saldo In
-            $checkInItemSame1 = $this->db->table("items");
-            $checkInItemSame1->select('code, stock');
-            $checkInItemSame1->where('id_item', $this->request->getPost('id_item'));
-            $checkInItemSame = $checkInItemSame1->get()->getResult();
-            foreach($checkInItemSame as $key => $item) {
-                $checkInItemSame = $item->code;
-                $checkInItemStockSame = $item->stock;
+                // Create Card Stock Saldo In
+                $checkInItemSame1 = $this->db->table("items");
+                $checkInItemSame1->select('code, stock');
+                $checkInItemSame1->where('id_item', $this->request->getPost('id_item'));
+                $checkInItemSame = $checkInItemSame1->get()->getResult();
+                foreach($checkInItemSame as $key => $item) {
+                    $checkInItemSame = $item->code;
+                    $checkInItemStockSame = $item->stock;
+                }
+                $cardStocks = new CardStocksModel();
+                $cardStocks->insert([
+                    'date' => date("Y-m-d"),
+                    'information' => $this->request->getPost('codeTR')." Barang Masuk",
+                    'id_item' => $checkInItemSame,
+                    'stock_in' => $this->request->getPost('total_stock'),
+                    'stock_out' => "",
+                    'saldo' => $checkInItemStockSame + $this->request->getPost('total_stock'),
+                ]);
+
+                // balace stock //
+                $item1 = $this->db->table("items");
+                $item1->select('stock');
+                $item1->where('id_item', $this->request->getPost('id_item'));
+                $itemPrice1 = $item1->get()->getResult();
+
+                $items2 = $itemPrice1[0]->stock;
+
+                $save_items = new ItemsModel();
+                $save_items->update($this->request->getPost('id_item'), [
+                    'stock' =>  $items2 + $this->request->getPost('total_stock'),
+                    'updated_at'  => date("Y-m-d H:i:s"),
+                    'updated_by'  => session()->get('username')
+                ]);
             }
-            $cardStocks = new CardStocksModel();
-            $cardStocks->insert([
-                'date' => date("Y-m-d"),
-                'information' => $this->request->getPost('codeTR')." Barang Masuk",
-                'id_item' => $checkInItemSame,
-                'stock_in' => $this->request->getPost('total_stock'),
-                'stock_out' => "",
-                'saldo' => $checkInItemStockSame + $this->request->getPost('total_stock'),
-            ]);
-
-            // balace stock //
-            $item1 = $this->db->table("items");
-            $item1->select('stock');
-            $item1->where('id_item', $this->request->getPost('id_item'));
-            $itemPrice1 = $item1->get()->getResult();
-
-            $items2 = $itemPrice1[0]->stock;
-
-            $save_items = new ItemsModel();
-            $save_items->update($this->request->getPost('id_item'), [
-                'stock' =>  $items2 + $this->request->getPost('total_stock'),
-                'updated_at'  => date("Y-m-d H:i:s"),
-                'updated_by'  => session()->get('username')
-            ]);
-
             session()->setFlashData('success', 'Berhasil ditambah');
         } else {
             session()->setFlashData('error', 'Barang yang ditambah sudah ada di transaksi ini, silakan ubah dengan cara mengeklik icon pencil');
@@ -496,10 +505,15 @@ class Transaction extends BaseController
     public function deleteCheckInItem($id)
     {
         $stockNewItem = $this->db->table("check_in_items");
-        $stockNewItem->select('stock, id_item, code_order');
-        $stockNewItem->where('id', $id);
+        $stockNewItem->select('id, stock, id_item, code_order');
+        $stockNewItem->where('code_order', $id);
         $itemStock = $stockNewItem->get()->getResult();
         $stockNewItems = $itemStock[0]->stock;
+
+        $checkIns = $this->db->table("check_ins");
+        $checkIns->select('id');
+        $checkIns->where('code_order', $id);
+        $checkInsResult = $checkIns->get()->getResult();
 
         $builder = $this->db->table("items");
         $builder->select('stock, code');
@@ -507,31 +521,39 @@ class Transaction extends BaseController
         $itemPrice = $builder->get()->getResult();
         $stockItems = $itemPrice[0]->stock;
 
-        // Delete Card Stock Saldo In
-        $checkInItemSame1 = $this->db->table("card_stocks");
-        $checkInItemSame1->select('id');
-        $checkInItemSame1->like('information', $itemPrice[0]->code);
-        $checkInItemSame = $checkInItemSame1->get()->getResult();
-       
-        $array = [];
-        foreach($checkInItemSame as $key => $item) {
-            $array[$key] = $checkInItemSame[$key]->id;
-            $cardStocks = new CardStocksModel();
-            $cardStocks->delete($array[$key]);
+        if($itemPrice[0]->stock <= 0) {
+            session()->setFlashdata('error', 'Data Transaksi Tidak bisa di hapus');
+        } else {
+            $key_like = $itemStock[0]->code_order.' '.'Barang Masuk';
+
+            // Delete Card Stock Saldo In
+            $checkInItemSame1 = $this->db->table("card_stocks");
+            $checkInItemSame1->select('id');
+            $checkInItemSame1->like('information', $key_like);
+            $checkInItemSame = $checkInItemSame1->get()->getResult();
+           
+            $array = [];
+            foreach($checkInItemSame as $key => $item) {
+                $array[$key] = $checkInItemSame[$key]->id;
+                $cardStocks = new CardStocksModel();
+                $cardStocks->delete($array[$key]);
+            }
+    
+            // balance stock
+            $save_items = new ItemsModel();
+            $save_items->update($itemStock[0]->id_item, [
+                'stock' =>  ($stockItems - $stockNewItems),
+                'updated_at'  => date("Y-m-d H:i:s"),
+                'updated_by'  => session()->get('username')
+            ]);
+    
+            $items = new CheckInItemsModel();
+            $itemsCheckIns = new CheckInsModel();
+            $items->delete($itemStock[0]->id);
+            $itemsCheckIns->delete($checkInsResult[0]->id);
+            session()->setFlashdata('success', 'Berhasil dihapus');
         }
-
-        // balance stock
-        $save_items = new ItemsModel();
-        $save_items->update($itemStock[0]->id_item, [
-            'stock' =>  ($stockItems - $stockNewItems),
-            'updated_at'  => date("Y-m-d H:i:s"),
-            'updated_by'  => session()->get('username')
-        ]);
-
-        $items = new CheckInItemsModel();
-        $items->delete($id);
-        session()->setFlashdata('success', 'Berhasil dihapus');
-        return redirect()->to(base_url('check_in/store'));
+        return redirect()->to(base_url('check_in'));
     }
 
     public function checkOut()
