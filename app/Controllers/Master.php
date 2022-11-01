@@ -38,33 +38,33 @@ class Master extends BaseController
 
         //Generate Code Items
         $count = count($items);
-        if($count == 0) {
+        if ($count == 0) {
             $var = 1;
         } else {
             $var = $count + 1;
         }
         $generate_code = sprintf('%04d', $var);
-        $code_items = "BRG".$generate_code;
+        $code_items = "BRG" . $generate_code;
         // Check Code Items
         $checkCodeItem = $this->db->table("items");
         $checkCodeItem->select('code');
         $checkCodeItem->where('code', $code_items);
         $checkCodeItem = $checkCodeItem->get()->getResult();
-        if($checkCodeItem = true) {
+        if ($checkCodeItem = true) {
             $var = $count + 2;
-            $generate_item_code = "BRG".sprintf('%04d', $var);
+            $generate_item_code = "BRG" . sprintf('%04d', $var);
         } else {
             $var = $count + 1;
-            $generate_item_code = "BRG".sprintf('%04d', $var);
+            $generate_item_code = "BRG" . sprintf('%04d', $var);
         }
-        
+
         $total = [];
-        foreach($items as $key => $value) {
+        foreach ($items as $key => $value) {
             $total = $value['price'] * $value['stock'];
         }
 
         $array = [];
-        foreach($items as $key => $item) {
+        foreach ($items as $key => $item) {
             $array[$key]['id_item'] = $items[$key]['id_item'];
             $array[$key]['code'] = $items[$key]['code'];
             $array[$key]['name'] = $items[$key]['name'];
@@ -76,7 +76,7 @@ class Master extends BaseController
 
             //Check Type Item
             $array[$key]['name_type'] = null;
-            if($items[$key]['id_type'] == 0) {
+            if ($items[$key]['id_type'] == 0) {
                 $array[$key]['name_type'] = null;
             } else {
                 $checkTypeItem = $this->db->table("type_items");
@@ -85,10 +85,10 @@ class Master extends BaseController
                 $checkTypeItem = $checkTypeItem->get()->getResult();
                 $array[$key]['name_type'] = $checkTypeItem[0]->name;
             }
-            
+
             //Check Merk Item
             $array[$key]['name_merk'] = null;
-            if($items[$key]['id_merk'] == 0) {
+            if ($items[$key]['id_merk'] == 0) {
                 $array[$key]['name_merk'] = null;
             } else {
                 $checkMerkItem = $this->db->table("merk_items");
@@ -123,7 +123,7 @@ class Master extends BaseController
 
         $data = [
             'title' => 'Data Barang',
-            'name_site' => $name_sites[0]->name_site, 
+            'name_site' => $name_sites[0]->name_site,
             'type' => 'dataItems',
             'items' => $array,
             'total' => $total,
@@ -174,9 +174,9 @@ class Master extends BaseController
         }
 
         $convertToArray = explode(' ', $this->request->getPost('price'));
-        if(count($convertToArray) == 2) {
+        if (count($convertToArray) == 2) {
             $slicedToArray = explode('.', $convertToArray[1]);
-            $joinToArray = join("",$slicedToArray);
+            $joinToArray = join("", $slicedToArray);
         } else {
             $joinToArray = $this->request->getPost('price');
         }
@@ -200,7 +200,7 @@ class Master extends BaseController
         $cardStocks = new CardStocksModel();
         $cardStocks->insert([
             'date' => date("Y-m-d"),
-            'information' => "Saldo ".$this->request->getPost('code'),
+            'information' => "Saldo " . $this->request->getPost('code'),
             'id_item' => $this->request->getPost('code'),
             'stock_in' => "",
             'stock_out' => "",
@@ -213,9 +213,9 @@ class Master extends BaseController
     public function updateItem($id)
     {
         $convertToArray = explode(' ', $this->request->getPost('price'));
-        if(count($convertToArray) == 2) {
+        if (count($convertToArray) == 2) {
             $slicedToArray = explode('.', $convertToArray[1]);
-            $joinToArray = join("",$slicedToArray);
+            $joinToArray = join("", $slicedToArray);
         } else {
             $joinToArray = $this->request->getPost('price');
         }
@@ -238,7 +238,7 @@ class Master extends BaseController
         $checkInItemSame1->select('code');
         $checkInItemSame1->where('id_item', $id);
         $checkInItemSame = $checkInItemSame1->get()->getResult();
-        foreach($checkInItemSame as $key => $item) {
+        foreach ($checkInItemSame as $key => $item) {
             $checkInItemSame = $item->code;
         }
 
@@ -247,18 +247,18 @@ class Master extends BaseController
         $checkInItemSame1->where('id_item', $checkInItemSame);
         $checkInItemSame = $checkInItemSame1->get()->getResult();
 
-        if($checkInItemSame == null) {
+        if ($checkInItemSame == null) {
             $cardStocks = new CardStocksModel();
             $cardStocks->insert([
                 'date' => date("Y-m-d"),
-                'information' => "Saldo ".$this->request->getPost('code'),
+                'information' => "Saldo " . $this->request->getPost('code'),
                 'id_item' => $this->request->getPost('code'),
                 'stock_in' => "",
                 'stock_out' => "",
                 // 'saldo' => $this->request->getPost('stock'),
             ]);
         }
-        
+
         session()->setFlashdata('success', 'Berhasil diupdate ');
         return redirect()->to(base_url('items'));
     }
@@ -272,17 +272,17 @@ class Master extends BaseController
         $checkInItemSame1->select('code');
         $checkInItemSame1->where('id_item', $id);
         $checkInItemSame = $checkInItemSame1->get()->getResult();
-        foreach($checkInItemSame as $key => $item) {
+        foreach ($checkInItemSame as $key => $item) {
             $checkInItemSame = $item->code;
         }
-        
+
         $checkInItemSame1 = $this->db->table("card_stocks");
         $checkInItemSame1->select('id');
         $checkInItemSame1->where('id_item', $checkInItemSame);
         $checkInItemSame2 = $checkInItemSame1->get()->getResult();
 
-        if($checkInItemSame2 != null) {
-            foreach($checkInItemSame2 as $key => $item) {
+        if ($checkInItemSame2 != null) {
+            foreach ($checkInItemSame2 as $key => $item) {
                 $checkInItemSame2 = $item->id;
             }
             $cardStockModel->delete($checkInItemSame2);
@@ -298,7 +298,7 @@ class Master extends BaseController
         $items = $this->typeItemModel->findAll();
 
         $array = [];
-        foreach($items as $key => $item) {
+        foreach ($items as $key => $item) {
             $array[$key]['id_type'] = $items[$key]['id_type'];
             $array[$key]['name'] = $items[$key]['name'];
 
@@ -320,7 +320,7 @@ class Master extends BaseController
         $builder_name_site = $this->db->table("setting_sites");
         $builder_name_site->select('*');
         $name_sites = $builder_name_site->get()->getResult();
-        
+
         $data = [
             'title' => 'Kategori',
             'name_site' => $name_sites[0]->name_site,
@@ -381,7 +381,7 @@ class Master extends BaseController
         $items = $this->merkItemModel->findAll();
 
         $array = [];
-        foreach($items as $key => $item) {
+        foreach ($items as $key => $item) {
             $array[$key]['id_merk'] = $items[$key]['id_merk'];
             $array[$key]['name'] = $items[$key]['name'];
 
@@ -459,7 +459,7 @@ class Master extends BaseController
         $items = $this->supplierModel->findAll();
 
         $array = [];
-        foreach($items as $key => $item) {
+        foreach ($items as $key => $item) {
             $array[$key]['id_supplier'] = $items[$key]['id_supplier'];
             $array[$key]['code'] = $items[$key]['code'];
             $array[$key]['name'] = $items[$key]['name'];
@@ -507,7 +507,7 @@ class Master extends BaseController
         //Generate Code Items
         $suppliers = $this->supplierModel->findAll();
         $count = count($suppliers);
-        if($count == 0) {
+        if ($count == 0) {
             $var = 1;
         } else {
             $var = $count + 1;
@@ -516,7 +516,7 @@ class Master extends BaseController
 
         $items = new SuppliersModel();
         $items->insert([
-            'code' => 'MJMS'.$generate_code,
+            'code' => 'MJMS' . $generate_code,
             'name' => $this->request->getPost('name'),
             'name_pic' => $this->request->getPost('name_pic'),
             'telepone_pic' => $this->request->getPost('telepone_pic'),
@@ -559,7 +559,7 @@ class Master extends BaseController
         $items = $this->montirModel->findAll();
 
         $array = [];
-        foreach($items as $key => $item) {
+        foreach ($items as $key => $item) {
             $array[$key]['id'] = $items[$key]['id'];
             $array[$key]['nip'] = $items[$key]['nip'];
             $array[$key]['name'] = $items[$key]['name'];
@@ -617,7 +617,7 @@ class Master extends BaseController
         //Generate Code Items
         $montirs = $this->montirModel->findAll();
         $count = count($montirs);
-        if($count == 0) {
+        if ($count == 0) {
             $var = 1;
         } else {
             $var = $count + 1;
@@ -626,7 +626,7 @@ class Master extends BaseController
 
         $items = new MontirsModel();
         $items->insert([
-            'nip' => 'MJME'.$generate_code,
+            'nip' => 'MJME' . $generate_code,
             'name' => $this->request->getPost('name'),
             'telepone' => $this->request->getPost('telepone'),
             'alamat' => $this->request->getPost('alamat'),
@@ -667,7 +667,7 @@ class Master extends BaseController
         $items = $this->customerModel->findAll();
 
         $array = [];
-        foreach($items as $key => $item) {
+        foreach ($items as $key => $item) {
             $array[$key]['id'] = $items[$key]['id'];
             $array[$key]['code'] = $items[$key]['code'];
             $array[$key]['name'] = $items[$key]['name'];
@@ -725,7 +725,7 @@ class Master extends BaseController
         //Generate Code Items
         $customers = $this->customerModel->findAll();
         $count = count($customers);
-        if($count == 0) {
+        if ($count == 0) {
             $var = 1;
         } else {
             $var = $count + 1;
@@ -734,7 +734,7 @@ class Master extends BaseController
 
         $items = new CustomersModel();
         $items->insert([
-            'code' => 'MJMC'.$generate_code,
+            'code' => 'MJMC' . $generate_code,
             'name' => $this->request->getPost('name'),
             'plat_nomor' => $this->request->getPost('plat_nomor'),
             'type_motor' => $this->request->getPost('type_motor'),
@@ -768,7 +768,7 @@ class Master extends BaseController
         $items = $this->servicesModel->findAll();
 
         $array = [];
-        foreach($items as $key => $item) {
+        foreach ($items as $key => $item) {
             $array[$key]['id'] = $items[$key]['id'];
             $array[$key]['name'] = $items[$key]['name'];
             $array[$key]['price'] = $items[$key]['price'];
@@ -793,7 +793,7 @@ class Master extends BaseController
 
             $array[$key]['count_suppiler_service'] = $checkInItemSame[0]->service + $checkInItemSame1[0]->service1 + $checkInItemSame2[0]->service2;
         }
-        
+
         // Name Site
         $builder_name_site = $this->db->table("setting_sites");
         $builder_name_site->select('setting_sites.name_site');
@@ -829,9 +829,9 @@ class Master extends BaseController
         }
 
         $convertToArray = explode(' ', $this->request->getPost('price'));
-        if(count($convertToArray) == 2) {
+        if (count($convertToArray) == 2) {
             $slicedToArray = explode('.', $convertToArray[1]);
-            $joinToArray = join("",$slicedToArray);
+            $joinToArray = join("", $slicedToArray);
         } else {
             $joinToArray = $this->request->getPost('price');
         }
@@ -848,9 +848,9 @@ class Master extends BaseController
     public function updateService($id)
     {
         $convertToArray = explode(' ', $this->request->getPost('price'));
-        if(count($convertToArray) == 2) {
+        if (count($convertToArray) == 2) {
             $slicedToArray = explode('.', $convertToArray[1]);
-            $joinToArray = join("",$slicedToArray);
+            $joinToArray = join("", $slicedToArray);
         } else {
             $joinToArray = $this->request->getPost('price');
         }

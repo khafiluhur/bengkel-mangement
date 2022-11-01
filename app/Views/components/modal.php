@@ -4,12 +4,12 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h6 class="modal-title" id="exampleModalLabel">Tambah <?=$title?></h6>
+                <h6 class="modal-title" id="exampleModalLabel">Tambah <?= $title ?></h6>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
+                    <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <?php if($type == 'dataItems'): ?>
+            <?php if ($type == 'dataItems') : ?>
                 <?php $validation = \Config\Services::validation(); ?>
                 <form method="post" action="<?= base_url(); ?>/items/process">
                     <?= csrf_field() ?>
@@ -22,11 +22,11 @@
                         <div class="form-group">
                             <label for="exampleInputEmail1">Nama Barang</label>
                             <input type="text" class="form-control" name="name" placeholder="Nama Barang" <?= old('name'); ?> id="name">
-                            <?php if($validation->getError('name')) {?>
+                            <?php if ($validation->getError('name')) { ?>
                                 <div class='alert alert-danger mt-2'>
-                                <?= $error = $validation->getError('name'); ?>
+                                    <?= $error = $validation->getError('name'); ?>
                                 </div>
-                            <?php }?>
+                            <?php } ?>
                         </div>
                         <div class="form-group">
                             <label for="exampleInputEmail1">Harga</label>
@@ -46,7 +46,7 @@
                                 <select class="form-control" id="id_type" name="id_type">
                                     <option value="">Pilih Kategori Barang</option>
                                     <?php foreach ($typeitem as $item) : ?>
-                                        <option value="<?=$item['id_type']?>"><?=$item['name']?></option>
+                                        <option value="<?= $item['id_type'] ?>"><?= $item['name'] ?></option>
                                     <?php endforeach; ?>
                                 </select>
                             </div>
@@ -57,7 +57,7 @@
                                 <select class="form-control" id="id_merk" name="id_merk">
                                     <option value="">Pilih Merk Barang</option>
                                     <?php foreach ($merkitem as $item) : ?>
-                                        <option value="<?=$item['id_merk']?>"><?=$item['name']?></option>
+                                        <option value="<?= $item['id_merk'] ?>"><?= $item['name'] ?></option>
                                     <?php endforeach; ?>
                                 </select>
                             </div>
@@ -76,9 +76,9 @@
                         <button type="submit" class="btn btn-primary btn-sm">Simpan</button>
                     </div>
                 </form>
-            <?php elseif($type == 'typeItems'): ?>
+            <?php elseif ($type == 'typeItems') : ?>
                 <form method="post" action="<?= base_url(); ?>/type_items/process">
-                <?= csrf_field() ?>
+                    <?= csrf_field() ?>
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="exampleInputEmail1">Kategori</label>
@@ -90,9 +90,9 @@
                         <button type="submit" class="btn btn-primary btn-sm">Simpan</button>
                     </div>
                 </form>
-            <?php elseif($type == 'merkItems'): ?>
+            <?php elseif ($type == 'merkItems') : ?>
                 <form method="post" action="<?= base_url(); ?>/merk_items/process">
-                <?= csrf_field() ?>
+                    <?= csrf_field() ?>
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="exampleInputEmail1">Merk Barang</label>
@@ -104,9 +104,9 @@
                         <button type="submit" class="btn btn-primary btn-sm">Simpan</button>
                     </div>
                 </form>
-            <?php elseif($type == 'suppliers'): ?>
+            <?php elseif ($type == 'suppliers') : ?>
                 <form method="post" action="<?= base_url(); ?>/suppliers/process">
-                <?= csrf_field() ?>
+                    <?= csrf_field() ?>
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="exampleInputEmail1">Nama Supplier</label>
@@ -130,9 +130,9 @@
                         <button type="submit" class="btn btn-primary btn-sm">Simpan</button>
                     </div>
                 </form>
-            <?php elseif($type == 'manajemenUser'): ?>
+            <?php elseif ($type == 'manajemenUser') : ?>
                 <form method="post" action="<?= base_url(); ?>/management_user/process">
-                <?= csrf_field() ?>
+                    <?= csrf_field() ?>
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="exampleInputEmail1">Name user</label>
@@ -166,8 +166,8 @@
                         <button type="submit" class="btn btn-primary btn-sm">Simpan</button>
                     </div>
                 </form>
- 
-            <?php elseif($type == 'checkOuts'): ?>
+
+            <?php elseif ($type == 'checkOuts') : ?>
                 <form method="post" action="<?= base_url(); ?>/check_out/process">
                     <?= csrf_field() ?>
                     <div class="modal-body">
@@ -177,7 +177,7 @@
                                 <select class="form-control" id="id_item" name="id_item">
                                     <option value="">Pilih</option>
                                     <?php foreach ($items as $item) : ?>
-                                        <option value="<?=$item['id_item']?>" data-stock="<?=$item['stock']?>"><?=$item['code']?>(<?=$item['name']?>)</option>
+                                        <option value="<?= $item['id_item'] ?>" data-stock="<?= $item['stock'] ?>"><?= $item['code'] ?>(<?= $item['name'] ?>)</option>
                                     <?php endforeach; ?>
                                 </select>
                             </div>
@@ -197,7 +197,7 @@
                         <button id="button_simpan" type="submit" class="btn btn-primary btn-sm">Simpan</button>
                     </div>
                 </form>
-            <?php elseif($type == 'montirs'): ?>
+            <?php elseif ($type == 'montirs') : ?>
                 <form method="post" action="<?= base_url(); ?>/montirs/process">
                     <?= csrf_field() ?>
                     <div class="modal-body">
@@ -219,9 +219,9 @@
                         <button type="submit" class="btn btn-primary btn-sm">Simpan</button>
                     </div>
                 </form>
-            <?php elseif($type == 'services'): ?>
+            <?php elseif ($type == 'services') : ?>
                 <form method="post" action="<?= base_url(); ?>/services/process">
-                <?= csrf_field() ?>
+                    <?= csrf_field() ?>
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="exampleInputEmail1">Nama Service</label>
@@ -237,9 +237,9 @@
                         <button type="submit" class="btn btn-primary btn-sm">Simpan</button>
                     </div>
                 </form>
-            <?php else: ?>
+            <?php else : ?>
                 <form method="post" action="<?= base_url(); ?>/customers/process">
-                <?= csrf_field() ?>
+                    <?= csrf_field() ?>
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="exampleInputEmail1">Nama Customer</label>
@@ -269,14 +269,14 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h6 class="modal-title" id="exampleModalLabel">Ubah <?=$title?></h6>
+                <h6 class="modal-title" id="exampleModalLabel">Ubah <?= $title ?></h6>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
+                    <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <?php if($type == 'dataItems'): ?>
+            <?php if ($type == 'dataItems') : ?>
                 <form id="dataItems" method="post">
-                <?= csrf_field() ?>
+                    <?= csrf_field() ?>
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="exampleInputEmail1">Kode Barang</label>
@@ -305,7 +305,7 @@
                                 <select class="form-control product_type2" id="id_type" name="id_type" required>
                                     <option value="">Pilih Kategori Barang</option>
                                     <?php foreach ($typeitem as $item) : ?>
-                                        <option value="<?=$item['id_type']?>"><?=$item['name']?></option>
+                                        <option value="<?= $item['id_type'] ?>"><?= $item['name'] ?></option>
                                     <?php endforeach; ?>
                                 </select>
                             </div>
@@ -316,7 +316,7 @@
                                 <select class="form-control product_merk2" id="id_merk" name="id_merk" required>
                                     <option value="">Pilih Merk Barang</option>
                                     <?php foreach ($merkitem as $item) : ?>
-                                        <option value="<?=$item['id_merk']?>"><?=$item['name']?></option>
+                                        <option value="<?= $item['id_merk'] ?>"><?= $item['name'] ?></option>
                                     <?php endforeach; ?>
                                 </select>
                             </div>
@@ -331,9 +331,9 @@
                         <button type="submit" class="btn btn-primary btn-sm">Simpan</button>
                     </div>
                 </form>
-            <?php elseif($type == 'typeItems'): ?>
+            <?php elseif ($type == 'typeItems') : ?>
                 <form id="typeItems" method="post" action="">
-                <?= csrf_field() ?>
+                    <?= csrf_field() ?>
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="exampleInputEmail1">Kategori</label>
@@ -345,9 +345,9 @@
                         <button type="submit" class="btn btn-primary btn-sm">Simpan</button>
                     </div>
                 </form>
-            <?php elseif($type == 'merkItems'): ?>
+            <?php elseif ($type == 'merkItems') : ?>
                 <form id="merkItems" method="post" action="">
-                <?= csrf_field() ?>
+                    <?= csrf_field() ?>
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="exampleInputEmail1">Merk Barang</label>
@@ -359,9 +359,9 @@
                         <button type="submit" class="btn btn-primary btn-sm">Simpan</button>
                     </div>
                 </form>
-            <?php elseif($type == 'suppliers'): ?>
+            <?php elseif ($type == 'suppliers') : ?>
                 <form id="suppliers" method="post" action="">
-                <?= csrf_field() ?>
+                    <?= csrf_field() ?>
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="exampleInputEmail1">Nama Supplier</label>
@@ -391,7 +391,7 @@
                         <button type="submit" class="btn btn-primary btn-sm">Simpan</button>
                     </div>
                 </form>
-            <?php elseif($type == 'manajemenUser'): ?>
+            <?php elseif ($type == 'manajemenUser') : ?>
                 <form id="managementuser" method="post" action="">
                     <?= csrf_field() ?>
                     <div class="modal-body">
@@ -427,7 +427,7 @@
                         <button type="submit" class="btn btn-primary btn-sm">Simpan</button>
                     </div>
                 </form>
-            <?php elseif($type == 'checkOuts'): ?>
+            <?php elseif ($type == 'checkOuts') : ?>
                 <form id="checkOuts" method="post" action="">
                     <?= csrf_field() ?>
                     <div class="modal-body">
@@ -437,7 +437,7 @@
                                 <select class="form-control product_code" id="id_item" name="id_item">
                                     <option value="">Pilih Barang</option>
                                     <?php foreach ($items as $item) : ?>
-                                        <option value="<?=$item['id_item']?>"><?=$item['code']?>(<?=$item['name']?>)</option>
+                                        <option value="<?= $item['id_item'] ?>"><?= $item['code'] ?>(<?= $item['name'] ?>)</option>
                                     <?php endforeach; ?>
                                 </select>
                             </div>
@@ -456,13 +456,14 @@
                         <button type="submit" class="btn btn-primary btn-sm">Simpan</button>
                     </div>
                 </form>
-            <?php elseif($type == 'montirs'): ?>
+            <?php elseif ($type == 'montirs') : ?>
                 <form id="montirs" method="post" action="">
                     <?= csrf_field() ?>
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="exampleInputEmail1">Nomor Pegawai</label>
-                            <input type="text" class="form-control product_code" name="name" placeholder="Nama" disabled>
+                            <input type="text" class="form-control product_code" name="name" placeholder="Nip" disabled>
+                            <input type="hidden" class="form-control product_code" name="nip">
                         </div>
                         <div class="form-group">
                             <label for="exampleInputEmail1">Nama</label>
@@ -482,7 +483,7 @@
                         <button type="submit" class="btn btn-primary btn-sm">Simpan</button>
                     </div>
                 </form>
-            <?php elseif($type == 'services'): ?>
+            <?php elseif ($type == 'services') : ?>
                 <form id="services" method="post" action="">
                     <?= csrf_field() ?>
                     <div class="modal-body">
@@ -500,7 +501,7 @@
                         <button type="submit" class="btn btn-primary btn-sm">Simpan</button>
                     </div>
                 </form>
-            <?php else: ?>
+            <?php else : ?>
                 <form id="customers" method="post" action="">
                     <?= csrf_field() ?>
                     <div class="modal-body">
@@ -532,14 +533,14 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h6 class="modal-title" id="exampleModalLabel">Hapus <?=$title?></h6>
+                <h6 class="modal-title" id="exampleModalLabel">Hapus <?= $title ?></h6>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
+                    <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <?php if($type == 'dataItems'): ?>
+            <?php if ($type == 'dataItems') : ?>
                 <form id="deleteItems" method="get">
-                <?= csrf_field() ?>
+                    <?= csrf_field() ?>
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="messageDelete">Apakah anda yakin ingin menghapus data ?</label> <label class="product_name font-weight-bold"></label>
@@ -550,9 +551,9 @@
                         <button type="submit" class="btn btn-primary btn-sm">Ya</button>
                     </div>
                 </form>
-            <?php elseif($type == 'typeItems'): ?>
+            <?php elseif ($type == 'typeItems') : ?>
                 <form id="typeDelete" method="get">
-                <?= csrf_field() ?>
+                    <?= csrf_field() ?>
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="messageDelete">Apakah anda yakin ingin menghapus data ?</label> <label class="product_name font-weight-bold"></label>
@@ -563,9 +564,9 @@
                         <button type="submit" class="btn btn-primary btn-sm">Ya</button>
                     </div>
                 </form>
-            <?php elseif($type == 'merkItems'): ?>
+            <?php elseif ($type == 'merkItems') : ?>
                 <form id="merkDelete" method="post" action="">
-                <?= csrf_field() ?>
+                    <?= csrf_field() ?>
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="messageDelete">Apakah anda yakin ingin menghapus data ?</label> <label class="product_name font-weight-bold"></label>
@@ -576,9 +577,9 @@
                         <button type="submit" class="btn btn-primary btn-sm">Ya</button>
                     </div>
                 </form>
-            <?php elseif($type == 'suppliers'): ?>
+            <?php elseif ($type == 'suppliers') : ?>
                 <form id="supplierDelete" method="post" action="">
-                <?= csrf_field() ?>
+                    <?= csrf_field() ?>
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="messageDelete">Apakah anda yakin ingin menghapus data ?</label> <label class="product_name font-weight-bold"></label>
@@ -589,7 +590,7 @@
                         <button type="submit" class="btn btn-primary btn-sm">Ya</button>
                     </div>
                 </form>
-            <?php elseif($type == 'manajemenUser'): ?>
+            <?php elseif ($type == 'manajemenUser') : ?>
                 <form id="managementuser" method="post" action="">
                     <?= csrf_field() ?>
                     <div class="modal-body">
@@ -625,7 +626,7 @@
                         <button type="submit" class="btn btn-primary btn-sm">Simpan</button>
                     </div>
                 </form>
-            <?php elseif($type == 'checkOuts'): ?>
+            <?php elseif ($type == 'checkOuts') : ?>
                 <form id="checkOuts" method="post" action="">
                     <?= csrf_field() ?>
                     <div class="modal-body">
@@ -635,7 +636,7 @@
                                 <select class="form-control product_code" id="id_item" name="id_item">
                                     <option value="">Pilih Barang</option>
                                     <?php foreach ($items as $item) : ?>
-                                        <option value="<?=$item['id_item']?>"><?=$item['code']?>(<?=$item['name']?>)</option>
+                                        <option value="<?= $item['id_item'] ?>"><?= $item['code'] ?>(<?= $item['name'] ?>)</option>
                                     <?php endforeach; ?>
                                 </select>
                             </div>
@@ -654,7 +655,7 @@
                         <button type="submit" class="btn btn-primary btn-sm">Simpan</button>
                     </div>
                 </form>
-            <?php elseif($type == 'montirs'): ?>
+            <?php elseif ($type == 'montirs') : ?>
                 <form id="montirDelete" method="post" action="">
                     <?= csrf_field() ?>
                     <div class="modal-body">
@@ -667,7 +668,7 @@
                         <button type="submit" class="btn btn-primary btn-sm">Ya</button>
                     </div>
                 </form>
-            <?php elseif($type == 'services'): ?>
+            <?php elseif ($type == 'services') : ?>
                 <form id="servicesDelete" method="get" action="">
                     <?= csrf_field() ?>
                     <div class="modal-body">
@@ -680,7 +681,7 @@
                         <button type="submit" class="btn btn-primary btn-sm">Ya</button>
                     </div>
                 </form>
-            <?php elseif($type == 'checkIns'): ?>
+            <?php elseif ($type == 'checkIns') : ?>
                 <form id="checkInsDelete" method="get">
                     <?= csrf_field() ?>
                     <div class="modal-body">
@@ -693,7 +694,7 @@
                         <button type="submit" class="btn btn-primary btn-sm">Ya</button>
                     </div>
                 </form>
-            <?php elseif($type == 'checkSuppliers'): ?>
+            <?php elseif ($type == 'checkSuppliers') : ?>
                 <form id="checkOutsDelete" method="get">
                     <?= csrf_field() ?>
                     <div class="modal-body">
@@ -706,7 +707,7 @@
                         <button type="submit" class="btn btn-primary btn-sm">Ya</button>
                     </div>
                 </form>
-            <?php else: ?>
+            <?php else : ?>
                 <form id="customerDelete" method="get">
                     <?= csrf_field() ?>
                     <div class="modal-body">
